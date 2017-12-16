@@ -159,7 +159,7 @@ export default{
           selectProv:'',
           selectDis:'',
           smokehistorys:[{value:"无",label:"无"},{value:"1-10包年",label:"1-10包年"},{value:"10-20包年",label:"10-20包年"},{value:"20-30包年",label:"20-30包年"},{value:"30包年以上",label:"30包年以上"}],
-          nations:[{value:"东亚",label:"东亚"},{value:"南亚",label:"南亚"},{value:"南亚",label:"南亚"},{value:"欧洲",label:"欧洲"},{value:"非洲",label:"非洲"},{value:"美洲",label:"美洲"}],
+          nations:[{value:"东亚",label:"东亚"},{value:"东南亚",label:"东南亚"},{value:"南亚",label:"南亚"},{value:"欧洲",label:"欧洲"},{value:"非洲",label:"非洲"},{value:"美洲",label:"美洲"}],
           sexs:[{value:"true",label:"男"},{value:"false",label:"女"}],
           diseasename:[],
           basicInfo: {},
