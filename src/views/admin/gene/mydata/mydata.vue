@@ -78,7 +78,19 @@
                 </el-table-column>
                 <el-table-column label="病人编号">
                     <template slot-scope="scope">
-                        <router-link :to="{path:'/admin/gene/edit?patientcode='+scope.row.dchPatient.patientcode+'&paid='+scope.row.dchPatient.patientid}" class="bian">
+                    	<Poptip placement="bottom-start" width="300" @on-popper-show="getUserBySample(scope.row)">
+                    		<Icon style="padding:0 10px;cursor:pointer;" type="android-person"></Icon>
+                    		<div class="api"  slot="content">
+                    			<el-table   align="center" :data="assignedData">
+                        			<el-table-column  label="分配人姓名" >
+                        				<template slot-scope="scope2">
+                        					{{assignedData[scope2.$index].username}}({{assignedData[scope2.$index].dept.name}})
+                        				</template>
+                        			</el-table-column>
+                    			</el-table>
+                    		</div>
+                    	</Poptip>
+                        <router-link style="width:40%;display:inline-block;" :to="{path:'/admin/gene/edit?patientcode='+scope.row.dchPatient.patientcode+'&paid='+scope.row.dchPatient.patientid}" class="bian">
                         {{ scope.row.dchPatient.patientcode }}
                         </router-link> 
                     </template>
@@ -336,6 +348,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         patientidList: [],            // 选中病人信息id列表
         useridList: [],               // 选中组成员id列表
         groupMemberData:[],           // 组、成员数据
+        assignedData:[],              // 分配人的数据
         loading:true,
         loadone:Boolean,
         tabledata: [],  
@@ -609,6 +622,10 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         },
         // 分配数据点击事件-切换成选择表格
         clickSoltData() {
+            // 显示选项
+            this.showSelection = true;
+            // 右下角按钮显示
+            this.batchShowBtn = true;
             // 根据样本获得病人信息参数
             let obj = {
                 "productId":"1" ,
@@ -629,10 +646,6 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                                 this.disTableSelect = true;
                             }
                         })
-                        // 显示选项
-                        this.showSelection = true;
-                        // 右下角按钮显示
-                        this.batchShowBtn = true;
                     }else{
                         this.tableData3=[];
                     }
@@ -724,7 +737,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 }
                 loadingInstance.close();
             }).catch((error)=>{
-                loadingInstance.close();
+            	this.$Message.error(error.statusText);
+				loadingInstance.close();
             })
         },
         clearFiles(){
@@ -840,6 +854,34 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             this.samid='';
             this.pull();
             console.log(this.patid)
+        },
+	//点击人物ICON
+        getUserBySample(row){
+        	let len=row.dchSampleList.length;
+        	let userid = getCookie("userid");
+        	this.assignedData=[];
+        	if(len && len>0){
+        		let obj={
+        			"userid": userid,
+        			"sampleid":row.dchSampleList[0].sampleid
+        		}
+        		data.getUsesBySampleId(obj).then((data)=>{
+	        		if(data.returnCode==200){
+	        			if(data.data && data.data.length>0){
+	        				if(data.data.length==1 && data.data[0].dchUserId==userid){ //当只有一条数据时
+	        					this.assignedData=[{"username":"暂未分配","dept":{"name":data.data[0].dept.name}}];
+	        				}else if(data.data.length>1){
+	        					this.assignedData=data.data;
+	        				}
+	        			}
+	        		}else{
+	        			this.$Message.error(data.msg);
+	        		}
+	        	}).catch((error)=>{
+	        		this.$Message.error(error.statusText);
+					this.assignedData=[];
+	            })
+        	}
         },
         // 上传
         uploadSample(){

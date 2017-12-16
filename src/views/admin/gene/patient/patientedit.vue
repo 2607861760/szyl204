@@ -115,7 +115,7 @@ export default{
                     this.sign=true;
                     this.$router.push("/admin");
                 }else{
-                    this.$Message.error(data.data)
+                    this.$Message.error(data.msg)
                 }
             }).catch((error)=>{
                 this.$Message.error(error)

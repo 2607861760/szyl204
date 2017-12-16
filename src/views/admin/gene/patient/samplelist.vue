@@ -37,7 +37,7 @@
         <el-table :data="samplelist" border style="width: 100%;" height="250" v-loading="listload">
             <el-table-column label="样本编号" min-width="10%">
                 <template slot-scope="scope">
-                    <span style="color:#3c8dbc" @click="clickSample(scope.row)">{{ scope.row.samplecode }}</span>
+                    <span style="color:#3c8dbc;cursor:pointer;" @click="clickSample(scope.row)">{{ scope.row.samplecode }}</span>
                 </template>
             </el-table-column>
             <el-table-column prop="sampletype" label="样本类型" min-width="10%"></el-table-column>
@@ -525,15 +525,21 @@ export default{
                             }
                         })
                     }else{
-                        data.addSample(this.sampleInfo).then((data)=>{                 
-                            if(data.data=="null"||data.data==null){
-                                this.$Message.error("参数错误！");
+                        data.addSample(this.sampleInfo).then((data)=>{  
+                            console.log(data.returnCode)
+                            if(data.returnCode==0 || data.returnCode==200){
+                                if(data.data=="null"||data.data==null){
+                                    this.$Message.error("参数错误！");
+                                }else{
+                                    this.$Message.success("样本添加成功！");
+                                    this.uploadDisabled = false;
+                                    this.getList();
+                                    this.samid=data.data.sampleid;
+                                }
                             }else{
-                                this.$Message.success("样本添加成功！");
-                                this.uploadDisabled = false;
-                                this.getList();
-                                this.samid=data.data.sampleid;
-                            }
+                                this.$Message.error(data.msg);
+                            }      
+                            
                         })
                     }           
                 }

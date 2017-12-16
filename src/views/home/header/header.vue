@@ -43,7 +43,7 @@
             margin:auto;
             height:100%;
             line-height:40px;
-            li{
+            &>li{
                 float:left;
                 color:#fff;
                 font-size:16px;
@@ -71,32 +71,38 @@
                         }
                         margin:auto;
                         .goods{
-                            &>div{
-                                width:150px;
-                                height:30px;
-                                line-height:30px;
+                            margin-top:10px;
+                            &>li{
                                 float:left;
-                                font-size:14px;
-                                .round{
-                                    width:10px;
-                                    height:10px;
+                                &>div{
+                                    height:30px;
+                                    line-height:30px;
                                     float:left;
-                                    border-radius:50%;
-                                    margin-top:10px;
-                                    border:1px solid #1996cd;
-                                }
-                                span{
-                                    color:#1996cd;
-                                    padding-left:10px;
-                                }
-                                &:hover{
+                                    font-size:14px;
                                     .round{
-                                        background:#1996cd;
+                                        width:10px;
+                                        height:10px;
+                                        float:left;
+                                        border-radius:50%;
+                                        margin-top:10px;
+                                        border:1px solid #1996cd;
                                     }
                                     span{
-                                       color:#ff6600; 
+                                        color:#1996cd;
+                                        padding-left:10px;
+                                    }
+                                    &:hover{
+                                        .round{
+                                            background:#1996cd;
+                                        }
+                                        span{
+                                        color:#ff6600; 
+                                        }
                                     }
                                 }
+                            }
+                            &>li+li{
+                                margin-left:20px;
                             }
                         }
                         .nav-txt{
@@ -182,34 +188,40 @@
                             <!--<div class="nav-txt">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus pharetra vulputate, felis tellus mollis orci, sed rhoncus sapien nunc eget.
                             </div>-->
-                            <div style="float:left;margin-left: 17px;">
+                            <div style="float:left;margin-left: 50px;">
                                 <p style="font-size:18px;color:#1996cd;">产品中心</p>
-                                <div class="goods">
-                                    <div>
-                                        <div class="round"></div>
-                                        <span>肿瘤精准医学</span>
-                                    </div>
-                                    <div style="margin-left:20px;">
-                                        <div class="round"></div>
-                                        <span>更多内容</span>
-                                    </div>
-                                </div>
-                                <div class="goods">
-                                    <div>
-                                        <div class="round"></div>
-                                        <span>罕见病精准医学</span>
-                                    </div>
-                                    <div style="margin-left:20px;">
-                                        <div class="round"></div>
-                                        <span>更多内容</span>
-                                    </div>
-                                </div>
-                                <div class="goods">
-                                    <div>
-                                        <div class="round"></div>
-                                        <span>药物基因组精准分析</span>
-                                    </div>
-                                </div>
+                                <ol class="goods">
+                                    <li>
+                                        <div>
+                                            <div class="round"></div>
+                                            <span>肿瘤精准医学</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div>
+                                            <div class="round"></div>
+                                            <span>罕见病精准医学</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div>
+                                            <div class="round"></div>
+                                            <span>药物基因组精准分析</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div>
+                                            <div class="round"></div>
+                                            <span>更多内容</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div>
+                                            <div class="round"></div>
+                                            <span>更多内容</span>
+                                        </div>
+                                    </li>
+                                </ol>
                             </div>
                         </div>
                     </div>

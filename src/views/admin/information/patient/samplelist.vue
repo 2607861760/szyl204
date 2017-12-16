@@ -31,7 +31,7 @@
         <el-table :data="samplelist" border style="width: 100%;" height="250">
             <el-table-column label="样本编号" min-width="10%" >
                 <template slot-scope="scope">
-                    <span style="color:#3c8dbc" @click="sam(scope.row)">{{ scope.row.samplecode }}</span>
+                    <span style="color:#3c8dbc;cursor:pointer;" @click="sam(scope.row)">{{ scope.row.samplecode }}</span>
                 </template>
             </el-table-column>
             <el-table-column prop="samplesource" label="样本类型" min-width="10%"></el-table-column>
