@@ -31,7 +31,7 @@
                             新建数据
                         </Button>
                         <div class="data">
-                            <div @click="single('single')">单个数据</div>
+                            <div @click="single">单个数据</div>
                             <div @click="files">批量数据</div>
                         </div>
                     </Dropdown>
@@ -635,9 +635,9 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         files(){
             this.$router.push('/admin/fileup?productId=2')
         },
-        single(value){
+        single(){
             this.datashow = false;
-            this.$router.push('/admin/tumour/info?type='+value);
+            this.$router.push('/admin/tumour/info?type=single');
         },
         run(index,row){  //点击运行
             this.samid=row.dchSampleList[index].sampleid;
