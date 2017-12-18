@@ -251,4 +251,12 @@ export const data = {
             return Promise.resolve(res.data)
         })
     },
+    /*
+    *显示已分配成员
+    */
+    getUsesBySampleId(obj){
+    	return $ajax.post(apiUrl.apiUrl+'sample/getUsesBySampleId',obj).then(function(res){
+            return Promise.resolve(res.data)
+        })
+    }
 }
