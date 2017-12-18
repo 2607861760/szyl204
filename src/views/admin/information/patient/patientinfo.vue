@@ -109,7 +109,7 @@
     <Modal v-model="removeModel" title="删除提示" width="300" :mask-closable="false">
         <p style="padding:20px;text-align:center;">您确定要删除这条信息吗？</p>
         <div class="fastq-footer">
-            <button size="small" type="primary" @click="saveInfoClick">确定</button>
+            <Button size="small" type="primary" @click="saveInfoClick">确定</Button>
         </div>
     </Modal>
 </div>
@@ -222,22 +222,22 @@ export default{
                 "productId":"1"
             }
             console.log(1)
-            // data.deletePatientById(obj).then((data)=>{
-            //     console.log(data)
-            //     if(data.returnCode==0 || data.returnCode==200){
-            //         if(data.data=="成功"){
-            //             this.$Message.success(data.data);
-            //             this.sign=false;
-            //             this.$emit('signs',this.sign)
-            //             this.$router.push('/admin/tumour')
-            //         }else{
-            //             this.$Message.error(data.data);
-            //         }
-            //     }else{
-            //         this.$Message.error(data.msg)
-            //     }
-            //     this.removeModel=false;
-            // })
+            data.deletePatientById(obj).then((data)=>{
+                console.log(data)
+                if(data.returnCode==0 || data.returnCode==200){
+                    if(data.data=="成功"){
+                        this.$Message.success(data.data);
+                        this.sign=false;
+                        this.$emit('signs',this.sign)
+                        this.$router.push('/admin/tumour')
+                    }else{
+                        this.$Message.error(data.data);
+                    }
+                }else{
+                    this.$Message.error(data.msg)
+                }
+                this.removeModel=false;
+            })
         },
         changeGender(val){  //性别改变
             this.genderId = val;
