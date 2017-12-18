@@ -726,12 +726,12 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             data.createCaseByPaientId(obj).then((data)=> {
                 console.log(data.data);
                 if(data.returnCode=="200" || data.returnCode =="0"){
-                    // this.href="http://tgex-dev.dchgenecloud.com:88/#/analyses/"+data.data.caseid
-                    // setTimeout('window.open("http://tgex-dev.dchgenecloud.com:88/#/analyses/"'+data.data.caseid+');', 500);
-                    // window.open("http://tgex-dev.dchgenecloud.com:88/#/analyses/"+data.data.caseid)
-
-                    window.open("http://10.131.101.173:88/#/analyses/"+data.data.caseid)
-                    // window.location.href="http://tgex-dev.dchgenecloud.com:88/#/analyses/"+data.data.caseid
+                    let a = document.createElement('a');
+						a.setAttribute('href',"http://tgex-dev.dchgenecloud.com:88/#/analyses/"+data.data.caseid);
+						a.setAttribute('target', '_blank');
+						document.body.appendChild(a)
+						a.click(); 
+						a.parentNode.removeChild(a);
                 }else{
                     this.$Message.error(data.msg)
                 }
