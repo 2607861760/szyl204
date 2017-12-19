@@ -140,7 +140,7 @@ export default {
         //     this.$emit("operate", name, row)
         // },
         // 显示行
-        showTr: function(row, index) {
+        showTr: function({row, index}) {
             let show = (row._parent ? (row._parent._expanded && row._parent._show) : true)
             row._show = show
             return show ? '' : 'display:none;'

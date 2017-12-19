@@ -524,20 +524,19 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         clickCheckBtn(value) {
             // console.log(JSON.stringify(value));
             // 存放成员id
-            let arr = [];
+            let str = '';
             // 获得勾选成员id
             if(M.isArray(value)) {
                 M.each(value,(item)=> {
-                    arr.push(item.dchUserId);
+                    str = item.dchUserId;
                     if(item.children && item.children.length>0) {
-                        M.each(item.children,(value)=>{
-                            arr.push(value.dchUserId);
-                        }) 
+                        this.clickCheckBtn(item.children);
                     }
+                    this.useridList.push(str);
+                    // 去掉数组中的重复
+                    this.useridList = M.uniqueArray(this.useridList);
                 })
             }
-            // 去掉数组中的重复
-            this.useridList = M.uniqueArray(arr);
             console.log(this.useridList);
         },
         // 表格左侧选择事件
