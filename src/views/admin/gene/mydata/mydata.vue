@@ -82,9 +82,14 @@
                     		<Icon style="padding:0 10px;cursor:pointer;" type="android-person"></Icon>
                     		<div class="api"  slot="content">
                     			<el-table v-loading="assinged"  align="center" :data="assignedData">
-                        			<el-table-column  label="分配人姓名" >
+                        			<el-table-column  label="分配人姓名">
                         				<template slot-scope="scope2">
-                        					{{assignedData[scope2.$index].username}}({{assignedData[scope2.$index].dept.name}})
+                        					<span v-if="assignedData[scope2.$index].dept.name!=''">
+                        						{{assignedData[scope2.$index].username}}({{assignedData[scope2.$index].dept.name}})
+                        					</span>
+                        					<span v-if="assignedData[scope2.$index].dept.name==''">
+                        						{{assignedData[scope2.$index].username}}
+                        					</span>
                         				</template>
                         			</el-table-column>
                     			</el-table>
