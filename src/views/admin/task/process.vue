@@ -57,7 +57,7 @@
             <div class="process-step">
                 <Row :gutter="16">
                     <Col pull="1" span="2">文件名称:</Col>
-                    <Col pull="1" span="2">{{file}}</Col>
+                    <Col pull="1" span="2"><div style="white-space:nowrap;">{{file}}</div></Col>
                 </Row>
                 <Row>
                     <div class="process-mid">
