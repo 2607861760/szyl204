@@ -121,7 +121,7 @@ $right-main-bg: #ECF0F5;
                   </div>
                   <el-menu-item index="/admin">
                       <Icon type="android-list" style="margin-right:8%;"></Icon>
-                      数据管理
+                      罕见病
                   </el-menu-item>
                   <el-menu-item index="/admin/tumour">
                       <Icon type="ios-pie" style="margin-right:8%;"></Icon>

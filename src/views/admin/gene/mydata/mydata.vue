@@ -81,7 +81,7 @@
                     	<Poptip placement="bottom-start" width="300" @on-popper-show="getUserBySample(scope.row)">
                     		<Icon style="padding:0 10px;cursor:pointer;" type="android-person"></Icon>
                     		<div class="api"  slot="content">
-                    			<el-table   align="center" :data="assignedData">
+                    			<el-table v-loading="assinged"  align="center" :data="assignedData">
                         			<el-table-column  label="分配人姓名" >
                         				<template slot-scope="scope2">
                         					{{assignedData[scope2.$index].username}}({{assignedData[scope2.$index].dept.name}})
@@ -139,8 +139,8 @@
                         <a @click="jumpTgexPage(scope.row)"   target="_blank">GDAP</a>
                     </template>
                 </el-table-column>
-                <tr slot="append" style="height:50px;" v-if="more">
-                    <td colspan="7" style="text-align:center;" v-loading="loading"></td>
+                <tr slot="append" style="height:50px;display:inline-block;" v-if="more">
+                    <td colspan="7" style="border:none;" v-loading="loading"></td>
                 </tr>
             </el-table>
             <div style="padding:40px 0px;">
@@ -349,8 +349,9 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         useridList: [],               // 选中组成员id列表
         groupMemberData:[],           // 组、成员数据
         assignedData:[],              // 分配人的数据
+        assinged:true,                //加载分配人时loading
         loading:true,
-        loadone:Boolean,
+        loadone:false,
         tabledata: [],  
         more:false,    
         height:'500',  
@@ -382,6 +383,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         choice:[],
         choices:[],
         pipeline:'',
+        allocation:false,
         ruleCustom: {
           samplecode: [
               { required: true, message: '样本编号不能为空', trigger: 'blur' }
@@ -572,6 +574,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             this.batchShowBtn = false;
             // 设置批次选中项
             this.selectPcId = "All";
+            this.allocation=false;
+            this.pageIndex=1;
             // 返回列表
             this.load();
         },
@@ -613,8 +617,12 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 this.showSelection = false;
                 // 按钮隐藏
                 this.batchShowBtn = false;
+                this.allocation=false;
+                this.pageIndex=1;
                 this.load();
             }else {
+                this.allocation=true;
+                this.pageIndex=1;
                 this.clickSoltData();
             } 
             // console.log(this.selectPcId);
@@ -632,9 +640,15 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 "pageSize":this.pageSize,
                 "pageIndex":this.pageIndex
             }
+            if(this.pageIndex==1){
+                this.tableData3.length=0;
+                this.loading=false;
+            }
+            this.loading=true;
             // 根据批次获得对应数据信息
             data.getProjectListByBatchId(obj).then((res)=> {
                 console.log(JSON.stringify(res))
+                this.loading=false;
                 if(res.returnCode==200 || res.returnCode==0) {
                     if(res.data!=null){
                         this.tableData3 = res.data.projectList;
@@ -859,6 +873,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         	let len=row.dchSampleList.length;
         	let userid = getCookie("userid");
         	this.assignedData=[];
+        	this.assinged=true;
         	if(len && len>0){
         		let obj={
         			"userid": userid,
@@ -876,10 +891,14 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
 	        		}else{
 	        			this.$Message.error(data.msg);
 	        		}
+	        		this.assinged=false;
 	        	}).catch((error)=>{
 	        		this.$Message.error(error.statusText);
 					this.assignedData=[];
+					this.assinged=false;
 	            })
+        	}else{
+        		this.assinged=false;
         	}
         },
         // 上传
@@ -1043,11 +1062,11 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             }
             if(this.pageIndex==1){
                 this.tableData3.length=0;
-                this.loadone=true;
+                this.loading=false;
             }
             this.loading=true;
             data.getProjectList(obj).then((data)=>{
-                this.loadone=false;
+                this.loading=true;
                 if(data.returnCode==0 || data.returnCode==200){
                     if(data.data!=null){
                         this.total=data.data.count;
@@ -1077,19 +1096,31 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 if(this.pageIndex<this.total/20){
                     this.pageIndex++;
                     setTimeout(()=>{
-                        this.load();
+                        if(this.allocation){
+                            this.clickSoltData();
+                        }else{
+                            this.load();
+                        }
                     },2000);
                 }else{
                     this.pageIndex=this.total/20;
                     setTimeout(()=>{
-                        this.load();
+                        if(this.allocation){
+                            this.clickSoltData();
+                        }else{
+                            this.load();
+                        }
                     },2000);
                 }
             }else{
             if(this.pageIndex<(Math.ceil(this.total/20))){
                 this.pageIndex++;
                 setTimeout(()=>{
-                    this.load();
+                    if(this.allocation){
+                            this.clickSoltData();
+                        }else{
+                            this.load();
+                        }
                 },2000);
                 }
             }
