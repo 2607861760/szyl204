@@ -365,12 +365,14 @@
             productId: '2'
         }
         console.log(obj);
-        data.getFileList(obj).then((res)=> {
-            console.log(res);
-            if(res.returnCode==0 || res.returnCode==200){
-                this.sampleDataList = res.data;
+        data.getFileList(obj).then((data)=> {
+            console.log(data);
+            if(data.returnCode==0 || data.returnCode==200){
+                this.sampleDataList = data.data;
+            }else if(data.returnCode==422 || data.returnCode==204){
+                this.$router.push('/login')
             }else{
-                this.$Message.error(res.msg)
+                this.$Message.error(data.msg)
             }
         })
     },
@@ -389,6 +391,8 @@
                 this.$Message.success(data.data);
                 this.removeModel=false;
                 this.getList();
+            }else if(data.returnCode==422 || data.returnCode==204){
+                this.$router.push('/login')
             }else{
                 this.$Message.error(data.msg);
                 this.removeModel=false;
@@ -434,9 +438,11 @@
         data.executeSample(obj).then((data)=>{
           if(data.returnCode==200 || data.returnCode==0){
             // 再次获取列表
-              this.load();
-              this.$Message.success("添加成功")
-          }else{
+                this.load();
+                this.$Message.success("添加成功")
+            }else if(data.returnCode==422 || data.returnCode==204){
+                this.$router.push('/login')
+            }else{
               this.$Message.error(data.msg)
           }
         })
@@ -472,6 +478,8 @@
                                 this.uploadDisabled = false;
                                 this.getList();
                             }
+                        }else if(data.returnCode==422 || data.returnCode==204){
+                            this.$router.push('/login')
                         }else{
                             this.$Message.error(data.msg)
                         }
@@ -488,6 +496,10 @@
                                 this.getList();
                                 this.samid=data.data.sampleid;
                             }
+                        }else if(data.returnCode==422 || data.returnCode==204){
+                            this.$router.push('/login')
+                        }else{
+                            this.$Message.error(data.msg)
                         }
                     })
                 }
@@ -522,14 +534,16 @@
         data.getForldList(obj).then((data)=>{
             // console.log(data)
             if(data.returnCode==0 || data.returnCode==200){
-                    if(M.isArray(data.data)) {
-                        this.fileServerCategoryList=data.data;
-                    }else {
-                        this.$Message.error(data.data)
-                    } 
-                }else{
-                    this.$Message.error(data.msg)
-                }
+                if(M.isArray(data.data)) {
+                    this.fileServerCategoryList=data.data;
+                }else {
+                    this.$Message.error(data.data)
+                } 
+            }else if(data.returnCode==422 || data.returnCode==204){
+                this.$router.push('/login')
+            }else{
+                this.$Message.error(data.msg)
+            }
       })
     },
     // 获得本地
@@ -551,6 +565,8 @@
                 }else {
                     this.$Message.error(data.data)
                 } 
+            }else if(data.returnCode==422 || data.returnCode==204){
+                this.$router.push('/login')
             }else{
                 this.$Message.error(data.msg)
             }
@@ -572,6 +588,8 @@
                     this.total=this.samplelist.length;
                     console.log(this.samplelist);
                 
+            }else if(data.returnCode==422 || data.returnCode==204){
+                this.$router.push('/login')
             }else{
                 this.$Message.error(data.msg);
             }

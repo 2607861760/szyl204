@@ -159,7 +159,7 @@ export default{
           selectProv:'',
           selectDis:'',
           smokehistorys:[{value:"无",label:"无"},{value:"1-10包年",label:"1-10包年"},{value:"10-20包年",label:"10-20包年"},{value:"20-30包年",label:"20-30包年"},{value:"30包年以上",label:"30包年以上"}],
-          nations:[{value:"东亚",label:"东亚"},{value:"东南亚",label:"东南亚"},{value:"南亚",label:"南亚"},{value:"欧洲",label:"欧洲"},{value:"非洲",label:"非洲"},{value:"美洲",label:"美洲"}],
+          nations:[{value:"东亚",label:"东亚"},{value:"南亚",label:"南亚"},{value:"东南亚",label:"东南亚"},{value:"欧洲",label:"欧洲"},{value:"非洲",label:"非洲"},{value:"美洲",label:"美洲"}],
           sexs:[{value:"true",label:"男"},{value:"false",label:"女"}],
           diseasename:[],
           basicInfo: {},
@@ -233,6 +233,8 @@ export default{
                     }else{
                         this.$Message.error(data.data);
                     }
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg)
                 }
@@ -260,14 +262,21 @@ export default{
             console.log(JSON.stringify(this.basicInfo))
             data.updatePatient(this.basicInfo).then((data)=>{
                 console.log(data)
-                if(data.msg==null){
-                    this.$Message.success(data.data);
-                    this.sign=false;
-                    this.$emit('signs',this.sign)
-                    this.$router.push("/admin/tumour");
+                if(data.returnCode==0 || data.returnCode==200){
+                    if(data.msg==null){
+                        this.$Message.success(data.data);
+                        this.sign=false;
+                        this.$emit('signs',this.sign)
+                        this.$router.push("/admin/tumour");
+                    }else{
+                        this.$Message.error(data.data)
+                    }
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
-                    this.$Message.error(data.data)
+                    this.$Message.error(data.msg)
                 }
+                
             })
         },
         changes(val){  //改变种族
@@ -305,6 +314,8 @@ export default{
                                     this.paid=data.data.patient.patientid;
                                     this.$router.push('/admin/tumour/newsample?paid='+this.paid)
                                 }
+                            }else if(data.returnCode==422 || data.returnCode==204){
+                                this.$router.push('/login')
                             }else{
                                 this.$Message.error(data.msg)
                             }
@@ -345,6 +356,8 @@ export default{
                             this.diseasetype.push(result)
                         }
                     })
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg)
                 }
@@ -385,6 +398,8 @@ export default{
                     if(this.basicInfo.alcoholism==true){
                         this.checks.push("alcoholism")
                     }
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg)
                 }

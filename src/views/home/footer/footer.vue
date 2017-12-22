@@ -18,6 +18,7 @@
                 .ivu-input{
                     background:rgba(255, 255, 255, .3);
                     border: none;
+                    color:#fff;
                 }
                 .submit{
                     width: 280px;
@@ -55,7 +56,7 @@
                     }
                 }
                 .details-txt{
-                    line-height:20px;
+                    line-height:30px;
                     color:#fff;
                     padding-top:10px;
                 }
@@ -71,6 +72,7 @@
         height: 60px;
         line-height: 60px;
         color: #FFF4EE;
+        font-size: 12px;
         text-align: center;
     }
 }

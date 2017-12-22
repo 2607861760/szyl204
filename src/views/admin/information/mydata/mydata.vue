@@ -451,6 +451,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     this.$Message.success(data.data);
                     this.removeModel=false;
                     this.load();
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg);
                     this.removeModel=false;
@@ -508,6 +510,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                                     this.load();
                                     this.uploadDisabled = false;
                                 }
+                            }else if(data.returnCode==422 || data.returnCode==204){
+                                this.$router.push('/login')
                             }else{
                                 this.$Message.error(data.msg);
                             }
@@ -524,8 +528,10 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                                 this.uploadDisabled = false;
                                 this.samid=data.data.sampleid;
                             }
+                        }else if(data.returnCode==422 || data.returnCode==204){
+                            this.$router.push('/login')
                         }else{
-                            this.$Message.eeror(data.msg)
+                            this.$Message.error(data.msg)
                         }
                     })
                 }
@@ -557,6 +563,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     }else {
                         this.$Message.error(data.data)
                     } 
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg)
                 }
@@ -581,6 +589,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     }else {
                         this.$Message.error(data.data)
                     } 
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg)
                 }
@@ -617,6 +627,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     }else{
                         this.samplefile=data.data;
                     }
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg)
                 }
@@ -667,6 +679,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     // 再次获取列表
                     this.load();
                     this.$Message.success("添加成功")
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg)
                 }
@@ -697,6 +711,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                         }
                         this.tableData3=this.tabledata;
                     }
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }
                 this.more=true;
                 if(this.total<=20){

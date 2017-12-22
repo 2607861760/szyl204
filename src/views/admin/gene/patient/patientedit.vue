@@ -114,6 +114,8 @@ export default{
                     this.$Message.success(data.data)
                     this.sign=true;
                     this.$router.push("/admin");
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg)
                 }
@@ -132,6 +134,8 @@ export default{
                     this.$Message.success(data.data);
                     this.sign=true;
                     this.$router.push('/admin')
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg);
                 }
@@ -158,6 +162,8 @@ export default{
                     this.genderId= String(data.data.dchPatient.gender);
                     // 克隆一份数据
                     this.oldInfo = M.clone(this.basicInfo);
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg)
                 }

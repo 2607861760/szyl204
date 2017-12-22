@@ -134,6 +134,8 @@
                         }else if(this.url.productId=="2"){
                             this.$router.push('/admin/tumour')
                         }
+                    }else if(data.returnCode==422 || data.returnCode==204 ){
+                        this.$router.push('/login')
                     }else{
                         this.$Message.error(data.msg);
                     }

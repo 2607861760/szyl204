@@ -109,6 +109,8 @@ import {data} from 'api/index.js'
                             this.$Message.error(data.data);
                             this.loading=false;
                         }
+                    }else if(data.returnCode==422 || data.returnCode==204){
+                        this.$router.push('/login')
                     }else{
                         this.$Message.error(data.msg)
                         this.loading=false;
@@ -136,6 +138,8 @@ import {data} from 'api/index.js'
                             this.$Message.error(data.data);
                             this.loading=false;
                         }
+                    }else if(data.returnCode==422 || data.returnCode==204){
+                        this.$router.push('/login')
                     }else{
                         this.$Message.error(data.msg)
                         this.loading=false;

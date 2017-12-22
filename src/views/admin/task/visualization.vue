@@ -61,11 +61,11 @@ export default {
                 userId:this.cookies
             }
             // console.log(obj);
-            task.getJobRowse(obj).then((res)=> {
-                console.log(res);
-                if(res.returnCode==0 ||res.returnCode==200){
-                    if(res.data=="成功") {
-                        this.urlSrc = "http://42.123.124.204:8081/jbrowse/JBrowse-1.11.5/index.html?data=file"
+            task.getJobRowse(obj).then((data) => {
+                console.log(data);
+                if (data.returnCode == 0 || data.returnCode == 200) {
+                    if (data.data == "成功") {
+                        this.urlSrc = "http://192.168.163.214/opt/tomcat/apache-tomcat-7.0.75/webapps/jbrowse/JBrowse-1.11.5/"
                         // this.urlSrc = "http://10.131.101.159:8080/jbrowse/JBrowse-1.11.5/index.html?data=file"
                         this.loading = false;
                     }else {
@@ -73,8 +73,10 @@ export default {
                         this.$Message.success("路径下没有文件");
                         this.loading = false;
                     }
-                }else{
-                    this.$Message.error(res.msg)
+                } else if (data.returnCode == 422 || data.returnCode == 204) {
+                    this.$router.push('/login')
+                } else {
+                    this.$Message.error(data.msg)
                 }
                 
             })

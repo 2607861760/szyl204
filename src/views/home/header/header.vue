@@ -5,7 +5,7 @@
 .home-header{
     background:#fff;
     .home-header-top{
-        height:90px;
+        height:80px;
         .home-header-top-right {
             float:right;
             line-height:60px;
@@ -58,7 +58,7 @@
                     position:absolute;
                     z-index:999;
                     left:0;
-                    box-shadow:0 5px 5px #666;
+                    box-shadow:0 1px 5px rgba(0,0,0,.11);
                     .nav-info-inner{
                         @media (min-width: 768px) {
                             width: 750px;
@@ -141,7 +141,7 @@
             <Row style="padding:10px 20px;">
                 <Col span="12">
                     <div>
-                        <a href="http://www.dchealth.com/"><img src='./logo.png'/></a>
+                        <a href="http://www.dchealth.com/"><img style="width: 191px;height:50px;margin-top: 5px;" src='./logo.png'/></a>
                     </div>
                 </Col>
                 <Col span="12">

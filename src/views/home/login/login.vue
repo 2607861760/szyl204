@@ -166,6 +166,8 @@ export default{
                         }else{
                             this.$Message.error("错误")
                         }
+                    }else if(data.returnCode==422 || data.returnCode==204){
+                        this.$router.push('/login')
                     }else{
                         this.$Message.error(data.msg)
                     }
@@ -208,17 +210,19 @@ export default{
                                 console.log(data)
                                     if(data.returnCode==0 || data.returnCode==200){
                                         M.extend(this.$store.state.currentUser,data.data)
-                                        setCookie('email',data.data.user.email,null,null,null);
-                                        setCookie('userid',data.data.user.dchUserId,null,null,null);
-                                        setCookie('passWord',obj.passWord,null,null,null);
-                                        setCookie('username',data.data.user.username,null,null,null);
+                                        setCookie('email',data.data.user.email,null);
+                                        setCookie('userid',data.data.user.dchUserId,null);
+                                        setCookie('passWord',obj.passWord,null);
+                                        setCookie('username',data.data.user.username,null);
                                         if(this.rememberPassword == true) {
-                                            setCookie('rememberPassword',this.rememberPassword,null,null,null);
+                                            setCookie('rememberPassword',this.rememberPassword,null);
                                         }else {
-                                            setCookie('rememberPassword',this.rememberPassword,null,null,null); 
+                                            setCookie('rememberPassword',this.rememberPassword,null); 
                                         }
                                         this.$router.push('/admin');
                                         this.load=false;
+                                    }else if(data.returnCode==422 || data.returnCode==204){
+                                        this.$router.push('/login')
                                     }else{
                                         this.$Message.error(data.msg)
                                         this.load=false;

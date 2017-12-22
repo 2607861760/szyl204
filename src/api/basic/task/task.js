@@ -96,9 +96,20 @@ export const task = {
      * @param  obj = {"jobid":"","path":''}
      * @return true
      */
-    ftpUpdate (obj) {
-        return $ajax.get(apiUrl.apiUrl + 'data/ftpupdate', { params:obj }).then(function(res){
-                return Promise.resolve(res.data)
-            })
+    ftpUpdate(obj) {
+        return $ajax.get(apiUrl.apiUrl + 'data/ftpupdate', { params: obj }).then(function(res) {
+            return Promise.resolve(res.data)
+        })
+    },
+    /**
+     * [task  任务管理-执行失败]
+     * @param  obj = {"jobid":""}
+     * @return true
+     */
+    getJobErrorById(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'job/getJobErrorById', { params: obj }).then(function(res) {
+            return Promise.resolve(res.data)
+        })
+
     }
 };

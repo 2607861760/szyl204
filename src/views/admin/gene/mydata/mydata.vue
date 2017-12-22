@@ -76,7 +76,7 @@
             <el-table :data="tableData3" border style="width: 100%;" :height="height" v-scroll="loadMore" @selection-change="handleSelectionChange">
                 <el-table-column type="selection"width="55" v-if="showSelection" :disabled="disTableSelect">
                 </el-table-column>
-                <el-table-column label="病人编号">
+                <el-table-column label="病人编号" width="250">
                     <template slot-scope="scope">
                     	<Poptip placement="bottom-start" width="300" @on-popper-show="getUserBySample(scope.row)">
                     		<Icon style="padding:0 10px;cursor:pointer;" type="android-person"></Icon>
@@ -95,7 +95,7 @@
                     			</el-table>
                     		</div>
                     	</Poptip>
-                        <router-link style="width:40%;display:inline-block;" :to="{path:'/admin/gene/edit?patientcode='+scope.row.dchPatient.patientcode+'&paid='+scope.row.dchPatient.patientid}" class="bian">
+                        <router-link style="width:70% !important;display:inline-block;text-align:left;" :to="{path:'/admin/gene/edit?patientcode='+scope.row.dchPatient.patientcode+'&paid='+scope.row.dchPatient.patientid}" class="bian">
                         {{ scope.row.dchPatient.patientcode }}
                         </router-link> 
                     </template>
@@ -598,12 +598,14 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 "patientidList":this.patientidList || [],
                 "useridList":this.useridList || []
             }
-            data.assignData(obj).then((res)=> {
-                if(res.returnCode==0 || res.returnCode==200) {
-                    this.$Message.success(res.msg);
+            data.assignData(obj).then((data)=> {
+                if(data.returnCode==0 || data.returnCode==200) {
+                    this.$Message.success(data.msg);
                     this.slotModel = false;
                     this.patientidList= [];           // 置空
                     this.useridList=[];               // 置空
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error("请选择分配组成员");
                 }
@@ -651,13 +653,13 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             }
             this.loading=true;
             // 根据批次获得对应数据信息
-            data.getProjectListByBatchId(obj).then((res)=> {
-                console.log(JSON.stringify(res))
+            data.getProjectListByBatchId(obj).then((data)=> {
+                console.log(JSON.stringify(data))
                 this.loading=false;
-                if(res.returnCode==200 || res.returnCode==0) {
-                    if(res.data!=null){
-                        this.tableData3 = res.data.projectList;
-                        this.total=res.data.count;
+                if(data.returnCode==200 || data.returnCode==0) {
+                    if(data.data!=null){
+                        this.tableData3 = data.data.projectList;
+                        this.total=data.data.count;
                         M.each(this.tableData3,(item)=> {
                             // console.log(item.dchSampleList);
                             if(item.dchSampleList.length==0) {
@@ -667,8 +669,10 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     }else{
                         this.tableData3=[];
                     }
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
-                    this.$Message.error(res.msg);
+                    this.$Message.error(data.msg);
                     this.tableData3=[];
                 }
             })
@@ -678,12 +682,14 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             let obj = {
                 "userId": getCookie('userid')
             }
-            data.queryDeptAndUser(obj).then((res)=> {
-                // console.log(JSON.stringify(res.data));
-                if(res.returnCode==0 || res.returnCode==200){
-                    this.groupMemberData = res.data;
+            data.queryDeptAndUser(obj).then((data)=> {
+                // console.log(JSON.stringify(data.data));
+                if(data.returnCode==0 || data.returnCode==200){
+                    this.groupMemberData = data.data;
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
-                    this.$Message.error(res.msg)
+                    this.$Message.error(data.msg)
                 }
             })
         },
@@ -693,11 +699,15 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 userId: getCookie('userid'),
                 productId:'1'
             }
-            task.getBatchList(obj).then((res)=> {
-                // console.log(res);
-                if(res.returnCode==0 || res.returnCode==200) {
-                    this.piciList = this.transformToSelect(res.data);
-                }
+            task.getBatchList(obj).then((data)=> {
+                // console.log(data);
+                if(data.returnCode==0 || data.returnCode==200) {
+                    this.piciList = this.transformToSelect(data.data);
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
+                }else{
+		    this.$Message.error(data.msg)
+		}
             })
         },
         // 转成select需要数据
@@ -750,6 +760,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
 						document.body.appendChild(a)
 						a.click(); 
 						a.parentNode.removeChild(a);
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg)
                 }
@@ -768,6 +780,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 this.$Message.success(response.msg)
             }else if(response.returnCode==217){
                 this.$Message.error(response.msg)
+            }else if(response.returnCode==422 || response.returnCode==204){
+                this.$router.push('/login')
             }
             this.$refs.upload.clearFiles();
         },
@@ -803,6 +817,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     }else {
                         this.$Message.error(data.data)
                     } 
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg)
                 }
@@ -830,6 +846,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     }else {
                         this.$Message.error(data.data)
                     } 
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg)
                 }
@@ -858,6 +876,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                         result.label=item;
                         this.platform.push(result)
                     })
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }
             }).catch((error)=>{
 
@@ -885,15 +905,17 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         			"sampleid":row.dchSampleList[0].sampleid
         		}
         		data.getUsesBySampleId(obj).then((data)=>{
-	        		if(data.returnCode==200){
+	        		if(data.returnCode==200 || data.returnCode==0){
 	        			if(data.data && data.data.length>0){
 	        				if(data.data.length==1 && data.data[0].dchUserId==userid){ //当只有一条数据时
-	        					this.assignedData=[{"username":"暂未分配","dept":{"name":data.data[0].dept.name}}];
+	        					this.assignedData=[{"username":"暂未分配","dept":{"name":""}}];
 	        				}else if(data.data.length>1){
 	        					this.assignedData=data.data;
 	        				}
 	        			}
-	        		}else{
+	        		}else if(data.returnCode==422 || data.returnCode==204){
+                        this.$router.push('/login')
+                    }else{
 	        			this.$Message.error(data.msg);
 	        		}
 	        		this.assinged=false;
@@ -937,6 +959,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                                     this.load();
                                     this.uploadDisabled = false;
                                 }
+                            }else if(data.returnCode==422 || data.returnCode==204){
+                                this.$router.push('/login')
                             }else{
                                 this.$Message.error(data.msg)
                             }
@@ -955,6 +979,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                                 this.uploadDisabled = false;
                                 this.samid=data.data.sampleid;
                             }
+                        }else if(data.returnCode==422 || data.returnCode==204){
+                            this.$router.push('/login')
                         }else{
                             this.$Message.error(data.msg)
                         }
@@ -977,6 +1003,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     this.$Message.success(data.data);
                     this.removeModel=false;
                     this.load();
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg);
                     this.removeModel=false;
@@ -1008,6 +1036,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 data.getFileList(obj).then((data)=>{
                     if(data.returnCode==0 || data.returnCode==200){
                         this.samplefile=data.data;
+                    }else if(data.returnCode==422 || data.returnCode==204){
+                        this.$router.push('/login')
                     }else{
                         this.$Message.error(data.msg)
                     }
@@ -1050,6 +1080,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 // 再次获取列表
                     this.load();
                     this.$Message.success("添加成功")
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg)
                 }
@@ -1083,6 +1115,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                         this.tableData3= this.tabledata;
                         // console.log(JSON.stringify(this.tableData3));
                     }
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }
                     this.more=true;
                     if(this.total<=20){

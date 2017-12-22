@@ -375,6 +375,8 @@ export default{
                 this.$Message.success(response.msg)
             }else if(response.returnCode==217){
                 this.$Message.error(response.msg)
+            }else if(response.returnCode==422 || response.returnCode==204){
+                this.$router.push('/login')
             }
         },
         finish(){//点击完成
@@ -398,6 +400,8 @@ export default{
                     this.$Message.success(data.data);
                     this.removeModel=false;
                     this.getList();
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg);
                     this.removeModel=false;
@@ -437,6 +441,8 @@ export default{
             data.executeSample(obj).then((data)=>{
                 if(data.returnCode==200 || data.returnCode==0){
                     this.$Message.success("添加成功")
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg)
                 }
@@ -462,6 +468,8 @@ export default{
                         result.label=item;
                         this.platform.push(result)
                     }) 
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }
             })
         },
@@ -486,11 +494,13 @@ export default{
                 productId: '1'
             }
             console.log(obj);
-            data.getFileList(obj).then((res)=> {
-                if(res.returnCode==0 || res.returnCode==200){
-                    this.sampleDataList = res.data;
+            data.getFileList(obj).then((data)=> {
+                if(data.returnCode==0 || data.returnCode==200){
+                    this.sampleDataList = data.data;
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
-                    this.$Message.error(res.msg)
+                    this.$Message.error(data.msg)
                 }
                 
             })
@@ -520,6 +530,8 @@ export default{
                                     this.uploadDisabled = false;
                                     this.getList();
                                 }
+                            }else if(data.returnCode==422 || data.returnCode==204){
+                                this.$router.push('/login')
                             }else{
                                 this.$Message.error(data.msg);
                             }
@@ -536,6 +548,8 @@ export default{
                                     this.getList();
                                     this.samid=data.data.sampleid;
                                 }
+                            }else if(data.returnCode==422 || data.returnCode==204){
+                                this.$router.push('/login')
                             }else{
                                 this.$Message.error(data.msg);
                             }      
@@ -591,6 +605,8 @@ export default{
                     }else {
                         this.$Message.error(data.data)
                     } 
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg)
                 }
@@ -616,6 +632,8 @@ export default{
                         this.$Message.error(data.data)
                         this.loading=false;
                     } 
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg)
                     this.loading=false;
@@ -644,6 +662,8 @@ export default{
                         console.log(this.samplelist);
                         this.listload=false;
                     }
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
                     this.$Meesage.error(data.msg)
                 }

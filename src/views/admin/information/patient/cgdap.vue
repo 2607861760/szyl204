@@ -46,6 +46,8 @@
                             this.urlSrc=data.data;
                             console.log(this.urlSrc)
                         }
+                    }else if(data.returnCode==422 || data.returnCode==204){
+                        this.$router.push('/login')
                     }else{
                         this.$Message.error(data.msg)
                     }

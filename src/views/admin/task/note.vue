@@ -218,10 +218,10 @@ export default {
                 analysisStep:"22"
             }
             // console.log(obj); 
-            task.getTaskInfoById(obj).then((res)=> {
-                // console.log(JSON.stringify(res));
-                if(res.returnCOde==0 || res.returnCode==200){
-                    let obj = res.data.jobProcessDataList;
+            task.getTaskInfoById(obj).then((data)=> {
+                // console.log(JSON.stringify(data));
+                if(data.returnCode==0 || data.returnCode==200){
+                    let obj = data.data.jobProcessDataList;
                     if(obj.length<=0) {
                         this.noteShow = false;
                     }
@@ -251,6 +251,10 @@ export default {
                             }
                         })
                     }
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
+                }else{
+                    this.$Message.error(data.msg)
                 }
             })
         },

@@ -157,10 +157,10 @@ export default {
                 jobId:this.url.jobid,
                 analysisStep:"1"
             }
-            task.getTaskInfoById(obj).then((res)=> {
-                if(res.returnCode==0 || res.returnCode==200){
-                    let obj = res.data.jobProcessDataList;
-                    // console.log(res);
+            task.getTaskInfoById(obj).then((data)=> {
+                if(data.returnCode==0 || data.returnCode==200){
+                    let obj = data.data.jobProcessDataList;
+                    // console.log(data);
                     if(obj.length<=0) {
                         this.qualityShow = false;
                     }else {
@@ -184,8 +184,10 @@ export default {
                             }
                         }) 
                     }
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
-                    this.$Message.error(res.msg)
+                    this.$Message.error(data.msg)
                 }
                
                            

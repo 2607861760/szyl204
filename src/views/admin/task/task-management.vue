@@ -82,10 +82,11 @@
                 </el-table-column>
                 <el-table-column prop="createtime" label="创建时间" min-width="11%"></el-table-column>
                 <el-table-column prop="spendtime" :formatter="foreignFlag" label="结束时间" min-width="10%"></el-table-column>
-                <el-table-column prop="status" label="状态" min-width="10%"> 
-                     <template slot-scope="scope">
-                        <router-link :to="{path:'/admin/process?jobid='+scope.row.jobid+'&pip='+scope.row.pipeline+'&file='+scope.row.file}" class="bian">{{ scope.row.status | foreignFlag}}
+                <el-table-column prop="status" label="状态" min-width="10%">
+                    <template slot-scope="scope">
+                        <router-link v-if="scope.row.status!=98" :to="{path:'/admin/process?jobid='+scope.row.jobid+'&pip='+scope.row.pipeline+'&file='+scope.row.file}" class="bian">{{ scope.row.status | foreignFlag}}
                         </router-link>
+                        <a @click="doGetJobError(scope.row)" v-if="scope.row.status==98">执行失败</a>
                         </span>
                     </template>           
                 </el-table-column>
@@ -171,8 +172,15 @@
                 </div>
                 <div class="sample-footer">
                     <Button type="ghost" style="margin-left:205px;" @click="onCanel">取消</Button>
-                    <Button type="primary" style="margin-left:0px;" @click="submitFormData">提交</Button>
+                    <Button type="primary" style="margin-left:0px;" @click="submitFormData" :disabled="disSubmit">提交</Button>
                 </div>
+            </div>
+        </Modal>
+        <!-- 执行失败错误提示框 -->
+        <Modal v-model="failMassageModel" width="620" :mask-closable="false">
+            <div class="sample-title">失败信息</div>
+            <div align="center" style="font-size:20px;height:150px;line-height:150px;" class="sample-block">
+                {{failMassage}}
             </div>
         </Modal>
     </div>
@@ -194,6 +202,7 @@ export default {
             more:'',
             routes:'',
             path:'',
+            disSubmit:true, //提交按钮禁用
             loading:true,
             tableList: [],            // 表格数组
             openEditModel:false,      // 弹层显隐
@@ -210,12 +219,14 @@ export default {
             total:null,
             count:null,
             newModel:false,    //新建任务弹层
-            batchlist:[],      // 样本批次列表
-            batchId:'',        // 批次选中项
-            sampleList:[],     // 样本列表
-            selectList:[],     // 样本选中项
-            tabledata:[],
-            productId:1,
+            failMassageModel: false, //执行失败弹出窗
+            failMassage: "",         //执行失败信息
+            batchlist: [],      // 样本批次列表
+            batchId: '',        // 批次选中项
+            sampleList: [],     // 样本列表
+            selectList: [],     // 样本选中项
+            tabledata: [],
+            productId: 1,
         }
     },
     directives: {  //监听滚动
@@ -242,9 +253,10 @@ export default {
                 return cellValue = "正在运行"
             }else if(cellValue=='99') {
                 return cellValue = "运行完成"
-            }else if(cellValue=='98') {
-                return cellValue = "运行出错"
             }
+            //          else if(cellValue=='98') {
+            //              return cellValue = "运行出错"
+            //          }
         },
     },
     // 实例创建时
@@ -312,7 +324,9 @@ export default {
                             this.batchlist.push(result); 
                         }
                     })
-                }else{
+                } else if (data.returnCode == 422 || data.returnCode == 204) {
+                    this.$router.push('/login')
+                } else {
                     this.$Message.error(data.msg)
                 }
             }).catch((error)=>{
@@ -340,11 +354,14 @@ export default {
                 if(data.returnCode==0 || data.returnCode==200){
                     if(data.data.sampleList.length>0){
                         this.sampleList=data.data.sampleList;
+                        this.disSubmit=false;
                     }else{
                         this.$Message.error("无数据")
                     } 
-                }else{
-                    this.$Message.eeror(data.msg)
+                } else if (data.returnCode == 422 || data.returnCode == 204) {
+                    this.$router.push('/login')
+                } else {
+                    this.$Message.error(data.msg)
                 }           
                 this.jobTotal = data.data.count?data.data.count:0;
             })
@@ -409,7 +426,9 @@ export default {
                     }else{
                         this.$Message.error(data.msg)
                     }
-                }else{
+                } else if (data.returnCode == 422 || data.returnCode == 204) {
+                    this.$router.push('/login')
+                } else {
                     this.$Message.error(data.msg)
                 }
                 
@@ -443,15 +462,17 @@ export default {
                 productId:this.productId
             }; 
             // console.log(obj);  
-            task.mergeJobById(obj).then((res)=> {
-                if(res.returnCode==0 || res.returnCode==200){
-                    if(isRemove) {
+            task.mergeJobById(obj).then((data) => {
+                if (data.returnCode == 0 || data.returnCode == 200) {
+                    if (isRemove) {
                         this._getTaskList();
                         this.removeModel = false;
                         this.$Message.success("删除成功！");
                     }
-                }else{
-                    this.$Message.error(res.msg)
+                } else if (data.returnCode == 422 || data.returnCode == 204) {
+                    this.$router.push('/login')
+                } else {
+                    this.$Message.error(data.msg)
                 }
             })
         },
@@ -465,15 +486,17 @@ export default {
                 idList:idList,
                 productId:this.productId
             }; 
-            task.mergeStopJob(obj).then((res)=> {
-                if(res.returnCode==0 || res.returnCode==200){
-                    if(isStop) {
+            task.mergeStopJob(obj).then((data) => {
+                if (data.returnCode == 0 || data.returnCode == 200) {
+                    if (isStop) {
                         this._getTaskList();
                         this.stopModel = false;
                         this.$Message.success("终止任务成功！");
                     }
-                }else{
-                    this.$Message.error(res.msg)
+                } else if (data.returnCode == 422 || data.returnCode == 204) {
+                    this.$router.push('/login')
+                } else {
+                    this.$Message.error(data.msg)
                 }
             })
         },
@@ -507,22 +530,24 @@ export default {
                 "productId":this.productId
             }
             console.log(obj)
-            task.getTaskList(obj).then((res)=> {
-                console.log(res);
-                if(res.returnCode==0 || res.returnCode==200){
-                    if(res.data == "null" || res.data == null) {
-                        this.loading=false;
+            task.getTaskList(obj).then((data) => {
+                console.log(data);
+                if (data.returnCode == 0 || data.returnCode == 200) {
+                    if (data.data == "null" || data.data == null) {
+                        this.loading = false;
                         this.tableList = [];
-                    }else {
-                        this.total = res.data.count;
-                        if(this.pageIndex==1){
-                            this.tabledata=res.data.jobList;
-                        }else{
-                            this.tabledata=this.tabledata.concat(res.data.jobList)
+                    } else {
+                        this.total = data.data.count;
+                        if (this.pageIndex == 1) {
+                            this.tabledata = data.data.jobList;
+                        } else {
+                            this.tabledata = this.tabledata.concat(data.data.jobList)
                         }
                         this.tableList=this.tabledata;
                     }
-                }else{
+                } else if (data.returnCode == 422 || data.returnCode == 204) {
+                    this.$router.push('/login')
+                } else {
                     this.$Message.error(data.msg)
                 }
             }).catch((error)=> {
@@ -538,6 +563,27 @@ export default {
                 return cellValue = cellValue;
             }
         },
+        //获取执行失败信息
+        doGetJobError(row) {
+            console.log(row);
+            this.failMassageModel = true;
+            let obj = {
+                "userId": this.cookies,
+                "jobId": row.jobid
+            }
+            task.getJobErrorById(obj).then((data) => {
+                console.log(data);
+                if (data.returnCode == 1) {
+                    if (data.data == null || data.data == "") {
+                        this.failMassage = "任务失败，请联系管理员！"
+                    } else {
+                        this.failMassage = data.data;
+                    }
+                }
+            }).catch((error) => {
+                this.failMassage = error.statusText;
+            })
+        }
     }
 }
     

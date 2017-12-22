@@ -204,6 +204,8 @@ export default {
                         this.flag=true;
                         if(data.returnCode==0 || data.returnCode==200){
                             this.$router.push('/login')
+                        }else if(data.returnCode==422 || data.returnCode==204){
+                            this.$router.push('/login')
                         }else{
                             this.$Message.error(data.msg)
                         }

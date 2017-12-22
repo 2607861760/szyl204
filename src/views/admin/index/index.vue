@@ -200,11 +200,13 @@ export default {
                     if(data.data==null || data.data=="null"){
                         this.$Message.error(data.msg);
                         this.load=false;
+                    }else if(data.returnCode==422 || data.returnCode==204){
+                        this.$router.push('/login')
                     }else{
                         M.extend(this.$store.state.currentUser,data.data)
-                        setCookie('email',data.data.user.email,null,null,null);
-                        setCookie('userid',data.data.user.dchUserId,null,null,null);
-                        setCookie('username',data.data.user.username,null,null,null)
+                        setCookie('email',data.data.user.email,null);
+                        setCookie('userid',data.data.user.dchUserId,null);
+                        setCookie('username',data.data.user.username,null)
                         this.cusername=getCookie('username');
                         this.$store.state.uid=data.data.userid;
                         this.$store.state.code=code;

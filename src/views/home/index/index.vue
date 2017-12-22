@@ -89,19 +89,19 @@
             padding:40px 50px 0;
             .cloud-pic-fs{
                 height:488px;
-                background:url('./u8.jpg') no-repeat;
+                background:url('./img/u8.jpg') no-repeat;
             }
             .cloud-pic-sc{
                 height:244px;
-                background:url('./u6.jpg') no-repeat;
+                background:url('./img/u6.jpg') no-repeat;
             }
             .cloud-pic-th{
                 height:244px;
-                background:url('./u218.jpg') no-repeat;
+                background:url('./img/u218.jpg') no-repeat;
             }
             .cloud-pic-fr{
                 height:244px;
-                background:url('./u94.jpg') no-repeat;
+                background:url('./img/u94.jpg') no-repeat;
                 background-size:100% 100%;
             }
             .cloud-pic{
@@ -150,7 +150,7 @@
         /*关于我们 */
     .about{
        height:420px;
-       background-image:url('./about.png');
+       background-image:url('./img/about.png');
        background-size:100% 100%;
        width:100%; 
        .inner{
@@ -182,7 +182,7 @@
                 top: 70%;
                 width: 40px;
                 height: 40px;
-                background-image:url('./left.png');
+                background-image:url('./img/left.png');
                 background-size:220% 200%;
                 
             }
@@ -211,15 +211,28 @@
                     top:0;
                     left:0;
                     &:hover{
-                        transition:all ease .5s;
-                        top:-10px;
-                        box-shadow:0 5px 5px #666;
+
+                        transition:all ease .10s;
+                    //     top:-10px;
+                         box-shadow:0 0 10px #999; 
                         .cooperate-bg{
                             display:block;
                         }
-                        .cooperate-title{
-                            background:rgba(25, 150, 205, 1);
+                        .cooperate-tras{
+                            // background:rgba(25, 150, 205, 1);
+                            height:40px;
                         }
+                    }
+                    .cooperate-tras {
+                        width:100%;
+                        height:0;
+                        background:#178ec1;
+                        transition-property:height;
+                        transition-duration:.3s;
+                        //transition-delay:.2s;
+                        z-index:-1;
+                        position:absolute;
+                        bottom:0;
                     }
                     .cooperate-bg{
                         width:100%;
@@ -228,7 +241,7 @@
                         top:0;
                         left:0;
                         z-index:222;
-                        background:rgba(0,0,0,.6);
+                        background:rgba(0,0,0,.3);
                         color:#fff;
                         display:none;
                         p{
@@ -249,16 +262,17 @@
                         color:#fff;
                         text-align:center;
                         line-height:40px;
+                        transition:all 1s ease 0;
                     }
                 }
                 .cooperate-pic.cooperate-pic-fs{
-                    background:url('./u160.jpg');
+                    background:url('./img/fd.png');
                 }
                 .cooperate-pic.cooperate-pic-sc{
-                    background:url('./u158.jpg');
+                    background:url('./img/hb.png');
                 }
                 .cooperate-pic.cooperate-pic-th{
-                    background:url('./u160.jpg');
+                    background:url('./img/xj.png');
                 }
             }
         }
@@ -284,7 +298,7 @@
                         <Col :lg="{span:6}">
                             <div class="medicine-pic">
                                 <div class="medicine-icon" style="background:#1ea8e3;">
-                                    <img src="./tu2.jpg"/>
+                                    <img src="./img/tu2.jpg"/>
                                 </div>
                                 <p>罕见病精准医学</p>
                             </div>
@@ -292,7 +306,7 @@
                         <Col :lg="{span:6}">
                             <div class="medicine-pic">
                                 <div class="medicine-icon" style="background:#00c800;">
-                                    <img src="./tu3.jpg"/>
+                                    <img src="./img/tu3.jpg"/>
                                 </div>
                                 <p>肿瘤精准医学</p>
                             </div>
@@ -300,7 +314,7 @@
                         <Col :lg="{span:6}">
                             <div class="medicine-pic">
                                 <div class="medicine-icon" style="background:#00c8c8;">
-                                    <img src="./tu1.jpg"/>
+                                    <img src="./img/tu1.jpg"/>
                                 </div>
                                 <p>药物基因组精准分析</p>
                             </div>
@@ -348,12 +362,12 @@
                 <div class="inner-title">关于我们</div>
                 <div class="about-txt">
                     <Row>
-                        <Col span="4">
+                        <Col span="3">
                             <div style="width:160px;margin-top:25px;">
-                                <img src="./u206.jpg" style="width:100%;height:100%;display:block;"/>
+                                <img src="./img/u206.jpg" style="width:100%;height:100%;display:block;"/>
                             </div>
                         </Col>
-                        <Col span="20">
+                        <Col span="21">
                             <p>
                                 <span style="color:#C10028;font-weight:700;font-size:20px;">神</span>州医疗目前是国内最早、  最权威的能够承担国家级健康医疗大数据建设和运营的企业。拥有健康医疗领域多项自主知识产权及软件著作权，拥有医疗信息化、医疗大数据分析、基因、医疗影像、生物信息、临床医学、病理、放疗等方面的专业技术、业务专家、医生及博士团队。神州医疗专注于健康医疗大数据、医疗云服务、  医疗卫生信息化等领域，向客户提供医疗信息化及健康医疗大数据服务，  帮助客户提高健康医疗服务水平，努力成为中国健康医疗大数据品牌领导者。神州医疗承担过国家“十二五”计划—人口宏观管理与决策信息系统（PADIS系统)，国家肿瘤大数据平台（863课题），  国家罕见病临床队列登记注册网络平台、  国家卫生计生委建设装备审批监管系统工程软件开发等国家级项目建设，  同时在北京、 天津、 江苏、 湖南、 湖北、黑龙江等多地承担着区域卫生信息平台、医院信息集成平台等省市级项目建设。神州医疗依托目前主流的云计算、大数据、物联网、  人工智能、机器学习、可穿戴设备等新技术，不断驱动我国健康医疗大数据发展的变革与创新，向客户提供健康医疗大数据解决方案、医疗信息化建设咨询、健康医疗软件产品开发、  医疗卫生大数据中心建设及安全体系建设等全面医疗服务解决方案，具有区域人口健康信息平台、医院随访、远程医疗、医疗影像等几大产品线。
                             </p>
@@ -373,10 +387,12 @@
                             <div class="cooperate-content">
                                 <div class="cooperate-pic cooperate-pic-fs">
                                     <div class="cooperate-bg">
-                                        <div><img src="./u178.jpg"/></div>
+                                        <div style="padding:18px 0 10px;"><img src="./img/fdlg.png" height="40" width="40" /></div>
                                         <p>这里是对合作伙伴简短的介绍，包括医院成立时间、地址、级别合作项目等介绍</p>
                                     </div>
-                                    <div class="cooperate-title">上海复旦儿科</div>
+                                    <div class="cooperate-title">上海复旦儿科
+                                    <div class="cooperate-tras"></div>
+                                    </div>
                                 </div>
                             </div>
                         </Col>
@@ -384,10 +400,12 @@
                             <div class="cooperate-content">
                                 <div class="cooperate-pic cooperate-pic-sc">
                                     <div class="cooperate-bg">
-                                        <div><img src="./u178.jpg"/></div>
+                                        <div style="padding:18px 0 10px;"><img src="./img/hblg.png" height="40" width="40"/></div>
                                         <p>这里是对合作伙伴简短的介绍，包括医院成立时间、地址、级别合作项目等介绍</p>
                                     </div>
-                                    <div class="cooperate-title">湖北省肿瘤医院</div>
+                                    <div class="cooperate-title">湖北省肿瘤医院
+                                    <div class="cooperate-tras"></div>
+                                    </div>
                                 </div>
                             </div>
                         </Col>
@@ -395,10 +413,12 @@
                             <div class="cooperate-content">
                                 <div class="cooperate-pic cooperate-pic-th">
                                     <div class="cooperate-bg">
-                                        <div><img src="./u178.jpg"/></div>
+                                        <div style="padding:18px 0 10px;"><img src="./img/xjlg.png" height="40" width="40"/></div>
                                         <p>这里是对合作伙伴简短的介绍，包括医院成立时间、地址、级别合作项目等介绍</p>
                                     </div>
-                                    <div class="cooperate-title">北京协和</div>
+                                    <div class="cooperate-title">西京医院
+                                    <div class="cooperate-tras"></div>
+                                    </div>
                                 </div>
                             </div>
                         </Col>
@@ -419,7 +439,7 @@ export default {
     data() {
         return {
             height:"408px",
-            banners:[{img:require('./bn1.jpg')},{img:require('./bn2.jpg')},{img:require('./bn3.jpg')},{img:require('./bn4.jpg')}]
+            banners:[{img:require('./img/bn1.jpg')},{img:require('./img/bn2.jpg')},{img:require('./img/bn3.jpg')},{img:require('./img/bn4.jpg')}]
         }
     },
     methods: {

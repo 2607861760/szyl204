@@ -29,14 +29,9 @@
     </div>
 </template>
 <script>
-// import {
-//     mapState,
-//     mapMutations
-// } from 'vuex';
 import Utils from '../utils/index.js'
 import {getCookie} from '@/common/js/cookie.js'
 import {data} from 'api/index.js'
-//  import Vue from 'vue'
 export default {
     name: 'tree-grid',
     props: {
@@ -130,9 +125,6 @@ export default {
         rowClick(row, event, column) {
             this.$emit("row-click", row, event, column)
         },
-        // tableBtnClick(name, row) {
-        //     this.$emit("operate", name, row)
-        // },
         // 显示行
         showTr: function({row, index}) {
             let show = (row._parent ? (row._parent._expanded && row._parent._show) : true)

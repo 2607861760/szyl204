@@ -117,6 +117,8 @@ export default {
                         this.currentUserName='';
                         // window.location.href='https://auth-dch-qa.genecards.cn/account/LogOff/?returnUrl=http://10.131.101.159:8080&app=DCHDM';
                         window.location.href='https://auth-dch-qa.genecards.cn/account/LogOff/?returnUrl=http://42.123.124.204:8081&app=DCHDM';
+                    }else if(data.returnCode==422 || data.returnCode==204){
+                        this.$router.push('/login')
                     }else{
                         this.$Message.error(data.msg)
                     }

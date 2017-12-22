@@ -117,6 +117,8 @@ export default{
                                 console.log(this.paid);
                                 this.$router.push('/admin/gene/newsample?paid='+this.paid)
                             }
+                        }else if(data.returnCode==422 || data.returnCode==204){
+                            this.$router.push('/login')
                         }else{
                             this.$Message.error(data.msg);
                         }

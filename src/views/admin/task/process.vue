@@ -128,10 +128,10 @@ export default {
                 jobid:this.url.jobid,
                 userId:getCookie('userid')
             }
-            task.getCurrentStep(obj).then((res)=> {
-                // console.log(JSON.stringify(res));
-                if(res.returnCode==0 || res.returnCode==200){
-                    this.processData = res.data.execTools;
+            task.getCurrentStep(obj).then((data)=> {
+                // console.log(JSON.stringify(data));
+                if(data.returnCode==0 || data.returnCode==200){
+                    this.processData = data.data.execTools;
                     // 设置当前正在执行的状态
                     M.each(this.processData,(item,index)=> {
                         if(item.status==2) {
@@ -139,8 +139,10 @@ export default {
                             console.log(this.currentStatus);
                         }
                     })
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
                 }else{
-                    this.$Message.error(res.msg)
+                    this.$Message.error(data.msg)
                 }
             }) 
         }
