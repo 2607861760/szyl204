@@ -1125,6 +1125,9 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     if(this.pageIndex==this.total/20 || this.pageIndex==(Math.ceil(this.total/20))){
                         this.more=false;
                     }
+                    if(this.tableData3.length==0){
+                        this.more=false;
+                    }
             }).catch((error)=>{
                 this.$Message.error(error.statusText);
                 this.loading=false;
