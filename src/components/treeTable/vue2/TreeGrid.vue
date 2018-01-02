@@ -75,7 +75,7 @@ export default {
         defaultExpandAll: {
             type: Boolean,
             default: function() {
-                return true
+                return false
             }
         }
     },
