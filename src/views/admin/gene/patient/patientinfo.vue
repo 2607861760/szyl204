@@ -110,8 +110,6 @@ export default{
                         if(data.returnCode==0 || data.returnCode==200){
                             if(data.data=='null' || data.data==null){
                                 this.$Message.error(data.msg);
-                            }else if(data.msg=="null" || data.msg==null){
-                                this.$Message.error(data.data)
                             }else{
                                 this.paid=data.data.patient.patientid;
                                 console.log(this.paid);

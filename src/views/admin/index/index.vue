@@ -208,7 +208,7 @@ export default {
                         setCookie('userid',data.data.user.dchUserId,null);
                         setCookie('username',data.data.user.username,null)
                         this.cusername=getCookie('username');
-                        this.$store.state.uid=data.data.userid;
+                        this.$store.state.uid=data.data.user.dchUserId;
                         this.$store.state.code=code;
                         this.show=true;
                         this.load=false;

@@ -18,9 +18,20 @@ export function getCookie(name) {
 
 //删除cookies  
 export function delCookie(name) {
-    var exp = new Date();
-    exp.setTime(exp.getTime() - 1);
-    var cval = getCookie(name);
-    if (cval != null)
-        document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+    // var exp = new Date();
+    // exp.setTime(exp.getTime() - 1);
+    // var cval = getCookie(name);
+    // if (cval != null)
+    //     document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+    setCookie(name, "", -1)
+}
+
+//清除全部cookie
+export function clearAllCookie() {
+    var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
+    if (keys) {
+        for (var i = keys.length; i--;)
+        // document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()
+            setCookie(keys[i], "", -1)
+    }
 }

@@ -226,7 +226,7 @@ export default{
             seqdate: '',   //测序日期
             listload:true,
             ptid:'',
-            total:10,
+            total:0,
             loading:true,
             sampleid:"",
             samid:'',
@@ -397,7 +397,7 @@ export default{
             }
             data.deleteSampleById(obj).then((data)=>{
                 if(data.returnCode==0 || data.returnCode==200){
-                    this.$Message.success(data.data);
+                    this.$Message.success(data.msg);
                     this.removeModel=false;
                     this.getList();
                 }else if(data.returnCode==422 || data.returnCode==204){
@@ -439,8 +439,10 @@ export default{
             }
             console.log(obj)
             data.executeSample(obj).then((data)=>{
+                console.log(data)
                 if(data.returnCode==200 || data.returnCode==0){
-                    this.$Message.success("添加成功")
+                    this.$Message.success("添加成功");
+                    this.getList();
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
                 }else{
@@ -488,6 +490,7 @@ export default{
         },
         // 根据sampleId 获得对应数据
         getSampleList(row) {
+            this.sampleDataList=[];
             let obj = {
                 userId: getCookie("userid"),
                 sampleid:row.sampleid,
@@ -496,7 +499,11 @@ export default{
             console.log(obj);
             data.getFileList(obj).then((data)=> {
                 if(data.returnCode==0 || data.returnCode==200){
-                    this.sampleDataList = data.data;
+                    if(data.data==null || data.data=='null'){
+                        this.$Message.error(data.msg)
+                    }else{
+                        this.sampleDataList = data.data;
+                    }
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
                 }else{
@@ -522,14 +529,9 @@ export default{
                     if(M.has(this.sampleInfo,'sampleid')==true){
                         data.updateSample(this.sampleInfo).then((data)=>{
                             if(data.returnCode==0 || data.returnCode==200){
-                                if(data.data=="null"||data.data==null){
-                                    this.$Message.error("参数错误！");
-                                }else{
-                                    this.$Message.success("样本修改成功！");
-                                // this.sampleModal=false;
-                                    this.uploadDisabled = false;
-                                    this.getList();
-                                }
+                                this.$Message.success(data.msg);
+                                this.uploadDisabled = false;
+                                this.getList();
                             }else if(data.returnCode==422 || data.returnCode==204){
                                 this.$router.push('/login')
                             }else{
@@ -541,9 +543,9 @@ export default{
                             console.log(data.returnCode)
                             if(data.returnCode==0 || data.returnCode==200){
                                 if(data.data=="null"||data.data==null){
-                                    this.$Message.error("参数错误！");
+                                    this.$Message.error(data.msg);
                                 }else{
-                                    this.$Message.success("样本添加成功！");
+                                    this.$Message.success(data.msg);
                                     this.uploadDisabled = false;
                                     this.getList();
                                     this.samid=data.data.sampleid;
@@ -603,7 +605,7 @@ export default{
                     if(M.isArray(data.data)) {
                         this.fileServerCategoryList=data.data;
                     }else {
-                        this.$Message.error(data.data)
+                        this.$Message.error(data.msg)
                     } 
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')

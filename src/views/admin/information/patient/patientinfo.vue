@@ -225,13 +225,13 @@ export default{
             data.deletePatientById(obj).then((data)=>{
                 console.log(data)
                 if(data.returnCode==0 || data.returnCode==200){
-                    if(data.data=="成功"){
-                        this.$Message.success(data.data);
+                    if(data.msg=="成功"){
+                        this.$Message.success(data.msg);
                         this.sign=false;
                         this.$emit('signs',this.sign)
                         this.$router.push('/admin/tumour')
                     }else{
-                        this.$Message.error(data.data);
+                        this.$Message.error(data.msg);
                     }
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
@@ -263,14 +263,10 @@ export default{
             data.updatePatient(this.basicInfo).then((data)=>{
                 console.log(data)
                 if(data.returnCode==0 || data.returnCode==200){
-                    if(data.msg==null){
-                        this.$Message.success(data.data);
-                        this.sign=false;
-                        this.$emit('signs',this.sign)
-                        this.$router.push("/admin/tumour");
-                    }else{
-                        this.$Message.error(data.data)
-                    }
+                    this.$Message.success(data.msg);
+                    this.sign=false;
+                    this.$emit('signs',this.sign)
+                    this.$router.push("/admin/tumour");
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
                 }else{
@@ -307,9 +303,6 @@ export default{
                                 if(data.data=='null' || data.data==null){
                                     // this.show = true;
                                     this.$Message.error(data.msg);
-                                }else if(data.msg=="null" || data.msg==null){
-                                    // this.show = true;
-                                    this.$Message.error(data.data)
                                 }else{
                                     this.paid=data.data.patient.patientid;
                                     this.$router.push('/admin/tumour/newsample?paid='+this.paid)

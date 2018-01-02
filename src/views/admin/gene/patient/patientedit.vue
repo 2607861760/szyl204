@@ -111,7 +111,7 @@ export default{
             M.extend(this.basicInfo,obj)
             data.updatePatient(this.basicInfo).then((data)=>{
                 if(data.returnCode==0 || data.returnCode==200){
-                    this.$Message.success(data.data)
+                    this.$Message.success(data.msg)
                     this.sign=true;
                     this.$router.push("/admin");
                 }else if(data.returnCode==422 || data.returnCode==204){
@@ -131,7 +131,7 @@ export default{
             }
             data.deletePatientById(obj).then((data)=>{
                 if(data.returnCode==0 || data.returnCode==200){
-                    this.$Message.success(data.data);
+                    this.$Message.success(data.msg);
                     this.sign=true;
                     this.$router.push('/admin')
                 }else if(data.returnCode==422 || data.returnCode==204){

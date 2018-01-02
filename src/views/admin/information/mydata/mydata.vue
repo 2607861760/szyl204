@@ -1,6 +1,7 @@
 <script lang="scss" scoped>
     tb{
-        height:35px;ling-height:35px;
+        height:35px;
+        line-height:35px;
     }
     
     .upload{
@@ -42,7 +43,7 @@
                     </div>
         
                     <div style="width:100%;padding:15px 20px;box-sizing:border-box;">
-                        <el-table :data="tableData3" border style="width: 100%;" :height="height" v-scroll="loadMore" v-loading="loadone">
+                        <el-table :data="tableData3" border  :height="height" v-scroll="loadMore" v-loading="loadone">
                             <el-table-column label="病人编号">
                                 <template slot-scope="scope">
                                     <router-link :to="{path:'/admin/tumour/edit?patientcode='+scope.row.dchPatient.patientcode+'&paid='+scope.row.dchPatient.patientid}" class="bian">{{ scope.row.dchPatient.patientcode }}
@@ -87,7 +88,8 @@
                             <el-table-column label="解读">
                                 <template slot-scope="scope">
                                     <div v-for="(list,index) in scope.row.dchSampleList" class="handle" style="height:40px;">
-                                        <router-link :to="{path:'/admin/tumour/cgdap?samid='+list.sampleid}">C GDAP</router-link>
+                                        <router-link :to="{path:'/admin/tumour/cgdap?samid='+list.sampleid}" v-if="list.isexecute==='3'">C GDAP</router-link>
+                                        <a href="javascript:;"  disabled v-else>C GDAP</a>
                                     </div>
                                 </template>
                             </el-table-column>
@@ -101,9 +103,9 @@
                                     </div>
                                 </template>
                             </el-table-column>
-                            <tr slot="append" style="height:50px;" v-if="more">
-                                <td colspan="7" style="text-align:center;" v-loading="loading"></td>
-                            </tr>
+                             <tr slot="append" style="height:50px;display:inline-block;" v-if="more">
+                                <td colspan="7" style="border:none;" v-loading="loading"></td>
+                            </tr> 
                         </el-table>
                         <div style="padding:40px 0px;">
                             <div>当前显示1-{{pageIndex*pagesize}}条，共{{total}}条</div>
@@ -273,7 +275,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         loading:true,  //加载loading
         sampleshow:false,   //点击样本编号 弹窗
         pagesize:20,  //页数
-        total:100,  //总条数
+        total:0,  //总条数
         pageIndex:1,  //页码
         patid:'',  //存储patientid
         samid:'',  //存储sampleid
@@ -448,7 +450,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             }
             data.deleteSampleById(obj).then((data)=>{
                 if(data.returnCode==0 || data.returnCode==200){
-                    this.$Message.success(data.data);
+                    this.$Message.success(data.msg);
                     this.removeModel=false;
                     this.load();
                 }else if(data.returnCode==422 || data.returnCode==204){
@@ -503,13 +505,9 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     if(this.sampleInfo.sampleid!=''){
                         data.updateSample(this.sampleInfo).then((data)=>{
                             if(data.returnCode==0 || data.returnCode==200){
-                                if(data.data=="null"||data.data==null){
-                                    this.$Message.error("参数错误！");
-                                }else{
-                                    this.$Message.success("样本修改成功！");
-                                    this.load();
-                                    this.uploadDisabled = false;
-                                }
+                                this.$Message.success(data.msg);
+                                this.load();
+                                this.uploadDisabled = false;
                             }else if(data.returnCode==422 || data.returnCode==204){
                                 this.$router.push('/login')
                             }else{
@@ -521,9 +519,9 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     data.addSample(this.sampleInfo).then((data)=>{
                         if(data.returnCode==0 || data.returnCode==200){
                             if(data.data=="null"||data.data==null){
-                                this.$Message.error("参数错误！");
+                                this.$Message.error(data.msg);
                             }else{
-                                this.$Message.success("样本添加成功！");
+                                this.$Message.success(data.msg);
                                 this.load();
                                 this.uploadDisabled = false;
                                 this.samid=data.data.sampleid;
@@ -561,7 +559,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     if(M.isArray(data.data)) {
                         this.fileCategoryList=data.data;
                     }else {
-                        this.$Message.error(data.data)
+                        this.$Message.error(data.msg)
                     } 
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
@@ -587,7 +585,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     if(M.isArray(data.data)) {
                         this.fileServerCategoryList=data.data;
                     }else {
-                        this.$Message.error(data.data)
+                        this.$Message.error(data.msg)
                     } 
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
@@ -614,6 +612,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         },
         samcode(index,row){ //点击样本编号
             this.sampleshow=true;
+            this.samplefile=[];
             let obj={
                 "userId":getCookie("userid"),
                 "sampleid":row.dchSampleList[index].sampleid,

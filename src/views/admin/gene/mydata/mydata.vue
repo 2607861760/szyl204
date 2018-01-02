@@ -137,10 +137,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="解读">
-                <!-- 复旦儿科医院解读路径：http://dch-tgex.shmu.edu.cn/ -->
-                <!-- 电信云/本地 解读路径：http://tgex-dev.dchgenecloud.com:88/ -->
                     <template slot-scope="scope">
-                        <!--<a :href="'http://tgex-dev.dchgenecloud.com:88/?subject='+scope.row.dchPatient.patientcode" target="_blank">GDAP</a>-->
                         <a @click="jumpTgexPage(scope.row)"   target="_blank">GDAP</a>
                     </template>
                 </el-table-column>
@@ -371,7 +368,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         sampleshow:false,
         href:"",
         pageSize:20,
-        total:100,
+        total:0,
         pageIndex:1,
         patid:'',
         samid:'',
@@ -815,7 +812,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     if(M.isArray(data.data)) {
                         this.fileCategoryList=data.data;
                     }else {
-                        this.$Message.error(data.data)
+                        this.$Message.error(data.msg)
                     } 
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
@@ -844,7 +841,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     if(M.isArray(data.data)) {
                         this.fileServerCategoryList=data.data;
                     }else {
-                        this.$Message.error(data.data)
+                        this.$Message.error(data.msg)
                     } 
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
@@ -951,14 +948,11 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 if(valid){
                     if(this.sampleInfo.sampleid!=''){
                         data.updateSample(this.sampleInfo).then((data)=>{
+                            console.log(data)
                             if(data.returnCode==0 || data.returnCode==200){
-                                if(data.data=="null"||data.data==null){
-                                    this.$Message.error("参数错误！");
-                                }else{
-                                    this.$Message.success("样本修改成功！");
-                                    this.load();
-                                    this.uploadDisabled = false;
-                                }
+                                this.$Message.success(data.msg);
+                                this.load();
+                                this.uploadDisabled = false;
                             }else if(data.returnCode==422 || data.returnCode==204){
                                 this.$router.push('/login')
                             }else{
@@ -972,9 +966,9 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                         console.log(data)
                         if(data.returnCode==0 || data.returnCode==200){
                             if(data.data=="null"||data.data==null){
-                                this.$Message.error("参数错误！");
+                                this.$Message.error(data.msg);
                             }else{
-                                this.$Message.success("样本添加成功！");
+                                this.$Message.success(data.msg);
                                 this.load();
                                 this.uploadDisabled = false;
                                 this.samid=data.data.sampleid;
@@ -1000,7 +994,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             }
             data.deleteSampleById(obj).then((data)=>{
                 if(data.returnCode==0 || data.returnCode==200){
-                    this.$Message.success(data.data);
+                    this.$Message.success(data.msg);
                     this.removeModel=false;
                     this.load();
                 }else if(data.returnCode==422 || data.returnCode==204){
@@ -1024,6 +1018,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         },
         samcode(index,row){ //点击样本编号
             this.sampleshow=true;
+            this.samplefile=[];
             let obj={
                 "userId":getCookie("userid"),
                 "sampleid":row.dchSampleList[index].sampleid,
@@ -1034,8 +1029,13 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             if(flag){
                 flag=false;
                 data.getFileList(obj).then((data)=>{
+                    console.log(data)
                     if(data.returnCode==0 || data.returnCode==200){
-                        this.samplefile=data.data;
+                        if(data.data==null || data.data=='null'){
+                            this.$Message.error(data.msg)
+                        }else{
+                            this.samplefile=data.data;
+                        }
                     }else if(data.returnCode==422 || data.returnCode==204){
                         this.$router.push('/login')
                     }else{

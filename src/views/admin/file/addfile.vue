@@ -128,7 +128,7 @@
                 data.uploadExcelFile(obj).then((data)=>{
                     console.log(data.data)
                     if(data.returnCode==0 || data.returnCode==200){
-                        this.$Message.success("数据上传成功");
+                        this.$Message.success(data.msg);
                         if(this.url.productId=="1"){
                             this.$router.push('/admin')
                         }else if(this.url.productId=="2"){

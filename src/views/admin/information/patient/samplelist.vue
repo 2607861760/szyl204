@@ -214,7 +214,7 @@
         receivedate:'',
         seqdate:'',
         ptid:'',
-        total:10,
+        total:0,
         loading:true,
         sampleid:"",
         sampleModal:false,
@@ -388,7 +388,7 @@
         }
         data.deleteSampleById(obj).then((data)=>{
             if(data.returnCode==0 || data.returnCode==200){
-                this.$Message.success(data.data);
+                this.$Message.success(data.msg);
                 this.removeModel=false;
                 this.getList();
             }else if(data.returnCode==422 || data.returnCode==204){
@@ -438,7 +438,7 @@
         data.executeSample(obj).then((data)=>{
           if(data.returnCode==200 || data.returnCode==0){
             // 再次获取列表
-                this.load();
+                this.getList();
                 this.$Message.success("添加成功")
             }else if(data.returnCode==422 || data.returnCode==204){
                 this.$router.push('/login')
@@ -471,13 +471,9 @@
                 if(M.has(this.sampleInfo,'sampleid')==true){
                     data.updateSample(this.sampleInfo).then((data)=>{
                         if(data.returnCode==0 || data.returnCode==200){
-                            if(data.data=="null"||data.data==null){
-                                this.$Message.error("参数错误！");
-                            }else{
-                                this.$Message.success("样本修改成功！");
-                                this.uploadDisabled = false;
-                                this.getList();
-                            }
+                            this.$Message.success(data.msg);
+                            this.uploadDisabled = false;
+                            this.getList();
                         }else if(data.returnCode==422 || data.returnCode==204){
                             this.$router.push('/login')
                         }else{
@@ -489,9 +485,9 @@
                     data.addSample(this.sampleInfo).then((data)=>{
                         if(data.returnCode==0 || data.returnCode==200){
                             if(data.data=="null"||data.data==null){
-                                this.$Message.error("参数错误！");
+                                this.$Message.error(data.msg);
                             }else{
-                                this.$Message.success("样本添加成功！");
+                                this.$Message.success(data.msg);
                                 this.uploadDisabled = false;
                                 this.getList();
                                 this.samid=data.data.sampleid;
@@ -537,7 +533,7 @@
                 if(M.isArray(data.data)) {
                     this.fileServerCategoryList=data.data;
                 }else {
-                    this.$Message.error(data.data)
+                    this.$Message.error(data.msg)
                 } 
             }else if(data.returnCode==422 || data.returnCode==204){
                 this.$router.push('/login')
@@ -563,7 +559,7 @@
                     this.fileCategoryList=data.data;
                     this.loading=false;
                 }else {
-                    this.$Message.error(data.data)
+                    this.$Message.error(data.msg)
                 } 
             }else if(data.returnCode==422 || data.returnCode==204){
                 this.$router.push('/login')
@@ -584,10 +580,12 @@
         data.getSampleList(obj).then((data)=>{
           console.log(data)
             if(data.returnCode==0 || data.returnCode==200){
+                if(data.data==null || data.data=='null'){
+                    this.$Message.error(data.msg)
+                }else{
                     this.samplelist=data.data;
                     this.total=this.samplelist.length;
-                    console.log(this.samplelist);
-                
+                }
             }else if(data.returnCode==422 || data.returnCode==204){
                 this.$router.push('/login')
             }else{

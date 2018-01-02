@@ -66,7 +66,7 @@
 </template>
 <script>
 import {data} from 'api/index.js'
-import {getCookie,delCookie} from '@/common/js/cookie.js'
+import {getCookie,clearAllCookie} from '@/common/js/cookie.js'
 export default {
     name: 'admin-head',
     props:["cusername"],
@@ -89,13 +89,9 @@ export default {
                 //             delete this.$store.state.currentUser[key]
                 //         })
                 //         console.log(this.$store.state.currentUser)
-                        this.$router.push("/");
-                        delCookie("userid");
-                        delCookie("email");
-                        delCookie("password");
-                        delCookie("rememberPassword");
-                        delCookie("username");
+                        clearAllCookie();
                         this.currentUserName='';
+                        this.$router.push("/");
                 //     }else{
                 //         this.$Message.error(data.msg)
                 //     }
@@ -108,11 +104,7 @@ export default {
                 }
                 data.logout(obj).then((data)=>{
                     if(data.returnCode==0 || data.returnCode==200){
-                        delCookie("userid");
-                        delCookie("email");
-                        delCookie("password");
-                        delCookie("rememberPassword");
-                        delCookie("username");
+                        clearAllCookie();
                         this.$store.state.code='';
                         this.currentUserName='';
                         // window.location.href='https://auth-dch-qa.genecards.cn/account/LogOff/?returnUrl=http://10.131.101.159:8080&app=DCHDM';

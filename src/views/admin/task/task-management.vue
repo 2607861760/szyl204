@@ -73,7 +73,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="file" label="文件名称" min-width="15%">
+                <el-table-column prop="file" label="文件名称" min-width="18%">
                     <template slot-scope="scope">
                        <tr style="white-space: nowrap; text-align: center;display:block;" v-for="list in scope.row.file" :key="list.id">{{list}}</tr>
                     </template>
@@ -87,8 +87,7 @@
                         <router-link v-if="scope.row.status!=98" :to="{path:'/admin/process?jobid='+scope.row.jobid+'&pip='+scope.row.pipeline+'&file='+scope.row.file}" class="bian">{{ scope.row.status | foreignFlag}}
                         </router-link>
                         <a @click="doGetJobError(scope.row)" v-if="scope.row.status==98">执行失败</a>
-                        </span>
-                    </template>           
+                    </template>
                 </el-table-column>
                 <el-table-column prop="path" label="vcf文件下载" min-width="10%" v-if="productId==1">
                     <template slot-scope="scope">
@@ -211,14 +210,13 @@ export default {
             nowEditInfo:null,
             removeModel:false,        // 删除弹层
             stopModel: false,         // 终止
-            btnType:null,
-            pageIndexModel:1,   // 弹层当前页
-            pageSize:20,
-            pageIndex:1,
-            jobTotal:null,      // 新建总数
-            total:null,
-            count:null,
-            newModel:false,    //新建任务弹层
+            btnType: null,
+            pageIndexModel: 1,   // 弹层当前页
+            pageSize: 20,
+            pageIndex: 1,
+            jobTotal: 0,      // 新建总数
+            total: 0,
+            newModel: false,    //新建任务弹层
             failMassageModel: false, //执行失败弹出窗
             failMassage: "",         //执行失败信息
             batchlist: [],      // 样本批次列表
@@ -268,6 +266,9 @@ export default {
         choice(name){
             this.productId=name+1;
             this._getTaskList(); 
+            this.batchlist = [];
+            this.sampleList = [];
+            this.jobTotal = 0;
         },
         //点击样本编号
         routeChange(row){
@@ -336,8 +337,12 @@ export default {
         // 样本批次改变
         changeSelect(val) {
             this.batchId = val;
+            this.sampleList=[];
+            this.jobTotal=0;
             // 获得样本列表
-            this.getSampleList();
+            if(this.batchId!=''){
+                this.getSampleList();
+            }
         },
         //根据样本批次，获取样本列表
         getSampleList(pageIndexModel=1){
@@ -351,19 +356,21 @@ export default {
             }
             // console.log(obj);
             task.getSampleByBatchId(obj).then((data)=>{
-                if(data.returnCode==0 || data.returnCode==200){
-                    if(data.data.sampleList.length>0){
-                        this.sampleList=data.data.sampleList;
-                        this.disSubmit=false;
-                    }else{
-                        this.$Message.error("无数据")
-                    } 
+                console.log(data)
+                if (data.returnCode == 0 || data.returnCode == 200) {
+                    if(data.data==null || data.data=="null"){
+                        this.$Message.error(data.msg);
+                        this.jobTotal=0;
+                    }else {
+                        this.sampleList = data.data.sampleList;
+                        this.jobTotal = data.data.count; 
+                    }
                 } else if (data.returnCode == 422 || data.returnCode == 204) {
                     this.$router.push('/login')
                 } else {
                     this.$Message.error(data.msg)
-                }           
-                this.jobTotal = data.data.count?data.data.count:0;
+                }
+                
             })
         },
         //是否可以勾选
@@ -380,12 +387,22 @@ export default {
             M.each(val,(item,index)=>{
                 this.selectList.push(item.sampleid);
             })
+            if(val.length==0){
+                this.disSubmit = true;
+            }else{
+                this.disSubmit = false;
+            }
         },
         // 全选
         handleselectAll(val){
             M.each(val,(item,index)=>{
                 this.selectList.push(item.sampleid);
             })
+            if(val.length==0){
+                this.disSubmit = true;
+            }else{
+                this.disSubmit = false;
+            }
         },
         // 弹层关闭
         closeModel() {
@@ -411,21 +428,17 @@ export default {
             }
             console.log(obj);
             task.executeJobBySampleIds(obj).then((data)=>{
-                // console.log(data)
+                console.log(data)
                 if(data.returnCode==0 || data.returnCode==200){
-                    if(data.msg==null){
-                        // this.newModel=false;
-                        // 提交完成清空数组
-                        this.selectList = [];
-                        // 提示信息
-                        this.$Message.success(data.data);
-                        // 重新渲染样本列表
-                        // this.getSampleList(this.pageIndex);
-                        // 重新渲染列表
-                        this._getTaskList();
-                    }else{
-                        this.$Message.error(data.msg)
-                    }
+                    // this.newModel=false;
+                    // 提交完成清空数组
+                    this.selectList = [];
+                    // 提示信息
+                    this.$Message.success(data.msg);
+                    // 重新渲染样本列表
+                    // this.getSampleList(this.pageIndex);
+                    // 重新渲染列表
+                    this._getTaskList();
                 } else if (data.returnCode == 422 || data.returnCode == 204) {
                     this.$router.push('/login')
                 } else {
