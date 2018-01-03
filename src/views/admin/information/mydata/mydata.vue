@@ -205,9 +205,9 @@
                 <div class="sample-inner">
                     <div style="padding:20px 10px;">
                         <el-table border aligin="left" :data="samplefile">
-                            <el-table-column label="文件名称" min-width="30%" prop="filename"></el-table-column>
-                            <el-table-column label="文件大小" min-width="10%" prop="size"></el-table-column>
-                            <el-table-column label="上传时间" min-width="10%" prop="uploaddate"></el-table-column>
+                            <el-table-column label="文件名称" prop="filename" min-width="150%"></el-table-column>
+                            <el-table-column label="文件大小" prop="size" ></el-table-column>
+                            <el-table-column label="上传时间" prop="uploaddate"></el-table-column>
                         </el-table>
                     </div>
                 </div>

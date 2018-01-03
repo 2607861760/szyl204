@@ -190,9 +190,9 @@
         <div class="sample-inner">
             <div style="padding:20px 10px;">
                 <el-table border aligin="left" :data="sampleDataList">
-                    <el-table-column label="文件名称" prop="filename" min-width="30%"></el-table-column>
-                    <el-table-column label="文件大小" prop="size" min-width="10%"></el-table-column>
-                    <el-table-column label="上传时间" min-width="10%"></el-table-column> 
+                    <el-table-column label="文件名称" prop="filename" min-width="150%"></el-table-column>
+                    <el-table-column label="文件大小" prop="size" ></el-table-column>
+                    <el-table-column label="上传时间" prop="uploaddate"></el-table-column> 
                 </el-table>
             </div>
         </div>

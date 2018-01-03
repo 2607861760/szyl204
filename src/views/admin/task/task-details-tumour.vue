@@ -42,6 +42,7 @@
                 text-align:center;
                 line-height:119px;
                 letter-spacing:5px;
+                word-wrap: break-word;
             }
         }
     }

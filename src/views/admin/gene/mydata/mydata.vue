@@ -258,10 +258,9 @@
             <div class="sample-inner">
                 <div style="padding:20px 10px;">
                     <el-table border align="center" :data="samplefile">
-                    
-                        <el-table-column label="文件名称" min-width="30%" prop="filename"></el-table-column>
-                        <el-table-column label="文件大小" min-width="10%" prop="size"></el-table-column>
-                        <el-table-column label="上传时间" min-width="10%" prop="uploaddate"></el-table-column>
+                        <el-table-column label="文件名称" min-width="150%" prop="filename"></el-table-column>
+                        <el-table-column label="文件大小"  prop="size"></el-table-column>
+                        <el-table-column label="上传时间"  prop="uploaddate"></el-table-column>
                     </el-table>
                 </div>
             </div>
@@ -599,7 +598,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 if(data.returnCode==0 || data.returnCode==200) {
                     this.$Message.success(data.msg);
                     this.slotModel = false;
-                    this.patientidList= [];           // 置空
+                    // this.patientidList= [];           // 置空
                     this.useridList=[];               // 置空
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
@@ -627,12 +626,18 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             }else {
                 this.allocation=true;
                 this.pageIndex=1;
-                this.clickSoltData();
+                this.SoltDataList();
             } 
             // console.log(this.selectPcId);
         },
         // 分配数据点击事件-切换成选择表格
-        clickSoltData() {
+        clickSoltData(){
+            this.pageIndex=1;
+            this.allocation=true;
+            this.SoltDataList();
+        },
+        // 分配数据列表
+        SoltDataList() {
             // 显示选项
             this.showSelection = true;
             // 右下角按钮显示
@@ -644,6 +649,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 "pageSize":this.pageSize,
                 "pageIndex":this.pageIndex
             }
+            this.more=true;
             if(this.pageIndex==1){
                 this.tableData3.length=0;
                 this.loading=false;
@@ -655,8 +661,13 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 this.loading=false;
                 if(data.returnCode==200 || data.returnCode==0) {
                     if(data.data!=null){
-                        this.tableData3 = data.data.projectList;
                         this.total=data.data.count;
+                        if(this.pageIndex==1){
+                            this.tabledata=data.data.projectList;
+                        }else{
+                            this.tabledata=this.tabledata.concat(data.data.projectList)
+                        }
+                        this.tableData3= this.tabledata;
                         M.each(this.tableData3,(item)=> {
                             // console.log(item.dchSampleList);
                             if(item.dchSampleList.length==0) {
@@ -671,6 +682,16 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 }else{
                     this.$Message.error(data.msg);
                     this.tableData3=[];
+                }
+                
+                if(this.total<=20){
+                    this.more=false;
+                }
+                if(this.pageIndex==this.total/20 || this.pageIndex==(Math.ceil(this.total/20))){
+                    this.more=false;
+                }
+                if(this.tableData3.length==0){
+                    this.more=false;
                 }
             })
         },
@@ -1139,7 +1160,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     this.pageIndex++;
                     setTimeout(()=>{
                         if(this.allocation){
-                            this.clickSoltData();
+                            this.SoltDataList();
                         }else{
                             this.load();
                         }
@@ -1148,7 +1169,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     this.pageIndex=this.total/20;
                     setTimeout(()=>{
                         if(this.allocation){
-                            this.clickSoltData();
+                            this.SoltDataList();
                         }else{
                             this.load();
                         }
@@ -1159,7 +1180,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 this.pageIndex++;
                 setTimeout(()=>{
                     if(this.allocation){
-                            this.clickSoltData();
+                            this.SoltDataList();
                         }else{
                             this.load();
                         }
