@@ -626,7 +626,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             }else {
                 this.allocation=true;
                 this.pageIndex=1;
-                this.SoltDataList();
+                this.clickSoltData();
             } 
             // console.log(this.selectPcId);
         },
@@ -636,7 +636,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             this.allocation=true;
             this.SoltDataList();
         },
-        // 分配数据列表
+        // 分配数据点击事件-切换成选择表格
         SoltDataList() {
             // 显示选项
             this.showSelection = true;
@@ -649,7 +649,6 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 "pageSize":this.pageSize,
                 "pageIndex":this.pageIndex
             }
-            this.more=true;
             if(this.pageIndex==1){
                 this.tableData3.length=0;
                 this.loading=false;
@@ -661,13 +660,13 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 this.loading=false;
                 if(data.returnCode==200 || data.returnCode==0) {
                     if(data.data!=null){
-                        this.total=data.data.count;
                         if(this.pageIndex==1){
                             this.tabledata=data.data.projectList;
                         }else{
                             this.tabledata=this.tabledata.concat(data.data.projectList)
                         }
-                        this.tableData3= this.tabledata;
+                        this.tableData3 = this.tabledata;
+                        this.total=data.data.count;
                         M.each(this.tableData3,(item)=> {
                             // console.log(item.dchSampleList);
                             if(item.dchSampleList.length==0) {
@@ -683,7 +682,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     this.$Message.error(data.msg);
                     this.tableData3=[];
                 }
-                
+                this.more=true;
                 if(this.total<=20){
                     this.more=false;
                 }
