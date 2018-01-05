@@ -49,7 +49,7 @@
                     </Col>
                     <Col class="tables"> 
                         <FormItem label="临床信息" style="width:78%;">
-                            <Input v-model="basicInfo.clinicalinf" type="textarea" :rows="3" :maxlength="100" placeholder="请输入不超过100个字"></Input>
+                            <Input v-model="basicInfo.clinicalinf" type="textarea" :rows="3" :maxlength="800" placeholder="请输入不超过800个字"></Input>
                         </FormItem>
                     </Col>
                 </Row>

@@ -70,7 +70,7 @@
                                     <div v-for="(list,index) in scope.row.dchSampleList" class="handle" style="height:40px;">
                                         <span class="status" v-if="list.isexecute=='1'">等待</span>
                                         <span class="status" v-else-if="list.isexecute=='0'">未执行</span>
-                                        <span class="status" v-else-if="list.isexecute=='2'">正在执行</span>
+                                        <span class="status" v-else-if="list.isexecute=='2'">正在运行</span>
                                         <span class="status" v-else-if="list.isexecute=='3'">已完成</span>
                                         <span class="status" v-else-if="list.isexecute=='4'">错误</span>
                                     </div>

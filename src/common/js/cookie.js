@@ -18,12 +18,12 @@ export function getCookie(name) {
 
 //删除cookies  
 export function delCookie(name) {
-    // var exp = new Date();
-    // exp.setTime(exp.getTime() - 1);
-    // var cval = getCookie(name);
-    // if (cval != null)
-    //     document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
-    setCookie(name, "", -1)
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval = getCookie(name);
+    if (cval != null)
+        document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+    // setCookie(name, "", -1)
 }
 
 //清除全部cookie

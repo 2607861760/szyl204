@@ -121,7 +121,7 @@
                         <div v-for="(list,index) in scope.row.dchSampleList" class="handle" style="height:40px;">
                             <span class="status" v-if="list.isexecute=='1'">等待</span>
                             <span class="status" v-else-if="list.isexecute=='0'">未执行</span>
-                            <span class="status" v-else-if="list.isexecute=='2'">正在执行</span>
+                            <span class="status" v-else-if="list.isexecute=='2'">正在运行</span>
                             <span class="status" v-else-if="list.isexecute=='3'">已完成</span>
                             <span class="status" v-else-if="list.isexecute=='4'">错误</span>
                         </div>
@@ -307,7 +307,7 @@
         <Modal v-model="slotModel" title="分配数据" width="600" :mask-closable="false">   
             <div class="sample-main">
                 <div class="sample-inner">
-                    <Tree :data="groupMemberData" show-checkbox @on-check-change="clickCheckBtn"></Tree>
+                    <Tree :data="groupMemberData" show-checkbox @on-check-change="clickCheckBtn" :multiple="true"></Tree>
                 </div>
             </div>
             <div class="slot-footer">
@@ -525,9 +525,11 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
     methods: {
         // 点击树形结构复选框
         clickCheckBtn(value) {
-            // console.log(JSON.stringify(value));
+            console.log(JSON.stringify(value));
+            
             // 存放成员id
             let str = '';
+            this.useridList.length=0;
             // 获得勾选成员id
             if(M.isArray(value)) {
                 M.each(value,(item)=> {
@@ -589,23 +591,30 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         },
         // 分配数据-确定事件
         handleSubmit() {
-            let obj = {
-                "userId":getCookie('userid'),
-                "patientidList":this.patientidList || [],
-                "useridList":this.useridList || []
-            }
-            data.assignData(obj).then((data)=> {
-                if(data.returnCode==0 || data.returnCode==200) {
-                    this.$Message.success(data.msg);
-                    this.slotModel = false;
-                    // this.patientidList= [];           // 置空
-                    this.useridList=[];               // 置空
-                }else if(data.returnCode==422 || data.returnCode==204){
-                    this.$router.push('/login')
-                }else{
-                    this.$Message.error("请选择分配组成员");
+            if(this.useridList.length==1){
+                let obj = {
+                    "userId":getCookie('userid'),
+                    "patientidList":this.patientidList || [],
+                    "useridList":this.useridList || []
                 }
-            })
+                data.assignData(obj).then((data)=> {
+                    if(data.returnCode==0 || data.returnCode==200) {
+                        this.$Message.success(data.msg);
+                        this.slotModel = false;
+                        // this.patientidList= [];           // 置空
+                        this.useridList=[];               // 置空
+                    }else if(data.returnCode==422 || data.returnCode==204){
+                        this.$router.push('/login')
+                    }else{
+                        this.$Message.error("请选择分配组成员");
+                    }
+                })
+            }else if(this.useridList.length==0){
+                this.$Message.error('请选择一位组成员')
+            }else{
+                this.$Message.error('只能选择一位组成员')
+            }
+            
         },
         // 取消点击
         cancelBtn() {
@@ -626,7 +635,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             }else {
                 this.allocation=true;
                 this.pageIndex=1;
-                this.clickSoltData();
+                this.SoltDataList();
             } 
             // console.log(this.selectPcId);
         },
@@ -656,7 +665,6 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             this.loading=true;
             // 根据批次获得对应数据信息
             data.getProjectListByBatchId(obj).then((data)=> {
-                console.log(JSON.stringify(data))
                 this.loading=false;
                 if(data.returnCode==200 || data.returnCode==0) {
                     if(data.data!=null){
@@ -700,7 +708,6 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 "userId": getCookie('userid')
             }
             data.queryDeptAndUser(obj).then((data)=> {
-                // console.log(JSON.stringify(data.data));
                 if(data.returnCode==0 || data.returnCode==200){
                     this.groupMemberData = data.data;
                 }else if(data.returnCode==422 || data.returnCode==204){
@@ -752,7 +759,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             }else if(cellValue =='1') {
                 return cellValue = "等待";
             }else if(cellValue =='2') {
-                return cellValue = "正在执行";
+                return cellValue = "正在运行";
             }else if(cellValue =='3') {
                 return cellValue = "已完成";
             }else if(cellValue =='4') {
@@ -772,7 +779,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 console.log(data.data);
                 if(data.returnCode=="200" || data.returnCode =="0"){
                     let a = document.createElement('a');
-						a.setAttribute('href',"http://tgex-dev.dchgenecloud.com:88/#/analyses/"+data.data.caseid);
+						a.setAttribute('href',"http://tgex-dev.dchgenecloud.com:88/#/analyses/"+data.data);
 						a.setAttribute('target', '_blank');
 						document.body.appendChild(a)
 						a.click(); 

@@ -2,15 +2,15 @@
 // 引入公共变量及方法
 @import '~common/scss/public/base-url.scss';
 .visual {
-   .visual-cont {
-        position:absolute;
+    .visual-cont {
+        position: absolute;
         width: 100%;
-        background:#fff;
+        background: #fff;
         .cont-iframe {
-            position:relative;
-            width:100%;
-            _height:700px;
-            min-height:700px;
+            position: relative;
+            width: 100%;
+            _height: 700px;
+            min-height: 700px;
         }
         .vis-cont {
             position: absolute;
@@ -18,7 +18,7 @@
             font-size: 18px;
             margin-left: 48%;
         }
-    } 
+    }
 }
 </style>
 <template>
@@ -33,22 +33,22 @@
 </template>
 <script>
 // 引入任务管理方法
-import {task} from 'api/index.js'
-import {getCookie} from '@/common/js/cookie.js'
+import { task } from 'api/index.js'
+import { getCookie } from '@/common/js/cookie.js'
 export default {
-    name:"visualization",
+    name: "visualization",
     data() {
         return {
-            cookies:getCookie('userid'), 
-            url:M.url(),
-            urlSrc:"",
-            dataShow:false,
-            loading:true
+            cookies: getCookie('userid'),
+            url: M.url(),
+            urlSrc: "",
+            dataShow: false,
+            loading: true
         }
     },
     // 实例创建时
     created() {
-        
+
         this.getJobRowse();
     },
     watch: {
@@ -57,17 +57,17 @@ export default {
     methods: {
         getJobRowse() {
             let obj = {
-                jobid:this.url.jobid,
-                userId:this.cookies
+                jobid: this.url.jobid,
+                userId: this.cookies
             }
             // console.log(obj);
             task.getJobRowse(obj).then((data) => {
                 console.log(data);
                 if (data.returnCode == 0 || data.returnCode == 200) {
-                    if (data.data == "成功") {
+                    if (data.msg == "成功") {
                         this.urlSrc = "http://42.123.124.204:8081/jbrowse/JBrowse-1.11.5/index.html?data=file"
                         this.loading = false;
-                    }else {
+                    } else {
                         this.dataShow = true;
                         this.$Message.success("路径下没有文件");
                         this.loading = false;
@@ -78,10 +78,10 @@ export default {
                     this.$Message.error(data.msg);
                     this.loading = false;
                 }
-                
+
             })
         },
     }
 }
-    
+
 </script>

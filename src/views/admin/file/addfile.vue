@@ -96,8 +96,14 @@
                 }
             },
             confirm(){  //确定
-                this.saplist.filename=this.newname;
-                this.reName=false;
+                if(this.newname!=''){
+                    this.saplist.filename=this.newname;
+                    this.reName=false;
+                    this.newname="";
+                }
+                // else{
+                //     this.$Message.error('请重命名')
+                // }
             },
             cover(row){  //覆盖
                 row.execelDataEnum ="keExecelDataType_FILE_OVERWRITE";

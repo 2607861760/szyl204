@@ -107,7 +107,7 @@ export default {
                 "productId":"1"
             }
             let flag=true;
-            if(this.copyname.length=1 && this.copyname[0]==row.filename){
+            if(this.copyname.length==1 && this.copyname[0]==row.filename){
                 this.$Message.error({
                     content:'<div class="prompt">该文件已添加</div>',
                     duration: 2

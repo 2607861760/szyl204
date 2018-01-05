@@ -53,7 +53,7 @@
         <div class="user-wrap">
             <Avatar icon="person" style="margin-right:10px;"/>
             <Dropdown>
-                <a href="javascript:void(0)" class="user-name" @click="userInfo">{{cusername}}</a>
+                <a href="javascript:void(0)" class="user-name">{{cusername}}</a>
             </Dropdown>
             <div class="admin-exit" @click="exit">
                 <!--<a href="https://auth-dch-qa.genecards.cn/account/LogOff/?RetUrl=http://42.123.124.204:8081&app=DCHDM" style="color:#fff;"></a>-->
@@ -66,7 +66,7 @@
 </template>
 <script>
 import {data} from 'api/index.js'
-import {getCookie,clearAllCookie} from '@/common/js/cookie.js'
+import {getCookie,clearAllCookie,delCookie} from '@/common/js/cookie.js'
 export default {
     name: 'admin-head',
     props:["cusername"],
@@ -78,6 +78,7 @@ export default {
     },
     methods: {
         exit(){
+            console.log(this.$store.state.code)
             if(this.$store.state.code==''){
                 // let obj={
                 //     userId:getCookie('userid')
@@ -89,7 +90,9 @@ export default {
                 //             delete this.$store.state.currentUser[key]
                 //         })
                 //         console.log(this.$store.state.currentUser)
-                        clearAllCookie();
+                        // clearAllCookie();
+                        delCookie('userid')
+                        console.log(getCookie('userid'))
                         this.currentUserName='';
                         this.$router.push("/");
                 //     }else{

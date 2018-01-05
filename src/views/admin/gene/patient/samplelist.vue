@@ -48,7 +48,7 @@
                     <div class="handle">
                         <span class="status" v-if="scope.row.isexecute==1">等待</span>
                         <span class="status" v-else-if="scope.row.isexecute==0">未执行</span>
-                        <span class="status" v-else-if="scope.row.isexecute==2">正在执行</span>
+                        <span class="status" v-else-if="scope.row.isexecute==2">正在运行</span>
                         <span class="status" v-else-if="scope.row.isexecute==3">已完成</span>
                         <span class="status" v-else-if="scope.row.isexecute==4">错误</span>
                     </div>

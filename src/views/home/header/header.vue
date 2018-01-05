@@ -262,7 +262,8 @@ export default {
     methods: {
         getCookieValue() {
             let userName = getCookie('username');
-            if(userName) {
+            console.log(getCookie('userid')+111)
+            if(getCookie('userid')) {
                 this.currentUserName = userName;
                 this.showBtn = false;
                 this.avatarShow = true;

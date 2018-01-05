@@ -86,7 +86,7 @@
                     <template slot-scope="scope">
                         <router-link v-if="scope.row.status!=98" :to="{path:'/admin/process?jobid='+scope.row.jobid+'&pip='+scope.row.pipeline+'&file='+scope.row.file}" class="bian">{{ scope.row.status | foreignFlag}}
                         </router-link>
-                        <a @click="doGetJobError(scope.row)" v-if="scope.row.status==98">执行失败</a>
+                        <!-- <a @click="doGetJobError(scope.row)" v-if="scope.row.status==98">执行失败</a> -->
                     </template>
                 </el-table-column>
                 <el-table-column prop="path" label="vcf文件下载" min-width="10%" v-if="productId==1">
@@ -101,7 +101,8 @@
                     <template slot-scope="scope" @click="handlerBtn($event, scope.row)">
                         <Row>
                             <Col span="12" push="2">
-                                <el-button size="small" type="primary" name="stop"  @click="handlerBtn('stop', scope.row)">终止</el-button>
+                                <el-button size="small" v-if="scope.row.status==99 || scope.row.status==98" disabled>终止</el-button>
+                                <el-button size="small" type="primary" name="stop"  @click="handlerBtn('stop', scope.row)" v-else>终止</el-button>
                             </Col>
                             <Col span="12" pull="2">
                                 <el-button size="small" type="primary" name="remove"  @click="handlerBtn('remove', scope.row)">删除</el-button>
@@ -148,10 +149,10 @@
                     </Select>
                 </div>
                 <div class="sample-inner">
-                    <el-table :data="sampleList" @select="handleselect" @select-all="handleselectAll">
+                    <el-table :data="sampleList" @select="handleselect" @select-all="handleselectAll" style="width: 100%;">
                         <el-table-column type="selection" width="55" :selectable="selectable"></el-table-column>
-                        <el-table-column label="样本编号" prop="samplecode"></el-table-column>
-                        <el-table-column label="流程" prop="region"></el-table-column>
+                        <el-table-column label="样本编号" prop="samplecode" width="350"></el-table-column>
+                        <el-table-column label="流程" prop="region" width="350"></el-table-column>
                     </el-table>
                     <div class="per-page" style="margin-top:10px;height:30px;">
                         <div style="float:left;">当前显示{{pageIndex*pageSize-19}}-{{pageIndex*pageSize}}条，共{{jobTotal}}条
@@ -252,9 +253,9 @@ export default {
             }else if(cellValue=='99') {
                 return cellValue = "运行完成"
             }
-            //          else if(cellValue=='98') {
-            //              return cellValue = "运行出错"
-            //          }
+            else if(cellValue=='98') {
+                return cellValue = "运行失败"
+            }
         },
     },
     // 实例创建时
