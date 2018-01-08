@@ -46,7 +46,7 @@
 <template>
     <div calss="task">
 
-        <Tabs type="card" @on-click="choice" class="">
+        <Tabs type="card" @on-click="choice" >
             <TabPane label="罕见病"></TabPane>
             <TabPane label="癌症" class="tabcard"></TabPane>
         </Tabs>
@@ -84,16 +84,16 @@
                 <el-table-column prop="spendtime" :formatter="foreignFlag" label="结束时间" min-width="10%"></el-table-column>
                 <el-table-column prop="status" label="状态" min-width="10%">
                     <template slot-scope="scope">
-                        <router-link v-if="scope.row.status!=98" :to="{path:'/admin/process?jobid='+scope.row.jobid+'&pip='+scope.row.pipeline+'&file='+scope.row.file}" class="bian">{{ scope.row.status | foreignFlag}}
+                        <router-link :to="{path:'/admin/process?jobid='+scope.row.jobid+'&pip='+scope.row.pipeline+'&file='+scope.row.file}" class="bian">{{ scope.row.status | foreignFlag}}
                         </router-link>
-                        <!-- <a @click="doGetJobError(scope.row)" v-if="scope.row.status==98">执行失败</a> -->
+                        
                     </template>
                 </el-table-column>
                 <el-table-column prop="path" label="vcf文件下载" min-width="10%" v-if="productId==1">
                     <template slot-scope="scope">
-                        <!--<el-button size="small" v-if="scope.row.status==99">下载</el-button>-->
+                       
                         <a :href="'http://42.123.124.204:8081/dchealth-platform/1.0/data/vcfdownload?jobid='+scope.row.jobid" download class="download" v-if="scope.row.status==99">下载</a>
-                        <!--<a :href="'http://10.131.101.159:8080/dchealth-platform/1.0/data/vcfdownload?jobid='+scope.row.jobid" download class="download" v-if="scope.row.status==99">下载</a>-->
+                       
                         <a class="dis-download" href="javascript:;" download  disabled v-else>下载</a>
                     </template>
                 </el-table-column>

@@ -24,12 +24,12 @@
         margin-left:150px;
         padding-top:15px;
         .process-ver {
-            margin-left:150px;
+            margin-left:80px;
         }
     }
     .process-mid {
         padding-top: 10px;
-        padding-bottom: 30px;
+        padding-bottom: 10px;
     }
 }
 .process-cont {
@@ -55,34 +55,34 @@
                 <p>任务名称</p>
             </div>
             <div class="process-step">
-                <Row :gutter="16">
-                    <Col pull="1" span="2">文件名称:</Col>
-                    <Col pull="1" span="2"><div style="white-space:nowrap;">{{file}}</div></Col>
+                <Row>
+                    <div style="width:80px;float:left;">文件名称:</div>
+                    <div style="width:100%;"><div style="white-space:nowrap;">{{file}}</div></div>
                 </Row>
                 <Row>
                     <div class="process-mid">
-                        <Col pull="1" span="2">运行流程:</Col>
-                        <Col pull="1" span="2">{{pipeline}}</Col>
+                        <div style="width:80px;float:left;">运行流程:</div>
+                        <div style="width:100%;">{{pipeline}}</div>
                     </div>
                 </Row>
                 <Row v-show="errorShow">
-                    <div>
-                        <Col pull="1" span="2">错误日志:</Col>
-                        <Col pull="1" span="2">
-                            <el-button type="primary" size="small" style="background:#4578ad;border-color: #4578ad;">下载错误日志</el-button>
-                        </Col>
+                    <div style="padding-bottom:10px;">
+                        <div style="width:80px;float:left;">错误日志:</div>
+                        <div style="width:100%;">
+                            <a :href="'http://42.123.124.204:8081/dchealth-platform/1.0/job/errorLogFileDownload?jobid='+this.url.jobid" download class="download" style="padding:5px 15px;">下载错误日志</a>
+                        </div>
                     </div>
                 </Row>
                 <Row>
-                    <Col pull="1" span="2">运行状态:</Col>
-                    <Col pull="4" span="20">
+                    <div style="width:80px;float:left;">运行状态:</div>
+                    <div style="width:100%;">
                         <div class="process-ver"> 
                             <Steps :current="currentStatus" direction="vertical" :status="runStatus">
-                                <Step v-for="(item,index) in processData" :key="index" :title="item.execTool" :content="item.status | statusFlag ">
+                                <Step v-for="(item,index) in processData" :key="index" :title="item.execTool" :content="item.errorInfo ">
                                 </Step>
                             </Steps>
                         </div>
-                    </Col>
+                    </div>
                 </Row>
             </div>
             
@@ -123,24 +123,24 @@ export default {
     },
     filters: {
         // 格式化数据
-        statusFlag(cellValue) {
-            if(cellValue=='1'){
-                return cellValue = "完成"
-            }else if(cellValue=='2') {
-                return cellValue = "正在运行"
-            }else if(cellValue=='3') {
-                return cellValue = "未执行"
-            }else if(cellValue=='4') {
-                return cellValue = "错误"
-            }
-        },
+        // statusFlag(cellValue) {
+        //     if(cellValue=='1'){
+        //         return cellValue = "完成"
+        //     }else if(cellValue=='2') {
+        //         return cellValue = "正在运行"
+        //     }else if(cellValue=='3') {
+        //         return cellValue = "未执行"
+        //     }else if(cellValue=='4') {
+        //         return cellValue = "错误"
+        //     }
+        // },
     },
     methods: {
         // 获取运行流程列表
         getCurrentStep() {
             let obj = {
-                // jobid:this.url.jobid,
-                jobid:"a3e8c87a17584802b4817da2b1325537",
+                jobid:this.url.jobid,
+                // jobid:"a3e8c87a17584802b4817da2b1325537",
                 userId:getCookie('userid')
             }
             task.getCurrentStep(obj).then((data)=> {

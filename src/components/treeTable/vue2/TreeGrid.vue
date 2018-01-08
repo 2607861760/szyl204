@@ -1,6 +1,6 @@
 <template>
     <div style='width:100%;border:1px solid #dfe6ec' class="tree">
-        <el-table   :data="data" border style="width: 100%" :row-style="showTr" @row-click="rowClick" ref="treeTable" highlight-current-row>
+        <el-table   :data="data" border style="width: 100%" :row-style="showTr" :cell-style="cellcenter" @row-click="rowClick" ref="treeTable" highlight-current-row>
             <el-table-column v-for="(column, index) in columns" :min-width="column.width" :key="column.dataIndex" :label="column.text">
                 <template slot-scope="scope">
                     <span v-if="spaceIconShow(index)" v-for="(space, levelIndex) in scope.row._level" class="ms-tree-space"></span>
@@ -139,6 +139,13 @@ export default {
         // tableBtnClick(name, row) {
         //     this.$emit("operate", name, row)
         // },
+        //文件大小行，居中显示
+        cellcenter({row, column, rowIndex, columnIndex}){
+            // console.log(columnIndex)
+            if(columnIndex==1){
+                return 'text-align:center;'
+            }
+        },
         // 显示行
         showTr: function({row, index}) {
             let show = (row._parent ? (row._parent._expanded && row._parent._show) : true)

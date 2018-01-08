@@ -111,5 +111,15 @@ export const task = {
             return Promise.resolve(res.data)
         })
 
+    },
+    /**
+     * [task  任务管理-下载错误日志]
+     * @param  obj = {"jobid":""}
+     * @return true
+     */
+    ftpUpdate(obj) {
+        return $ajax.get(apiUrl.apiUrl + '/job/errorLogFileDownload', { params: obj }).then(function(res) {
+            return Promise.resolve(res.data)
+        })
     }
 };
