@@ -1,12 +1,12 @@
-import {apiUrl} from '@/common/js/Base.js'
+import { apiUrl } from '@/common/js/Base.js'
 export const data = {
     /**
      * [data  树形列表添加按钮]
      * @param  {[type]} param [path,fileName,userId,sampleid,productId]
      * @return {[type]}   obj
      */
-    addFastq(obj){
-        return $ajax.post(apiUrl.apiUrl+'upload/addFastq2Sample',obj).then(function(res){
+    addFastq(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'upload/addFastq2Sample', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -15,8 +15,8 @@ export const data = {
      * @param  {[type]} param [病人信息,productId,userId,productname]
      * @return {[type]}   obj
      */
-    addProject(obj){
-        return $ajax.post(apiUrl.apiUrl+'project/addProject',obj).then(function(res){
+    addProject(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'project/addProject', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -25,8 +25,8 @@ export const data = {
      * @param  {[type]} param [样本信息,productId,userId,patientid]
      * @return {[type]}   obj
      */
-    addSample(obj){
-        return $ajax.post(apiUrl.apiUrl+'sample/addSample',obj).then(function(res){
+    addSample(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'sample/addSample', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -35,8 +35,8 @@ export const data = {
      * @param  {[type]} param [productId,userId,idList]
      * @return {[type]}   obj
      */
-    deletePatientById(obj){
-        return $ajax.post(apiUrl.apiUrl+'patient/deletePatientById',obj).then(function(res){
+    deletePatientById(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'patient/deletePatientById', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -45,8 +45,8 @@ export const data = {
      * @param  {[type]} param [productId,userId,idList]
      * @return {[type]}   obj
      */
-    deleteSampleById(obj){
-        return $ajax.post(apiUrl.apiUrl+'sample/deleteSampleById',obj).then(function(res){
+    deleteSampleById(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'sample/deleteSampleById', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -55,8 +55,8 @@ export const data = {
      * @param  {[type]} param [productId,userId,sampleid,pipeline,templateId]
      * @return {[type]}   obj
      */
-    executeSample(obj){
-        return $ajax.post(apiUrl.apiUrl+'sample/executeSample',obj).then(function(res){
+    executeSample(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'sample/executeSample', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -65,8 +65,8 @@ export const data = {
      * @param  {[type]} param [userId]
      * @return {[type]}   obj
      */
-    getdiseaselist(obj){
-        return $ajax.post(apiUrl.apiUrl+'disease/getdiseaselist',obj).then(function(res){
+    getdiseaselist(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'disease/getdiseaselist', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -75,8 +75,8 @@ export const data = {
      * @param  {[type]} param [userId,productId,pipeline,sampleId,fileGroupId,templateId]
      * @return {[type]}   obj
      */
-    getFatsQList(obj){
-        return $ajax.post(apiUrl.apiUrl+'sample/getFatsQList',obj).then(function(res){
+    getFatsQList(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'sample/getFatsQList', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -85,8 +85,8 @@ export const data = {
      * @param  {[type]} param [userId,productId,sampleid]
      * @return {[type]}   obj
      */
-    getFileList(obj){
-        return $ajax.post(apiUrl.apiUrl+'sample/getFileList',obj).then(function(res){
+    getFileList(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'sample/getFileList', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -95,8 +95,8 @@ export const data = {
      * @param  {[type]} param [userId,productId,path]
      * @return {[type]}   obj
      */
-    getForldList(obj){
-        return $ajax.post(apiUrl.apiUrl+'upload/getForldList',obj).then(function(res){
+    getForldList(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'upload/getForldList', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -105,8 +105,8 @@ export const data = {
      * @param  {[type]} param [userId,productId,patientcode,patientid]
      * @return {[type]}   obj
      */
-    getProjectDetail(obj){
-        return $ajax.post(apiUrl.apiUrl+'project/getProjectDetail',obj).then(function(res){
+    getProjectDetail(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'project/getProjectDetail', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -115,8 +115,8 @@ export const data = {
      * @param  {[type]} param [userId,productId,pageSize,pageIndex]
      * @return {[type]}   obj
      */
-    getProjectList(obj){
-        return $ajax.post(apiUrl.apiUrl+'project/getProjectList?t='+Date.now()+'',obj).then(function(res){
+    getProjectList(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'project/getProjectList?t=' + Date.now() + '', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -125,8 +125,8 @@ export const data = {
      * @param  {[type]} param [userId,productId,patientid]
      * @return {[type]}   obj
      */
-    getSampleList(obj){
-        return $ajax.post(apiUrl.apiUrl+'patient/getSampleList',obj).then(function(res){
+    getSampleList(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'patient/getSampleList', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -135,8 +135,8 @@ export const data = {
      * @param  {[type]} param [userId,productId]
      * @return {[type]}   obj
      */
-    getTGexPara(obj){
-        return $ajax.post(apiUrl.apiUrl+'sample/getTGexPara',obj).then(function(res){
+    getTGexPara(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'sample/getTGexPara', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -145,8 +145,8 @@ export const data = {
      * @param  {[type]} param [userId,productId,filename]
      * @return {[type]}   obj
      */
-    readExcel(obj){
-        return $ajax.post(apiUrl.apiUrl+'upload/readExcel',obj).then(function(res){
+    readExcel(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'upload/readExcel', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -155,8 +155,8 @@ export const data = {
      * @param  {[type]} param [userId,productId,patientid,病人信息]
      * @return {[type]}   obj
      */
-    updatePatient(obj){
-        return $ajax.post(apiUrl.apiUrl+'patient/updatePatient',obj).then(function(res){
+    updatePatient(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'patient/updatePatient', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -165,8 +165,8 @@ export const data = {
      * @param  {[type]} param [样本信息,productId,userId,patientid,sampleid]
      * @return {[type]}   obj
      */
-    updateSample(obj){
-        return $ajax.post(apiUrl.apiUrl+'sample/updateSample',obj).then(function(res){
+    updateSample(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'sample/updateSample', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -175,8 +175,8 @@ export const data = {
      * @param  {[type]} param [excelList,productId,userId]
      * @return {[type]}   obj
      */
-    uploadExcelFile(obj){
-        return $ajax.post(apiUrl.apiUrl+'upload/uploadExcelFile',obj).then(function(res){
+    uploadExcelFile(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'upload/uploadExcelFile', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -185,8 +185,8 @@ export const data = {
      * @param  {[type]} param [excelList,productId,userId]
      * @return {[type]}   obj
      */
-    vishuourl(obj){
-        return $ajax.post(apiUrl.apiUrl+'job/vishuourl',obj).then(function(res){
+    vishuourl(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'job/vishuourl', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -195,8 +195,8 @@ export const data = {
      * @param  {[type]} param [paientId]
      * @return {[type]}   obj
      */
-    createCaseByPaientId(obj){
-        return $ajax.post(apiUrl.apiUrl+'workflow/createCaseByPaientId',obj).then(function(res){
+    createCaseByPaientId(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'workflow/createCaseByPaientId', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -205,8 +205,8 @@ export const data = {
      * @param  {[type]} param [userId]
      * @return {[type]}   obj
      */
-    logout(obj){
-        return $ajax.post(apiUrl.apiUrl+'auth/logout',obj).then(function(res){
+    logout(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'auth/logout', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -216,8 +216,8 @@ export const data = {
      * "pageSize":10,"pageIndex":1}
      * @return {[type]}   obj
      */
-    getProjectListByBatchId(obj){
-        return $ajax.post(apiUrl.apiUrl+'project/getProjectListByBatchId',obj).then(function(res){
+    getProjectListByBatchId(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'project/getProjectListByBatchId', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -226,8 +226,8 @@ export const data = {
      * @param  {[type]} param { "patientidList":["a","b"],"useridList":["c"]}
      * @return {[type]}   obj
      */
-    assignData(obj){
-        return $ajax.post(apiUrl.apiUrl+'project/assignData',obj).then(function(res){
+    assignData(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'project/assignData', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -237,7 +237,7 @@ export const data = {
      * @return {[type]}   obj
      */
     queryDeptAndUser(obj) {
-        return $ajax.post(apiUrl.apiUrl+'usercenter/queryDeptAndUser',obj).then(function(res){
+        return $ajax.post(apiUrl.apiUrl + 'usercenter/queryDeptAndUser', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -247,15 +247,15 @@ export const data = {
      * @return {[type]}   obj
      */
     queryUserByDeptId(obj) {
-        return $ajax.post(apiUrl.apiUrl+'usercenter/queryUserByDeptId',obj).then(function(res){
+        return $ajax.post(apiUrl.apiUrl + 'usercenter/queryUserByDeptId', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
     /*
-    *显示已分配成员
-    */
-    getUsesBySampleId(obj){
-    	return $ajax.post(apiUrl.apiUrl+'sample/getUsesBySampleId',obj).then(function(res){
+     *显示已分配成员
+     */
+    getUsesBySampleId(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'sample/getUsesBySampleId', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     }

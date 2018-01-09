@@ -78,6 +78,9 @@
     .el-table thead {
         background: #eef1f6;
     }
+    .el-table .el-table__header-wrapper {
+        background: grey;
+    }
     .el-table tr {
         background: none;
     }

@@ -54,7 +54,7 @@
             <Form :model="basicInfo" ref="basicInfos" label-position="left" :label-width="80" inline :rules="rulebasicInfo">
                 <Col class="tables">
                     <FormItem label="疾病名称" style="width:30%;" prop="diseasename">
-                        <Select v-model="basicInfo.diseasename" style="width:100" @on-change="getProv">
+                        <Select v-model="basicInfo.diseasename" style="width:100" @on-change="getProv" >
                             <Option v-for="item in diseasename" :value="item.value" :key="item.value" >{{ item.label}}</Option>
                         </Select>
                     </FormItem>
@@ -294,10 +294,12 @@ export default{
             console.log(JSON.stringify(this.basicInfo))
             console.log(names);
             console.log(name);
-            this.$refs[names].validate((valid)=>{
-                console.log(valid);
-                this.$refs[name].validate((valid) => {
-                    if(valid){
+            this.$refs[names].validate((valids)=>{
+                console.log(valids);
+                // if(valids){
+                    this.$refs[name].validate((valid) => {
+                    console.log(valid);
+                    if(valid && valids){
                         data.addProject(this.basicInfo).then((data)=>{
                             if(data.returnCode==0 || data.returnCode==200){
                                 if(data.data=='null' || data.data==null){
@@ -316,6 +318,8 @@ export default{
                         })
                     }
                 })
+                // }
+                
             })
             
         },
@@ -331,11 +335,10 @@ export default{
         getdisease(){
             this.diseasetype=[];
             let obj={
-                "userId":getCookie("userid"),
-                "diseaseparentid":this.dchdiseaseid
+                userId:getCookie("userid"),
+                diseaseparentid:this.dchdiseaseid
             }
             data.getdiseaselist(obj).then((data)=>{
-                console.log(data);
                 if(data.returnCode==0 || data.returnCode==200){
                     M.each(data.data,(item,index)=>{
                         var result={};
