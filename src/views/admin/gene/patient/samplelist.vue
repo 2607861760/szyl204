@@ -631,7 +631,7 @@ export default{
                         this.fileCategoryList=data.data;
                         this.loading=false;
                     }else {
-                        this.$Message.error(data.data)
+                        this.$Message.error(data.msg)
                         this.loading=false;
                     } 
                 }else if(data.returnCode==422 || data.returnCode==204){

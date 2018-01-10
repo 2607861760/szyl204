@@ -279,8 +279,10 @@ export default {
                 }else if(this.productId==2){
                     this.$router.push({path:'/admin/task-details-tumour?type=quality&jobid='+row.jobid+'&productId='+this.productId+'&samplecode='+row.samplecode})
                 }
+            }else if(row.status==98){
+                this.$Message.error("该任务运行失败")
             }else{
-                this.$Message.warning("该样本正在运行")
+                this.$Message.warning("该任务正在运行")
             }
             
         },

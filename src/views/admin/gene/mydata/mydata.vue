@@ -266,11 +266,11 @@
             </div>
         </Modal>
         <!--文件上传-->
-        <Modal width="835px" v-model="upModal" :mask-closable="false">
+        <Modal width="835px" v-model="upModal" :mask-closable="false" @on-cancel="clearData">
             <div class="sample-title">文件上传</div>
             <div class="upload">
                 <Col span="24" class="demo-tabs-style2">
-                    <Tabs type="card"  @on-click="serverlocal" value="upload">
+                    <Tabs type="card"  @on-click="serverlocal" :value="tabsVal">
                         <TabPane label="upload" name="upload">
                             <div>
                                 <Upload ref="upload" multiple action="/dchealth-platform/1.0/upload/fileUpload" show-upload-list :data="{'sampleid':this.samid,'userId':this.userId,'type':'vcf'}" 
@@ -335,6 +335,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
     name: "mydata",
     data(){
       return {
+        tabsVal:'upload',             //默认tabs的value值
         parentId:'',
         disTableSelect:false,         // 禁用表格多选框
         disShowNo:true,               // 分配按钮禁用
@@ -819,10 +820,19 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         // tabs切换事件
         serverlocal(name){  //serverlocal
             if(name=='local') {
+                console.log(this.tabsVal)
                 this._getLocalDataList();
             }else if(name=='server') {
+                console.log(this.tabsVal)
                 this._getServerDataList();
             }
+        },
+        //关闭文件上传弹层清空数据
+        clearData(){
+            alert(1)
+            this.tabsVal="upload";
+            this.fileCategoryList.length=0;
+            this.fileServerCategoryList.length=0;
         },
         // 获得本地/storage/serverData/
         _getLocalDataList() {
