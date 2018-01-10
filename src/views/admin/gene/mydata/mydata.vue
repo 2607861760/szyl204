@@ -270,7 +270,7 @@
             <div class="sample-title">文件上传</div>
             <div class="upload">
                 <Col span="24" class="demo-tabs-style2">
-                    <Tabs type="card"  @on-click="serverlocal" :value="tabsVal">
+                    <Tabs type="card"  @on-click="serverlocal" v-model="tabsVal">
                         <TabPane label="upload" name="upload">
                             <div>
                                 <Upload ref="upload" multiple action="/dchealth-platform/1.0/upload/fileUpload" show-upload-list :data="{'sampleid':this.samid,'userId':this.userId,'type':'vcf'}" 
@@ -352,9 +352,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         groupMemberData:[],           // 组、成员数据
         assignedData:[],              // 分配人的数据
         assinged:true,                //加载分配人时loading
-        loading:true,
-        loadone:false,
-        tabledata: [],  
+        loading:true,                 //加载下一页的loading
         more:false,    
         height:'500',  
         tableDatas:[],  
@@ -413,7 +411,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             //     width:'10'
             // }
           ],
-        sampletype: [{
+        sampletype: [{  //样本类型
           value: '血样',
           label: '血样'
           }, {
@@ -423,7 +421,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
           value: '口腔',
           label: '口腔'
           }],
-        designator: [{
+        designator: [{    //亲属关系
             value: '先证者',
             label: '先证者'
             }, {
@@ -472,7 +470,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             value: '其他',
             label: '其他'
         }],
-        region: [{
+        region: [{    //测序区域
             value: 'WES',
             label: 'WES',
             disabled:false
@@ -487,7 +485,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         }],
         platform: [],
         enrichmentkit: [],
-        seqtype: [{
+        seqtype: [{    //测序类型
             value: 'DNA-Seq',
             label: 'DNA-Seq'
             }, {
@@ -667,14 +665,15 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             // 根据批次获得对应数据信息
             data.getProjectListByBatchId(obj).then((data)=> {
                 this.loading=false;
+                let tabledata=[];
                 if(data.returnCode==200 || data.returnCode==0) {
                     if(data.data!=null){
                         if(this.pageIndex==1){
-                            this.tabledata=data.data.projectList;
+                            tabledata=data.data.projectList;
                         }else{
-                            this.tabledata=this.tabledata.concat(data.data.projectList)
+                            tabledata=this.tabledata.concat(data.data.projectList)
                         }
-                        this.tableData3 = this.tabledata;
+                        this.tableData3 = tabledata;
                         this.total=data.data.count;
                         M.each(this.tableData3,(item)=> {
                             // console.log(item.dchSampleList);
@@ -827,12 +826,12 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 this._getServerDataList();
             }
         },
-        //关闭文件上传弹层清空数据
+        //关闭上传文件弹层清空数据
         clearData(){
-            alert(1)
-            this.tabsVal="upload";
-            this.fileCategoryList.length=0;
-            this.fileServerCategoryList.length=0;
+            this.tabsVal='upload'
+            this.fileCategoryList=[];
+            this.fileServerCategoryList=[];
+            this.uploadDisabled=true;
         },
         // 获得本地/storage/serverData/
         _getLocalDataList() {

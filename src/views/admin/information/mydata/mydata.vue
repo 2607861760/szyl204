@@ -88,7 +88,8 @@
                             <el-table-column label="解读">
                                 <template slot-scope="scope">
                                     <div v-for="(list,index) in scope.row.dchSampleList" class="handle" style="height:40px;">
-                                        <router-link :to="{path:'/admin/tumour/cgdap?samid='+list.sampleid}" v-if="list.isexecute==='3'">C GDAP</router-link>
+                                        <!-- <router-link :to="{path:'/admin/tumour/cgdap?samid='+list.sampleid}" v-if="list.isexecute==='3'">C GDAP</router-link> -->
+                                        <a v-if="list.isexecute==='3'" @click="jumpVishuourl(list.sampleid)">C GDAP</a>
                                         <a href="javascript:;"  disabled v-else>C GDAP</a>
                                     </div>
                                 </template>
@@ -214,11 +215,11 @@
             </Modal>
 
 <!--文件上传-->
-            <Modal width="835px" v-model="upModal" :mask-closable="false">
+            <Modal width="835px" v-model="upModal" :mask-closable="false" @on-cancel="clearData">
                 <div class="sample-title">文件上传</div>
                 <div class="upload">
                     <Col span="24" class="demo-tabs-style2">
-                        <Tabs type="card"  @on-click="serverlocal" value="upload">
+                        <Tabs type="card"  @on-click="serverlocal" v-model="tabsVal">
                             <TabPane label="upload" name="upload">
                                 <div>
                                     <Upload ref="upload" multiple action="/dchealth-platform/1.0/upload/fileUpload" show-upload-list :data="{'sampleid':this.samid,'userId':this.userId,'type':'vcf'}" 
@@ -409,7 +410,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             label: "15"
         }],
         tableData3: [],
-        tabledata:[]
+        tabledata:[],
+        tabsVal:'upload'
       }
     },
     directives: {  //监听滚动
@@ -426,6 +428,38 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         }
     },
     methods: {
+        //关闭上传文件弹层清空数据
+        clearData(){
+            this.tabsVal='upload'
+            this.fileCategoryList=[];
+            this.fileServerCategoryList=[];
+        },
+        //跳转Vishuourl
+        jumpVishuourl(value){
+            let obj={
+                "userId":getCookie("userid"),
+                "sampleid":value
+            }
+            console.log(obj)
+            data.vishuourl(obj).then((data)=>{
+                console.log(data)
+                if(data.returnCode==0 || data.returnCode==200){
+                    if(data.data=="null" || data.data==null){
+                        this.$Message.error(data.msg)
+                        // this.show=false;
+                    }else{
+                        this.$store.state.vishuourlUrl=data.data;
+                        console.log(this.$store.state.vishuourlUrl)
+                        this.$router.push('/admin/tumour/cgdap')
+                    }
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
+                }else{
+                    this.$Message.error(data.msg)
+                }
+            }).catch((error)=>{
+            })
+        },
         clearFiles(){
             const fileList = this.$refs.upload.fileList;
             this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);

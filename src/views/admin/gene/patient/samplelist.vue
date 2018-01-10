@@ -154,11 +154,11 @@
         </div>
     </Modal>
     <!--文件上传-->
-    <Modal width="835px" v-model="upModal" :mask-closable="false">
+    <Modal width="835px" v-model="upModal" :mask-closable="false" @on-cancel="clearData">
         <div class="sample-title">文件上传</div>
         <div class="upload">
             <Col span="24" class="demo-tabs-style2">
-                <Tabs type="card" @on-click="serverlocal" value="upload">
+                <Tabs type="card" @on-click="serverlocal" v-model="tabsVal">
                     <TabPane label="upload" name="upload">
                         <div>
                             <Upload multiple action="/dchealth-platform/1.0/upload/fileUpload" show-upload-list :data="{'sampleid':this.samid,'userId':userId,'type':'vcf'}" 
@@ -356,18 +356,25 @@ export default{
             },
             idList:[],
             removeModel:false,
+            tabsVal:'upload'
         }
     },
     methods: {
+        //关闭上传文件弹层清空数据
+        clearData(){
+            this.tabsVal='upload'
+            this.fileCategoryList=[];
+            this.fileServerCategoryList=[];
+            this.uploadDisabled=true;
+        },
         //关闭新建样本模态框
         closeModal(){
-            //重置表单
-            // this.$refs["sampleInfo"].resetFields();
             this.takendate="";
             this.receivedate="";
             this.seqdate="";
             this.platformId="";
             this.enrichmentkitId="";
+            this.uploadDisabled=true;
         },
         // 上传成功
         upsuccess(response, file, fileList) {
