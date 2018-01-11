@@ -353,10 +353,9 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         assignedData:[],              // 分配人的数据
         assinged:true,                //加载分配人时loading
         loading:true,                 //加载下一页的loading
-        more:false,    
-        height:'500',  
-        tableDatas:[],  
-        uploadDisabled: true,
+        more:false,                   //控制加载下一页的loading显示与隐藏  
+        height:'500',                 //表格默认高              
+        uploadDisabled: true,         //上传按钮是否禁用
         platformId:'',
         enrichmentkitId:'',
         takendate:'',
