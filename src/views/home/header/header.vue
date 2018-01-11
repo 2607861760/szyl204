@@ -163,9 +163,10 @@
                                 <div v-else>
                                     <router-link to="/login"  @click="loginModal = true" class="active" v-show="showBtn">登录</router-link>
                                     <span>|</span>
-                                    <router-link to="/register" v-show="showBtn">
+                                    <!-- <router-link to="/register" v-show="showBtn">
                                         注册
-                                    </router-link>
+                                    </router-link> -->
+                                    <a href="javascript:;" v-show="showBtn">注册</a>
                                 </div>
                                 
                             </div>

@@ -193,6 +193,7 @@
                     <el-table-column label="文件名称" prop="filename" min-width="150%"></el-table-column>
                     <el-table-column label="文件大小" prop="size" ></el-table-column>
                     <el-table-column label="上传时间" prop="uploaddate"></el-table-column> 
+                    <el-table-column label="状态"  prop="status" :formatter="statusFormatter"></el-table-column>
                 </el-table>
             </div>
         </div>
@@ -494,6 +495,20 @@ export default{
             this.sampleshow=true; 
             // 调用方法
             this.getSampleList(row);
+        },
+        //格式化文件状态
+        statusFormatter(row, column,cellValue){
+            switch(row.status){
+                case "1":
+                    return '正在上传';
+                    break;
+                case "2":
+                    return '上传完成';
+                    break;
+                case "3":
+                    return '上传失败';
+                    break;
+            }
         },
         // 根据sampleId 获得对应数据
         getSampleList(row) {

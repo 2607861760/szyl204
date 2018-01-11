@@ -209,6 +209,7 @@
                             <el-table-column label="文件名称" prop="filename" min-width="150%"></el-table-column>
                             <el-table-column label="文件大小" prop="size" ></el-table-column>
                             <el-table-column label="上传时间" prop="uploaddate"></el-table-column>
+                            <el-table-column label="状态"  prop="status" :formatter="statusFormatter"></el-table-column>
                         </el-table>
                     </div>
                 </div>
@@ -677,6 +678,20 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             this.pageIndex=val;
             this.load();
         },
+        //格式化文件状态
+        statusFormatter(row, column,cellValue){
+            switch(row.status){
+                case "1":
+                    return '正在上传';
+                    break;
+                case "2":
+                    return '上传完成';
+                    break;
+                case "3":
+                    return '上传失败';
+                    break;
+            }
+        },
         files(){
             this.$router.push('/admin/fileup?productId=2')
         },
@@ -760,6 +775,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             }).catch((error)=>{
                 this.$Message.error(error.statusText);
                 this.loading=false;
+                this.loadone=false;
             })
             
         },

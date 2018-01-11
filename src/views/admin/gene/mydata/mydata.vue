@@ -35,7 +35,7 @@
         <div class="mydata-nav">
             <div class="mydata-cont">
                 <Row>
-                    <Col span="6">
+                    <Col span="3">
                         <div class="mydata-add">
                             <Dropdown style="margin-left:20px;position:relative;">
                                 <Button type="primary" class="build">
@@ -49,23 +49,27 @@
                             </Dropdown>
                         </div>
                     </Col>
-                    <Col span="6" pull="3">
+                    <Col span="8" style="min-width:500px;margin-left:20px;">
                         <div class="search-inp">查询：
-                            <input type="text" style="margin-right:20px;height:30px;width:180px;"/>
+                            <Select v-model="searchColumn" style="width:120px;" placeholder="请选择查询字段" @on-change="getSearchColumn">
+                                <Option v-for="item in searchColumnList" :value="item.value" :key="item.value" style="text-align:center;letter-spacing:1px;">{{ item.label }}</Option>
+                            </Select>
+                            <Input type="text" v-model="keyword" style="margin-right:20px;height:30px;width:40%;margin-left:5px;" placeholder="请输入关键字" />
+                            <Button type="primary" class="build" @click="load">
+                                查询
+                            </Button>
                         </div>
                     </Col>
-                    <Col span="6" push="5">
+                    <Col span="3" style="float:right;margin-right:10px;min-width:200px;">
                         <div class="select-na">批次筛选:</div>
                         <Select style="float:left;width:120px;" v-model="selectPcId" @on-change="SelectChangeData">
                             <Option value="All">全部</Option>
                             <Option value="0">无批次</Option>
                             <Option v-for="(item, index) in piciList" :value="item.value" :label="item.label" :key="index">{{item.label}}</Option>
                         </Select>
-                    </Col>
-                    <Col span="6" push="4">
-                        <Button type="primary" class="build" @click="clickSoltData">
+                        <!-- <Button type="primary" class="build" @click="clickSoltData" style="margin-left:20px;">
                             分配数据
-                        </Button>
+                        </Button> -->
                     </Col>
                 </Row>
             </div>
@@ -261,6 +265,7 @@
                         <el-table-column label="文件名称" min-width="150%" prop="filename"></el-table-column>
                         <el-table-column label="文件大小"  prop="size"></el-table-column>
                         <el-table-column label="上传时间"  prop="uploaddate"></el-table-column>
+                        <el-table-column label="状态"  prop="status" :formatter="statusFormatter"></el-table-column>
                     </el-table>
                 </div>
             </div>
@@ -504,7 +509,23 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         tableData3: [],
         userId:'',
         idList:[],
-
+        searchColumn:'',            //查询字段
+        searchColumnList:[          //查询字段集合
+            {
+                label:'--请选择--',
+                value:'all'
+            },{
+                label:'病人编号',
+                value:'patientcode'
+            },{
+                label:'样本批次',
+                value:'samplebatch'
+            },{
+                label:'样本编号',
+                value:'samplecode'
+            },
+        ],
+        keyword:'',             //查询内容
       }
     },
     directives: {
@@ -521,6 +542,22 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         }
     },
     methods: {
+        //获取查询字段
+        getSearchColumn(val){
+            this.pageIndex=1;
+            this.keyword='';
+            switch(val){
+                case 'patientcode':
+                  this.searchColumn="1";
+                  break;
+                case 'samplebatch':
+                  this.searchColumn="2";
+                  break;  
+                case 'samplecode':
+                  this.searchColumn="3";
+                  break;  
+            }     
+        },
         // 点击树形结构复选框
         clickCheckBtn(value) {
             console.log(JSON.stringify(value));
@@ -1082,6 +1119,20 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 })
             }
         },
+        //格式化文件状态
+        statusFormatter(row, column,cellValue){
+            switch(row.status){
+                case "1":
+                    return '正在上传';
+                    break;
+                case "2":
+                    return '上传完成';
+                    break;
+                case "3":
+                    return '上传失败';
+                    break;
+            }
+        },
         files(){ //点击批量数据
             this.$router.push('/admin/fileup?productId=1')
         },
@@ -1137,7 +1188,13 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 this.loading=false;
             }
             this.loading=true;
+            if(this.searchColumn!='' && this.searchColumn!="all"){
+                obj.searchColumn=this.searchColumn;
+                obj.keyword=this.keyword;
+            }
+            console.log(obj)
             data.getProjectList(obj).then((data)=>{
+                console.log(data)
                 this.loading=true;
                 if(data.returnCode==0 || data.returnCode==200){
                     if(data.data!=null){

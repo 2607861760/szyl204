@@ -19,7 +19,7 @@
             <el-table-column label="操作" v-if="treeType === 'normal'" min-width="10%" >
                 <template slot-scope="scope">
                     <div style="width:100%;text-align:center;">
-                        <Button style="padding:2px 18px;font-size:12px;background:#4578ad;" type="primary" v-if="scope.row.type=='fastq'||scope.row.type=='vcf'" size="small" @click="copy(scope.row)">
+                        <Button style="padding:2px 18px;font-size:12px;background:#4578ad;" type="primary" v-if="scope.row.type=='fastq'||scope.row.type=='vcf'||scope.row.type=='fq'" size="small" @click="copy(scope.row)">
                             添加
                         </Button>
                     </div>
