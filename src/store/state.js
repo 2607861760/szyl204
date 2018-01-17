@@ -7,7 +7,17 @@ const state = {
     loadstate: false, //
     uid: '',
     code: '',
-    vishuourlUrl: ''
+    projectid: '', //项目代号
+    jobid: '',
+    pip: '',
+    file: '',
+    patientInfo: {
+        patientCode: '',
+        patientId: ''
+    },
+    sampleInfo: {
+        samplecode: ''
+    }
 };
 
 export default state;

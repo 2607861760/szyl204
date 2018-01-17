@@ -80,7 +80,7 @@ export default {
     },
     data() {
         return {
-            url:M.url()
+            
         }
     },
     computed: {
@@ -100,7 +100,7 @@ export default {
             let obj={
                 "filename":row.path,
                 "userId":getCookie("userid"),
-                "productId":this.url.productId
+                "productId":this.$store.state.projectid,
             }
             let flag=true;
             if(flag){
@@ -112,7 +112,7 @@ export default {
                         this.$store.state.allfile.length=0;
                         this.$store.state.allfile=data.data;
                         flag=true;
-                        this.$router.push('/admin/addfile?productId='+this.url.productId)
+                        this.$router.push('/admin/addfile')
                    }else{
                        this.$Message.error(data.msg)
                    }

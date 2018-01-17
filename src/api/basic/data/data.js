@@ -116,7 +116,7 @@ export const data = {
      * @return {[type]}   obj
      */
     getProjectList(obj) {
-        return $ajax.post(apiUrl.apiUrl + 'project/getProjectList?t=' + Date.now() + '', obj).then(function(res) {
+        return $ajax.post(apiUrl.apiUrl + 'project/getProjectList', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },

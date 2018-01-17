@@ -46,20 +46,23 @@
             <el-table-column label="状态" min-width="10%">
                 <template slot-scope="scope">
                     <div class="handle">
-                        <span class="status" v-if="scope.row.isexecute==1">等待</span>
-                        <span class="status" v-else-if="scope.row.isexecute==0">未执行</span>
-                        <span class="status" v-else-if="scope.row.isexecute==2">正在运行</span>
-                        <span class="status" v-else-if="scope.row.isexecute==3">已完成</span>
-                        <span class="status" v-else-if="scope.row.isexecute==4">错误</span>
+                        <span class="status" v-if="scope.row.samplestatus=='1'">等待</span>
+                        <span class="status" v-else-if="scope.row.samplestatus=='0'">----</span>
+                        <span class="status" v-else-if="scope.row.samplestatus=='2'">正在运行</span>
+                        <span class="status" v-else-if="scope.row.samplestatus=='3'">已完成</span>
+                        <span class="status" v-else-if="scope.row.samplestatus=='4'">错误</span>
+                        <span class="status" v-else-if="scope.row.samplestatus=='5'">----</span>
+                        <span class="status" v-else-if="scope.row.samplestatus=='6'">未执行</span>
                     </div>
                 </template>
             </el-table-column>
             <el-table-column label="操作" min-width="20%">
               <template slot-scope="scope">
                   <div class="handle">
-                      <span class="bian" @click="run(scope.$index,scope.row)" v-if="scope.row.isexecute==0">运行</span>
-                      <span class="bian" @click="delet(scope.$index,scope.row)">删除</span>
-                      <span class="bian" @click="edit(scope.$index,scope.row)">编辑</span>
+                    <button class="bian" style="border:none;background:none;color:#ccc;padding: 0px 10px;" disabled @click="run(index,scope.row)" v-if="scope.row.samplestatus=='0'||scope.row.samplestatus=='5'">运行</button>
+                    <span class="bian" @click="run(index,scope.row)" v-else-if="scope.row.samplestatus=='6'">运行</span>
+                    <span class="bian" @click="delet(scope.$index,scope.row)">删除</span>
+                    <span class="bian" @click="edit(scope.$index,scope.row)">编辑</span>
                   </div>
               </template>
             </el-table-column>
@@ -233,7 +236,6 @@ export default{
             samid:'',
             sampleModal:false,
             change: true,
-            url:M.url(),
             sampleshow:false,
             samplelist: [],
             upModal: false,
@@ -361,6 +363,20 @@ export default{
         }
     },
     methods: {
+        //格式化文件状态
+        statusFormatter(row, column,cellValue){
+            switch(row.status){
+                case "1":
+                    return '正在上传';
+                    break;
+                case "2":
+                    return '上传完成';
+                    break;
+                case "3":
+                    return '上传失败';
+                    break;
+            }
+        },
         //关闭上传文件弹层清空数据
         clearData(){
             this.tabsVal='upload'
@@ -496,20 +512,6 @@ export default{
             // 调用方法
             this.getSampleList(row);
         },
-        //格式化文件状态
-        statusFormatter(row, column,cellValue){
-            switch(row.status){
-                case "1":
-                    return '正在上传';
-                    break;
-                case "2":
-                    return '上传完成';
-                    break;
-                case "3":
-                    return '上传失败';
-                    break;
-            }
-        },
         // 根据sampleId 获得对应数据
         getSampleList(row) {
             this.sampleDataList=[];
@@ -521,9 +523,7 @@ export default{
             console.log(obj);
             data.getFileList(obj).then((data)=> {
                 if(data.returnCode==0 || data.returnCode==200){
-                    if(data.data==null || data.data=='null'){
-                        this.$Message.error(data.msg)
-                    }else{
+                    if(data.data!=null || data.data!='null'){
                         this.sampleDataList = data.data;
                     }
                 }else if(data.returnCode==422 || data.returnCode==204){
@@ -537,7 +537,7 @@ export default{
         keep(name){  //点击保存
             let obj={
                 userId:getCookie("userid"),
-                patientid:this.ptid,
+                patientid:this.$store.state.patientInfo.patientId,
                 productId:"1",
                 enrichmentkit:this.enrichmentkitId,
                 platform:this.platformId,
@@ -564,9 +564,7 @@ export default{
                         data.addSample(this.sampleInfo).then((data)=>{  
                             console.log(data.returnCode)
                             if(data.returnCode==0 || data.returnCode==200){
-                                if(data.data=="null"||data.data==null){
-                                    this.$Message.error(data.msg);
-                                }else{
+                                if(data.data!="null"||data.data!=null){
                                     this.$Message.success(data.msg);
                                     this.uploadDisabled = false;
                                     this.getList();
@@ -626,9 +624,7 @@ export default{
                 if(data.returnCode==0 || data.returnCode==200){
                     if(M.isArray(data.data)) {
                         this.fileServerCategoryList=data.data;
-                    }else {
-                        this.$Message.error(data.msg)
-                    } 
+                    }
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
                 }else{
@@ -651,11 +647,9 @@ export default{
                 if(data.returnCode==0 || data.returnCode==200){
                     if(M.isArray(data.data)) {
                         this.fileCategoryList=data.data;
-                        this.loading=false;
-                    }else {
-                        this.$Message.error(data.msg)
-                        this.loading=false;
-                    } 
+                        
+                    }
+                    this.loading=false;
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
                 }else{
@@ -668,23 +662,21 @@ export default{
             this.enrichmentkit=[]
             this.platform=[]
             this.listload=true;
-            this.ptid=this.url.paid;
             this.samplelist=[]
             let obj={
-                "patientid":this.ptid,
+                "patientid":this.$store.state.patientInfo.patientId,
                 "userId":getCookie("userid"),
                 "productId":"1"
             }
             data.getSampleList(obj).then((data)=>{
                 console.log(data)
+                this.listload=false;
                 if(data.returnCode==0 || data.returnCode==200){
-                    if(data.data=="null"||data.data==null){
-                        this.listload=false;
-                    }else{
+                    
+                    if(data.data!="null"||data.data!=null){
                         this.samplelist=data.data;
                         this.total=this.samplelist.length;
                         console.log(this.samplelist);
-                        this.listload=false;
                     }
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')

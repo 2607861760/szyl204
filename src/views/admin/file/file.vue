@@ -65,7 +65,6 @@ import {data} from 'api/index.js'
                 loading:true,
                 fileCategoryList: [],
                 localFileCategoryList: [],
-                url:M.url(),
                 columns: [
                     {
                         text: '文件名称',
@@ -96,7 +95,7 @@ import {data} from 'api/index.js'
                     // /opt/NfsDir/PublicDir/demo/  电信云
                     // /storage/serverData/   159
                     "userId":getCookie("userid"),
-                    "productId":this.url.productId
+                    "productId":this.$store.state.projectid
                 }
                 console.log(obj)
                 data.getForldList(obj).then((data)=>{
@@ -104,11 +103,8 @@ import {data} from 'api/index.js'
                     if(data.returnCode==0 || data.returnCode==200){
                         if(data.data.length>0 && M.isArray(data.data)) {
                             this.localFileCategoryList=data.data;
-                            this.loading=false;
-                        }else {
-                            this.$Message.error(data.msg);
-                            this.loading=false;
                         }
+                        this.loading=false;
                     }else if(data.returnCode==422 || data.returnCode==204){
                         this.$router.push('/login')
                     }else{
@@ -116,6 +112,8 @@ import {data} from 'api/index.js'
                         this.loading=false;
                     }
                     
+                }).catch((err)=>{
+                    this.loading=false;
                 })
             },
             // 获得硬盘列表
@@ -126,24 +124,23 @@ import {data} from 'api/index.js'
                     // /opt/NfsDir/PublicDir/demo/  电信云
                     // /storage/serverData/   159
                     "userId":getCookie("userid"),
-                    "productId":this.url.productId
+                    "productId":this.$store.state.projectid
                 }
                 data.getForldList(obj).then((data)=>{
                     console.log(data)
                     if(data.returnCode==0 || data.returnCode==200){
                         if(data.data.length>0 && M.isArray(data.data)) {
                             this.fileCategoryList=data.data || [];
-                            this.loading=false;
-                        }else {
-                            this.$Message.error(data.msg);
-                            this.loading=false;
                         }
+                        this.loading=false;
                     }else if(data.returnCode==422 || data.returnCode==204){
                         this.$router.push('/login')
                     }else{
                         this.$Message.error(data.msg)
                         this.loading=false;
                     }                    
+                }).catch((err)=>{
+                    this.loading=false;
                 })
             }
         },

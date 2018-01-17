@@ -156,7 +156,6 @@ export default {
         return {
             cusername:"",
             load:Boolean,
-            url:M.url(),
             // 左侧导航列数
             spanLeft: 3,
             // 右侧内容列数
@@ -197,12 +196,7 @@ export default {
             this.load=true;
             login.tgexLogin(code).then((data)=>{
                 if(data.returnCode==0 || data.returnCode==200){
-                    if(data.data==null || data.data=="null"){
-                        this.$Message.error(data.msg);
-                        this.load=false;
-                    }else if(data.returnCode==422 || data.returnCode==204){
-                        this.$router.push('/login')
-                    }else{
+                    if(data.data!=null || data.data!="null"){
                         M.extend(this.$store.state.currentUser,data.data)
                         setCookie('email',data.data.user.email,null);
                         setCookie('userid',data.data.user.dchUserId,null);
@@ -213,6 +207,9 @@ export default {
                         this.show=true;
                         this.load=false;
                     }
+                    this.load=false;
+                }else if(data.returnCode==422 || data.returnCode==204){
+                        this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg);
                     this.load=false;

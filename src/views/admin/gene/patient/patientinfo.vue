@@ -108,12 +108,11 @@ export default{
                     data.addProject(this.basicInfo).then((data)=>{
                         console.log(data)
                         if(data.returnCode==0 || data.returnCode==200){
-                            if(data.data=='null' || data.data==null){
-                                this.$Message.error(data.msg);
-                            }else{
+                            if(data.data!='null' || data.data!=null){
                                 this.paid=data.data.patient.patientid;
                                 console.log(this.paid);
-                                this.$router.push('/admin/gene/newsample?paid='+this.paid)
+                                this.$store.state.patientInfo.patientId=data.data.patient.patientid;
+                                this.$router.push('/admin/gene/newsample')
                             }
                         }else if(data.returnCode==422 || data.returnCode==204){
                             this.$router.push('/login')

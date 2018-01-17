@@ -129,7 +129,6 @@ export default {
             tableTitleSecond: null,
             tableListThree:[],
             tableTitleThree: null,
-            url:M.url(),
             src:"",
         }
     },
@@ -148,7 +147,7 @@ export default {
         },
         getJobProgressInfoById() {
             let obj = {
-                jobId:this.url.jobid,
+                jobId:this.$store.state.jobid,
                 analysisStep:"13"
             }
             // console.log(obj); 

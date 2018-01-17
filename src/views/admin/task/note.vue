@@ -195,7 +195,6 @@ export default {
             tableTitleFirst: null,
             tableListSecond: [],
             tableTitleSecond:null,
-            url:M.url()
         }
     },
     // 实例创建时
@@ -214,7 +213,7 @@ export default {
         },
         getJobProgressInfoById() {
             let obj = {
-                jobId:this.url.jobid,
+                jobId:this.$store.state.jobid,
                 analysisStep:"22"
             }
             // console.log(obj); 

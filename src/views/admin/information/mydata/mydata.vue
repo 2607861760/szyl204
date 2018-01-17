@@ -50,9 +50,7 @@
                                     </router-link>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="姓名">
-                                <template slot-scope="scope">{{scope.row.dchPatient.patientname}}
-                                </template>
+                            <el-table-column label="姓名" prop="dchPatient.patientname">
                             </el-table-column>
                             <el-table-column label="样本类型" prop="sample" >
                                 <template slot-scope="scope">
@@ -68,11 +66,7 @@
                             <el-table-column label="状态">
                                 <template slot-scope="scope">
                                     <div v-for="(list,index) in scope.row.dchSampleList" class="handle" style="height:40px;">
-                                        <span class="status" v-if="list.isexecute=='1'">等待</span>
-                                        <span class="status" v-else-if="list.isexecute=='0'">未执行</span>
-                                        <span class="status" v-else-if="list.isexecute=='2'">正在运行</span>
-                                        <span class="status" v-else-if="list.isexecute=='3'">已完成</span>
-                                        <span class="status" v-else-if="list.isexecute=='4'">错误</span>
+                                        <span class="status">{{list.samplestatus | dataFormat}}</span>
                                     </div>
                                 </template>
                             </el-table-column>
@@ -748,6 +742,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 this.loadone=true;
             }
             data.getProjectList(obj).then((data)=>{
+                console.log(data)
                 this.loadone=false;
                 if(data.returnCode==0 || data.returnCode==200){
                     if(data.data!=null){
@@ -795,6 +790,24 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         components: {treeGrid},
         mounted(){
             this.load();
+        },
+        filters: {
+            // 格式化数据
+            dataFormat(cellValue) {
+                if(cellValue=='0' || cellValue=='5'){
+                    return cellValue = "----"
+                }else if(cellValue=='1' ) {
+                    return cellValue = "等待"
+                }else if(cellValue=='2') {
+                    return cellValue = "正在运行"
+                }else if(cellValue=='3') {
+                    return cellValue = "已完成"
+                }else if(cellValue=='4') {
+                    return cellValue = "错误"
+                }else if(cellValue=='6') {
+                    return cellValue = "未执行"
+                }
+            },
         },
 
   }

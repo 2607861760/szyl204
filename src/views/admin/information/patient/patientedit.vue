@@ -10,7 +10,7 @@
         <span style="margin-left:10px;">病人信息</span>
     </div>
     <div style="padding-top:5px;">
-        <patientInfo :routeshow="show" @obinfo="oldInfo" @signs="onSelectType" @binfo="basicinfo"></patientInfo>
+        <patientInfo :routeshow="show" @obinfo="oldInfo" @signs="onSelectType" @binfo="basicinfo" ref="pInfo"></patientInfo>
     </div>
     <div>
         <div class="info-title" style="padding:10px 0 10px 10px;border-bottom:1px solid #ccc;">
@@ -100,8 +100,9 @@ export default{
         },
     },
     beforeRouteLeave(to, from, next) {
+        console.log(this.$refs.pInfo.flag)
         let bool = this.judgeObjEqual(this.oldinfo,this.newInfo);
-        if((to.path !="/admin/tumour" && bool==false) || (to.path=="/admin/tumour" && this.sign && bool==false)){
+        if((to.path !="/admin/tumour" && bool==false) || (to.path=="/admin/tumour" && this.sign && bool==false) && this.$refs.pInfo.flag==false){
             this.$Modal.confirm({
                 title: '放弃提示',
                 content: `<div class="modal-bd modal-bd2">

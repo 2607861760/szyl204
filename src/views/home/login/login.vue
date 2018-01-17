@@ -163,8 +163,6 @@ export default{
                         let url = data.data;
                         if(url) {
                             window.location.href = url;
-                        }else{
-                            this.$Message.error("错误")
                         }
                     }else if(data.returnCode==422 || data.returnCode==204){
                         this.$router.push('/login')
@@ -215,7 +213,9 @@ export default{
                                         setCookie('passWord',obj.passWord,null);
                                         setCookie('username',data.data.user.username,null);
                                         if(this.rememberPassword == true) {
-                                            setCookie('rememberPassword',this.rememberPassword,null);
+                                            setCookie('rememberPassword',this.rememberPassword,'30');
+                                            setCookie('email',data.data.user.email,'30');
+                                            setCookie('passWord',obj.passWord,'30');
                                         }else {
                                             setCookie('rememberPassword',this.rememberPassword,null); 
                                         }

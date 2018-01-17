@@ -45,7 +45,7 @@ import {delCookie} from '@/common/js/cookie.js'
 export default {
     data() {
             return {
-                nowUrl: M.url()
+               
             }
         },
         created() {

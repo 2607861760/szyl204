@@ -40,7 +40,6 @@ export default {
     data() {
         return {
             cookies: getCookie('userid'),
-            url: M.url(),
             urlSrc: "",
             dataShow: false,
             loading: true
@@ -57,8 +56,8 @@ export default {
     methods: {
         getJobRowse() {
             let obj = {
-                jobid: this.url.jobid,
-                userId: this.cookies
+                jobid:this.$store.state.jobid,
+                userId:this.cookies
             }
             // console.log(obj);
             task.getJobRowse(obj).then((data) => {

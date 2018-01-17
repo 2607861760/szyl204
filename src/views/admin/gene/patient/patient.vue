@@ -26,7 +26,7 @@
               <TabPane label="病人信息"></TabPane>
           </Tabs>
         </Col>
-        <patientInfo @binfo="basicinfo"></patientInfo>
+        <patientInfo @binfo="basicinfo" ref='pInfo'></patientInfo>
     </div>
 </template>
 <script>
@@ -53,7 +53,7 @@ export default{
                 delete this.newInfo[key];
             }
         })
-        if(to.path !="/admin/gene/newsample" && !M.isEmptyObject(this.newInfo) ){
+        if(to.path !="/admin/gene/newsample" && !M.isEmptyObject(this.newInfo) && this.$refs.pInfo.flag==false){
             this.$Modal.confirm({
                 title: '放弃提示',
                 content: `<div class="modal-bd modal-bd2">

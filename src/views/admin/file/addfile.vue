@@ -26,7 +26,7 @@
         <div class="filesup">批量上传</div>
         <div style="padding:20px;"><span style="cursor:pointer;" @click="back"><&nbsp;&nbsp;批量添加</span>
         <div style="float:right;">
-            <Button type="primary" @click="upstart">开始上传</Button>
+            <Button type="primary" @click="upstart" :disabled="updisabled">开始上传</Button>
         </div>
     </div>
     
@@ -84,7 +84,7 @@
                 excelList:[],  //选择数据
                 sampleDataWithExcel:[],  //当前表格数据
                 saplist:[],
-                url:M.url(),
+                updisabled:false,  //上传按钮禁用
             }
         },
         methods:{
@@ -122,33 +122,42 @@
                 this.excelList=val;
             },
             back(){  //后退
-                this.$router.push('/admin/fileup?productId='+this.url.productId);
+                this.$router.push('/admin/fileup');
             },
             upstart(){  //开始上传
                 this.loading=false;
+                this.updisabled=true;
                 let obj={
                     "excelList":this.excelList,
                     "userId":getCookie("userid"),
-                    "productId":this.url.productId
+                    "productId":this.$store.state.projectid
                 }
-                data.uploadExcelFile(obj).then((data)=>{
-                    console.log(data.data)
-                    if(data.returnCode==0 || data.returnCode==200){
-                        this.$Message.success(data.msg);
-                        if(this.url.productId=="1"){
-                            this.$router.push('/admin')
-                        }else if(this.url.productId=="2"){
-                            this.$router.push('/admin/tumour')
+                if(this.excelList.length>0){
+                    data.uploadExcelFile(obj).then((data)=>{
+                        console.log(data.data)
+                        if(data.returnCode==0 || data.returnCode==200){
+                            this.$Message.success(data.msg);
+                            if(this.$store.state.projectid=="1"){
+                                this.$router.push('/admin')
+                            }else if(this.$store.state.projectid=="2"){
+                                this.$router.push('/admin/tumour')
+                            }
+                        }else if(data.returnCode==422 || data.returnCode==204 ){
+                            this.$router.push('/login')
+                        }else{
+                            this.$Message.error(data.msg);
                         }
-                    }else if(data.returnCode==422 || data.returnCode==204 ){
-                        this.$router.push('/login')
-                    }else{
-                        this.$Message.error(data.msg);
-                    }
-                    this.loading=true
-                }).catch((error)=>{
-                    this.$Message.error(error);
-                })
+                        this.loading=true;
+                        this.updisabled=false;
+                    }).catch((error)=>{
+                        this.updisabled=false;
+                        this.$Message.error(error.statusText);
+                    })
+                }else{
+                    this.updisabled=false;
+                    this.$Message.error('请选择需要上传的文件');
+                }
+                
             }
         },
         mounted(){  //加载数据列表

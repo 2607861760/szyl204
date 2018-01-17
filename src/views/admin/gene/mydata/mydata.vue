@@ -51,7 +51,7 @@
                     </Col>
                     <Col span="8" style="min-width:500px;margin-left:20px;">
                         <div class="search-inp">查询：
-                            <Select v-model="searchColumn" style="width:120px;" placeholder="请选择查询字段" @on-change="getSearchColumn">
+                            <Select v-model="searchColumn" style="width:140px;" placeholder="请选择查询字段" @on-change="getSearchColumn">
                                 <Option v-for="item in searchColumnList" :value="item.value" :key="item.value" style="text-align:center;letter-spacing:1px;">{{ item.label }}</Option>
                             </Select>
                             <Input type="text" v-model="keyword" style="margin-right:20px;height:30px;width:40%;margin-left:5px;" placeholder="请输入关键字" />
@@ -60,16 +60,16 @@
                             </Button>
                         </div>
                     </Col>
-                    <Col span="3" style="float:right;margin-right:10px;min-width:200px;">
+                    <Col span="3" style="float:right;margin-right:10px;min-width:300px;">
                         <div class="select-na">批次筛选:</div>
                         <Select style="float:left;width:120px;" v-model="selectPcId" @on-change="SelectChangeData">
                             <Option value="All">全部</Option>
                             <Option value="0">无批次</Option>
                             <Option v-for="(item, index) in piciList" :value="item.value" :label="item.label" :key="index">{{item.label}}</Option>
                         </Select>
-                        <!-- <Button type="primary" class="build" @click="clickSoltData" style="margin-left:20px;">
+                         <Button type="primary" class="build" @click="clickSoltData" style="margin-left:10px;">
                             分配数据
-                        </Button> -->
+                        </Button> 
                     </Col>
                 </Row>
             </div>
@@ -77,10 +77,10 @@
         
         <!-- 内容区域 -->
         <div class="mydata-content"> 
-            <el-table :data="tableData3" border style="width: 100%;" :height="height" v-scroll="loadMore" @selection-change="handleSelectionChange">
+            <el-table :data="tableData3" border style="width: 100%;" :height="height"  @selection-change="handleSelectionChange">
                 <el-table-column type="selection"width="55" v-if="showSelection" :disabled="disTableSelect">
                 </el-table-column>
-                <el-table-column label="病人编号" width="250">
+                <el-table-column label="病人编号" width="250" sortable prop="dchPatient.patientcode" >
                     <template slot-scope="scope">
                     	<Poptip placement="bottom-start" width="300" @on-popper-show="getUserBySample(scope.row)">
                     		<Icon style="padding:0 10px;cursor:pointer;" type="android-person"></Icon>
@@ -99,9 +99,9 @@
                     			</el-table>
                     		</div>
                     	</Poptip>
-                        <router-link style="width:70% !important;display:inline-block;text-align:left;" :to="{path:'/admin/gene/edit?patientcode='+scope.row.dchPatient.patientcode+'&paid='+scope.row.dchPatient.patientid}" class="bian">
-                        {{ scope.row.dchPatient.patientcode }}
-                        </router-link> 
+                        <a style="width:70% !important;display:inline-block;text-align:left;" @click="clickPatientcode(scope.row)" href='javascript:;' class="bian">
+                         {{ scope.row.dchPatient.patientcode }} 
+                        </a> 
                     </template>
                 </el-table-column>
                 <el-table-column label="样本批次">
@@ -123,18 +123,15 @@
                 <el-table-column label="状态">
                     <template slot-scope="scope">
                         <div v-for="(list,index) in scope.row.dchSampleList" class="handle" style="height:40px;">
-                            <span class="status" v-if="list.isexecute=='1'">等待</span>
-                            <span class="status" v-else-if="list.isexecute=='0'">未执行</span>
-                            <span class="status" v-else-if="list.isexecute=='2'">正在运行</span>
-                            <span class="status" v-else-if="list.isexecute=='3'">已完成</span>
-                            <span class="status" v-else-if="list.isexecute=='4'">错误</span>
+                            <span class="status">{{list.samplestatus | dataFormat}}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" min-width="150%">
                     <template slot-scope="scope">
                         <div v-for="(list,index) in scope.row.dchSampleList" class="handle">
-                            <span class="bian" @click="run(index,scope.row)" v-if="list.isexecute==='0'">运行</span>
+                            <button class="bian" style="border:none;background:none;color:#ccc;padding: 0px 10px;" disabled @click="run(index,scope.row)" v-if="list.samplestatus=='0'||list.samplestatus=='5'">运行</button>
+                            <span class="bian" @click="run(index,scope.row)" v-else-if="list.samplestatus=='6'">运行</span>
                             <span class="bian" @click="delet(index,scope.row)">删除</span>
                             <span class="bian" @click="edit(index,scope.row)">编辑</span>
                         </div>
@@ -142,17 +139,22 @@
                 </el-table-column>
                 <el-table-column label="解读">
                     <template slot-scope="scope">
-                        <a @click="jumpTgexPage(scope.row)"   target="_blank">GDAP</a>
+                        <a @click="jumpTgexPage(scope.row)"   target="_blank">分析</a>
                     </template>
                 </el-table-column>
-                <tr slot="append" style="height:50px;display:inline-block;" v-if="more">
-                    <td colspan="7" style="border:none;" v-loading="loading"></td>
-                </tr>
             </el-table>
             <div style="padding:40px 0px;">
                 <Row>
                     <Col span="12">
-                        <div style="float:left;">当前显示1-{{pageIndex*pageSize}}条，共{{total}}条</div>
+                        <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="currentPage"
+                        :page-sizes="[50, 100, 200, 500, 1000]"
+                        :page-size="pageSize"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="total">
+                        </el-pagination>
                     </Col>
                     <Col :lg="{span:12,push:7}" v-if="batchShowBtn">
                         <Button type="default" class="batch-btn pri-left-btn" @click="batchClickBtn">
@@ -357,7 +359,6 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         groupMemberData:[],           // 组、成员数据
         assignedData:[],              // 分配人的数据
         assinged:true,                //加载分配人时loading
-        loading:true,                 //加载下一页的loading
         more:false,                   //控制加载下一页的loading显示与隐藏  
         height:'500',                 //表格默认高              
         uploadDisabled: true,         //上传按钮是否禁用
@@ -368,8 +369,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         seqdate:'',
         fastq:false,
         sampleshow:false,
-        href:"",
-        pageSize:20,
+        pageSize:50,
         total:0,
         pageIndex:1,
         patid:'',
@@ -526,25 +526,56 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             },
         ],
         keyword:'',             //查询内容
+        currentPage:1,         //当前页数
       }
     },
-    directives: {
-        scroll: {
-            bind: function (el, binding){
-            var ele=el.querySelector('.el-table__body-wrapper');
-            ele.addEventListener('scroll', function(){
-              if(this.scrollTop + this.clientHeight >= this.scrollHeight) {
-                let fnc = binding.value; 
-                fnc();
-                }
-              })
-            }
-        }
-    },
     methods: {
+        //点击病人编号
+        clickPatientcode(row){
+            this.$store.state.patientInfo.patientId=row.dchPatient.patientid;
+            this.$store.state.patientInfo.patientCode=row.dchPatient.patientcode;
+            this.$router.push('/admin/gene/edit')
+        },
+        compare(property, reverse){
+            return function(a,b){
+                let value1 = a[property]
+                let value2 = b[property]
+                if (reverse) {
+                console.log('111')
+                return value1 + value2
+                } else {
+                return value1 - value2
+                }
+                
+            }
+        },
+        //排序方式
+        sortMethod(a,b){
+            // return this.tableData3.sort(this.compare(a.dchPatient.patientcode, b.dchPatient.patientcode))
+            // let value1=a.dchPatient.patientcode;
+            // let value2=b.dchPatient.patientcode;
+            // if(value1-value2>0){
+            //     return true;
+            // }else{
+            //     return false;
+            // }
+            return a.dchPatient.patientcode.localeCompare(b.dchPatient.patientcode)>0;
+            // return a.dchPatient.patientcode.localeCompare(b.dchPatient.patientcode)>0 ? 1:0;
+        },
+        //每页显示改变
+        handleSizeChange(val) {
+            this.pageSize=val;
+            this.load();
+        },
+        //页码改变
+        handleCurrentChange(val) {
+            this.pageIndex=val;
+            this.load();
+        },
         //获取查询字段
         getSearchColumn(val){
             this.pageIndex=1;
+            this.currentPage=1;
             this.keyword='';
             switch(val){
                 case 'patientcode':
@@ -666,10 +697,12 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 this.batchShowBtn = false;
                 this.allocation=false;
                 this.pageIndex=1;
+                this.currentPage=1;
                 this.load();
             }else {
                 this.allocation=true;
                 this.pageIndex=1;
+                this.currentPage=1;
                 this.SoltDataList();
             } 
             // console.log(this.selectPcId);
@@ -677,6 +710,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         // 分配数据点击事件-切换成选择表格
         clickSoltData(){
             this.pageIndex=1;
+            this.currentPage=1;
             this.allocation=true;
             this.SoltDataList();
         },
@@ -695,21 +729,12 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             }
             if(this.pageIndex==1){
                 this.tableData3.length=0;
-                this.loading=false;
             }
-            this.loading=true;
             // 根据批次获得对应数据信息
             data.getProjectListByBatchId(obj).then((data)=> {
-                this.loading=false;
-                let tabledata=[];
                 if(data.returnCode==200 || data.returnCode==0) {
                     if(data.data!=null){
-                        if(this.pageIndex==1){
-                            tabledata=data.data.projectList;
-                        }else{
-                            tabledata=this.tabledata.concat(data.data.projectList)
-                        }
-                        this.tableData3 = tabledata;
+                        this.tableData3 = data.data.projectList;
                         this.total=data.data.count;
                         M.each(this.tableData3,(item)=> {
                             // console.log(item.dchSampleList);
@@ -725,16 +750,6 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 }else{
                     this.$Message.error(data.msg);
                     this.tableData3=[];
-                }
-                this.more=true;
-                if(this.total<=20){
-                    this.more=false;
-                }
-                if(this.pageIndex==this.total/20 || this.pageIndex==(Math.ceil(this.total/20))){
-                    this.more=false;
-                }
-                if(this.tableData3.length==0){
-                    this.more=false;
                 }
             })
         },
@@ -883,9 +898,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 if(data.returnCode==0 || data.returnCode==200){
                     if(M.isArray(data.data)) {
                         this.fileCategoryList=data.data;
-                    }else {
-                        this.$Message.error(data.msg)
-                    } 
+                    }
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
                 }else{
@@ -912,9 +925,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 if(data.returnCode==0 || data.returnCode==200){
                     if(M.isArray(data.data)) {
                         this.fileServerCategoryList=data.data;
-                    }else {
-                        this.$Message.error(data.msg)
-                    } 
+                    }
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
                 }else{
@@ -1037,9 +1048,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     data.addSample(this.sampleInfo).then((data)=>{
                         console.log(data)
                         if(data.returnCode==0 || data.returnCode==200){
-                            if(data.data=="null"||data.data==null){
-                                this.$Message.error(data.msg);
-                            }else{
+                            if(data.data!="null"||data.data!=null){
                                 this.$Message.success(data.msg);
                                 this.load();
                                 this.uploadDisabled = false;
@@ -1101,11 +1110,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             if(flag){
                 flag=false;
                 data.getFileList(obj).then((data)=>{
-                    console.log(data)
                     if(data.returnCode==0 || data.returnCode==200){
-                        if(data.data==null || data.data=='null'){
-                            this.$Message.error(data.msg)
-                        }else{
+                        if(data.data!=null || data.data!='null'){
                             this.samplefile=data.data;
                         }
                     }else if(data.returnCode==422 || data.returnCode==204){
@@ -1134,7 +1140,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             }
         },
         files(){ //点击批量数据
-            this.$router.push('/admin/fileup?productId=1')
+            this.$store.state.projectid=1;
+            this.$router.push('/admin/fileup')
         },
         single(){//点击单一数据
             this.datashow = false;
@@ -1182,12 +1189,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 "pageIndex" : this.pageIndex,
                 "productId" : "1",
                 "userId":getCookie('userid'),
-            }
-            if(this.pageIndex==1){
-                this.tableData3.length=0;
-                this.loading=false;
-            }
-            this.loading=true;
+            }  
+            this.tableData3.length=0;
             if(this.searchColumn!='' && this.searchColumn!="all"){
                 obj.searchColumn=this.searchColumn;
                 obj.keyword=this.keyword;
@@ -1195,69 +1198,17 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             console.log(obj)
             data.getProjectList(obj).then((data)=>{
                 console.log(data)
-                this.loading=true;
                 if(data.returnCode==0 || data.returnCode==200){
                     if(data.data!=null){
                         this.total=data.data.count;
-                        if(this.pageIndex==1){
-                            this.tabledata=data.data.projectList;
-                        }else{
-                            this.tabledata=this.tabledata.concat(data.data.projectList)
-                        }
-                        this.tableData3= this.tabledata;
-                        // console.log(JSON.stringify(this.tableData3));
+                        this.tableData3= data.data.projectList;
                     }
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
                 }
-                    this.more=true;
-                    if(this.total<=20){
-                        this.more=false;
-                    }
-                    if(this.pageIndex==this.total/20 || this.pageIndex==(Math.ceil(this.total/20))){
-                        this.more=false;
-                    }
-                    if(this.tableData3.length==0){
-                        this.more=false;
-                    }
             }).catch((error)=>{
                 this.$Message.error(error.statusText);
-                this.loading=false;
             })
-        },
-        loadMore() {
-            if(this.total%20==0){
-                if(this.pageIndex<this.total/20){
-                    this.pageIndex++;
-                    setTimeout(()=>{
-                        if(this.allocation){
-                            this.SoltDataList();
-                        }else{
-                            this.load();
-                        }
-                    },2000);
-                }else{
-                    this.pageIndex=this.total/20;
-                    setTimeout(()=>{
-                        if(this.allocation){
-                            this.SoltDataList();
-                        }else{
-                            this.load();
-                        }
-                    },2000);
-                }
-            }else{
-            if(this.pageIndex<(Math.ceil(this.total/20))){
-                this.pageIndex++;
-                setTimeout(()=>{
-                    if(this.allocation){
-                            this.SoltDataList();
-                        }else{
-                            this.load();
-                        }
-                },2000);
-                }
-            }
         },
         //点击编辑
         edit(index,row){ 
@@ -1294,6 +1245,22 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 return cellValue = ""
             }else if(cellValue){
                 return cellValue
+            }
+        },
+        // 格式化数据
+        dataFormat(cellValue) {
+            if(cellValue=='0' || cellValue=='5'){
+                return cellValue = "----"
+            }else if(cellValue=='1' ) {
+                return cellValue = "等待"
+            }else if(cellValue=='2') {
+                return cellValue = "正在运行"
+            }else if(cellValue=='3') {
+                return cellValue = "已完成"
+            }else if(cellValue=='4') {
+                return cellValue = "错误"
+            }else if(cellValue=='6') {
+                return cellValue = "未执行"
             }
         },
     },

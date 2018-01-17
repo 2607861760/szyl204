@@ -153,7 +153,6 @@ export default{
           paid:'',
           placement:"top",
           removeModel:false,
-          url:M.url(),
           diseasetype:[],
           dchdiseaseid:0,
           selectProv:'',
@@ -165,6 +164,7 @@ export default{
           basicInfo: {},
           sign:true,
           oldInfo:{},
+          flag:false,
           rulebasicInfo: {
               phone: [
                   { validator: validatePhone, trigger: 'blur' }
@@ -246,7 +246,7 @@ export default{
         },
         delet(){  //点击删除
             this.idList=[];
-            this.idList.push(this.url.paid);
+            this.idList.push(this.$store.state.patientInfo.patientId);
             this.removeModel=true;
         },
         upPatient(){
@@ -268,6 +268,7 @@ export default{
                     this.$emit('signs',this.sign)
                     this.$router.push("/admin/tumour");
                 }else if(data.returnCode==422 || data.returnCode==204){
+                    this.flag=true;
                     this.$router.push('/login')
                 }else{
                     this.$Message.error(data.msg)
@@ -310,6 +311,7 @@ export default{
                                     this.$router.push('/admin/tumour/newsample?paid='+this.paid)
                                 }
                             }else if(data.returnCode==422 || data.returnCode==204){
+                                this.flag=true;
                                 this.$router.push('/login')
                             }else{
                                 this.$Message.error(data.msg)
@@ -364,8 +366,8 @@ export default{
         //获取病人信息
         getpatientinfo(){
             let obj={
-                "patientcode":this.url.patientcode,
-                "patientid":this.url.paid,
+                "patientcode":this.$store.state.patientInfo.patientCode,
+                "patientid":this.$store.state.patientInfo.patientId,
                 "userId":getCookie("userid"),
                 "productId":'2'
             }
@@ -410,7 +412,7 @@ export default{
         //     this.getpatientinfo();
         //     this.placement="bottom"
         // }
-        if(this.url.type!="single") {
+        if(M.url().type!="single") {
             this.getpatientinfo();
             this.placement="bottom"
         }

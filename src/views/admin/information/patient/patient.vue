@@ -30,7 +30,7 @@
       </Tabs>
     </Col>
     <div class="patient-info">
-        <patientInfo :routeshow="show" @binfo="basicinfo"></patientInfo>
+        <patientInfo :routeshow="show" @binfo="basicinfo" ref="pInfo"></patientInfo>
     </div>
 </div>
 </template>
@@ -58,7 +58,7 @@ export default{
                 delete this.newInfo[key]
             }
         })
-        if(to.path !="/admin/tumour/newsample" && !M.isEmptyObject(this.newInfo)){
+        if(to.path !="/admin/tumour/newsample" && !M.isEmptyObject(this.newInfo) && this.$refs.pInfo.flag==false){
             this.$Modal.confirm({
                 title: '放弃提示',
                 content: `<div class="modal-bd modal-bd2">

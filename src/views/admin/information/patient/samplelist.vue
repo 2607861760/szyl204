@@ -214,13 +214,11 @@
         takendate:'',
         receivedate:'',
         seqdate:'',
-        ptid:'',
         total:0,
         loading:true,
         sampleid:"",
         sampleModal:false,
         change: true,
-        url:M.url(),
         sampleDataList:[],
         sampleshow:false,
         samplelist: [],
@@ -480,7 +478,7 @@
     keep(name){  //点击保存
         let obj={
             userId:getCookie("userid"),
-            patientid:this.ptid,
+            patientid:this.$store.state.patientInfo.patientId,
             productId:"2",
             takendate:String(this.takendate),
             receivedate:String(this.receivedate),
@@ -590,10 +588,9 @@
         })
     },
     getList(){   //获取样本列表
-        this.ptid=this.url.paid;
         this.samplelist=[];
         let obj={
-            "patientid":this.ptid,
+            "patientid":this.$store.state.patientInfo.patientId,
             "userId":getCookie("userid"),
             "productId":"2"
         }

@@ -100,14 +100,12 @@ export default {
         return {
             // 流程数据 
             processData: [],
-            //  jobid
-            url:M.url(), 
             // 当期状态
             currentStatus: -1, 
             // 文件名称
-            file:M.url().file,
+            file:this.$store.state.file,
             // 流程
-            pipeline:M.url().pip,
+            pipeline:this.$store.state.pip,
             //运行错误
             runStatus:'process',
             //错误下载显示
@@ -139,7 +137,7 @@ export default {
         // 获取运行流程列表
         getCurrentStep() {
             let obj = {
-                jobid:this.url.jobid,
+                jobid:this.$store.state.jobid,
                 // jobid:"a3e8c87a17584802b4817da2b1325537",
                 userId:getCookie('userid')
             }

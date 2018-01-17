@@ -57,7 +57,7 @@
                         <Row>
                            <Col>
                                 <div class="pic-cont" v-model="picLeftList">
-                                    <div class="pic-item" v-for="(item,index) in picLeftList" :key="item.displayName" @click="mouseCoverLeft(index)">
+                                    <div class="pic-item" v-for="(item,index) in picLeftList" :key="index" @click="mouseCoverLeft(index)">
                                         <!-- <div class="pic-tit">
                                             {{item.displayName}}
                                         </div> -->
@@ -81,7 +81,7 @@
                         <Row>
                             <Col>
                                 <div class="pic-cont" v-model="picRightList">
-                                    <div class="pic-item" v-for="(item,index) in picRightList" :key="item.displayName" @click="mouseCoverRight(index)">
+                                    <div class="pic-item" v-for="(item,index) in picRightList" :key="index" @click="mouseCoverRight(index)">
                                         <!-- <div class="pic-tit">
                                             {{item.displayName}}
                                         </div> -->
@@ -124,7 +124,6 @@ export default {
         return { 
             imgUrl :imgUrl.imgurl,   // 图片路径前缀
             qualityShow: true,
-            url:M.url(),
             picShowLeft:false,       // 大图盒子隐藏
             picShowRight:false,
             picLeftList: [],        // 左侧图标
@@ -142,9 +141,9 @@ export default {
     // 实例创建时
     created() {
         this.getJobProgressInfoById();
-        if(this.url.productId==1){
+        if(this.$store.state.projectid==1){
             this.show=true;
-        }else if(this.url.productId==2){
+        }else if(this.$store.state.projectid==2){
             this.show=false;
         }
     },
@@ -154,7 +153,7 @@ export default {
     methods: {
         getJobProgressInfoById() {
             let obj = {
-                jobId:this.url.jobid,
+                jobId:this.$store.state.jobid,
                 analysisStep:"1"
             }
             task.getTaskInfoById(obj).then((data)=> {

@@ -207,7 +207,6 @@ export default {
     name:"task-index",
     data() {
         return {
-            url:M.url(),
             path:'',
             openLoadModel:false, // 下载弹框
             taskModelList:[],    // 弹层数据
@@ -218,7 +217,7 @@ export default {
     // 实例创建时
     created() {
         this.currentView = this.$route.query.type;
-        this.productId=this.url.productId; 
+        this.productId=this.$store.state.projectid; 
     },
     watch: {
         // 如果路由有变化，会再次执行该方法
@@ -226,9 +225,7 @@ export default {
             this.$router.push({
                 path: "/admin/task-details-tumour",
                 query: {
-                    type: newVal,
-                    path:this.url.path ? this.url.path : '',
-                    jobid:this.url.jobid ? this.url.jobid : ''
+                    type: newVal
                 }
             })
         },

@@ -85,7 +85,6 @@ export default{
         return {
             abandonModel:false,
             genderId:null,
-            url:M.url(),
             show: true,
             sexs:[{value:"true",label:"男"},{value:"false",label:"女"}],
             birthday: '',        
@@ -103,7 +102,7 @@ export default{
         upPatient(){   //更新病人信息
             let obj={
                 gender:this.genderId,
-                patientid:this.url.paid,
+                patientid:this.$store.state.patientInfo.patientId,
                 userId:getCookie("userid"),
                 productId:"1",
                 birthday:String(this.birthday)
@@ -127,7 +126,7 @@ export default{
             let obj={
                 "userId":getCookie("userid"),
                 "idList":this.idList,
-                "productId":"1"
+                "productId":'1'
             }
             data.deletePatientById(obj).then((data)=>{
                 if(data.returnCode==0 || data.returnCode==200){
@@ -144,14 +143,14 @@ export default{
         },
         delet(){ //点击删除
             this.idList=[];
-            this.idList.push(this.url.paid);
+            this.idList.push(this.$store.state.patientInfo.patientId);
             this.removeModel=true;
         },
         // 获得详情信息
         getProjectDetail() {
             let obj={
-                "patientcode":this.url.patientcode,
-                "patientid":this.url.paid,
+                "patientcode":this.$store.state.patientInfo.patientCode,
+                "patientid":this.$store.state.patientInfo.patientId,
                 "userId":getCookie("userid"),
                 "productId":'1'
             }

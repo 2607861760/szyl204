@@ -84,8 +84,8 @@
                 <el-table-column prop="spendtime" :formatter="foreignFlag" label="结束时间" min-width="10%"></el-table-column>
                 <el-table-column prop="status" label="状态" min-width="10%">
                     <template slot-scope="scope">
-                        <router-link :to="{path:'/admin/process?jobid='+scope.row.jobid+'&pip='+scope.row.pipeline+'&file='+scope.row.file}" class="bian">{{ scope.row.status | foreignFlag}}
-                        </router-link>
+                        <a href="javascript:;" class="bian" @click="clickStatus(scope.row)">{{ scope.row.status | foreignFlag}}
+                        </a>
                         
                     </template>
                 </el-table-column>
@@ -155,8 +155,8 @@
                         <el-table-column label="流程" prop="region" width="350"></el-table-column>
                     </el-table>
                     <div class="per-page" style="margin-top:10px;height:30px;">
-                        <div style="float:left;">当前显示{{pageIndex*pageSize-19}}-{{pageIndex*pageSize}}条，共{{jobTotal}}条
-                        </div>
+                        <!-- <div style="float:left;">当前显示{{pageIndex*pageSize-19}}-{{pageIndex*pageSize}}条，共{{jobTotal}}条
+                        </div> -->
                         <div style="float:right;">
                             <el-pagination
                             @size-change="handleSizeChange"
@@ -164,7 +164,7 @@
                             :current-page="pageIndexModel"
                             :page-sizes="[10, 20, 30, 40]"
                             :page-size="pageSize"
-                            layout="sizes, prev, pager, next"
+                            layout="total, sizes, prev, pager, next, jumper"
                             :total="jobTotal">
                             </el-pagination> 
                         </div> 
@@ -263,6 +263,7 @@ export default {
         this._getTaskList();      
     },
     methods: {
+    
         // tabs切换
         choice(name){
             this.productId=name+1;
@@ -378,7 +379,7 @@ export default {
         },
         //是否可以勾选
         selectable(row,index){
-            if(row.isexecute==='0'){
+            if(row.samplestatus==='0'){
                 return 1;
             }else{
                 return 0;
