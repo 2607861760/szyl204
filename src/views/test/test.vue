@@ -1,118 +1,88 @@
-// <style lang="scss" scoped>
-// .wrap {
-//     width: 80%;
-//     margin: 0 auto;
-//     background: #fff;
-// }
-// .box{
-//     padding: 20px;
-// }
-
-// </style>
-
-// <template>
-//     <div class="wrap">
-//         <div class="box">
-//             <div class="tools clear">
-//             <p>我是测试页面</p>
-            
-//             </div>
-//             <div class="mol-view-body">
-//                 <molView :data="nowMol" :defaultFileType="fileType"></molView>
-//             </div>
-            
-//            <!--  <molView></molView> -->
-//         </div>
-//     </div>
-// </template>
-
-// <script>
-// // 引入组件
-// import molView from 'components/mol-view/mol-view.vue';
-// // 引入测试数据
-// import molDatas from './data/data.js';
-
-
-// export default {
-//     data () {
-//         return {
-//             // 测试数据
-//             molDatas: molDatas,
-//             // 当前展示数据
-//             nowMol: molDatas[0],
-//             // 背景颜色
-//             backgroundColor: "#f00",
-//             // 显示形状
-//             defaultType: "line",
-//             // 文件类型
-//             fileType: "pdb"
-
-//         }
-//     },
-//     mounted() {
-//         // 默认第一个为展示数据
-//         // this.nowMol = this.molDatas[1];
-//     },
-//     methods: {
-//         // 改变展示数据
-//         changeViewData(index) {
-//             this.molData = molDatas[index];
-//         }
-//     },
-//     components: {
-//         molView
-//     },
-// };
-
-// </script>
 <template>
-    <Tree :data="data4" show-checkbox ></Tree>
+    <tree-grid :columns="columns" :tree-structure="true" :data-source="fileCategoryList" ></tree-grid>
 </template>
 <script>
-    export default {
-        data () {
-            return {
-                data4: [
+    import treeGrid from '@/components/treeTable/vue3/TreeGrid';
+    import {data} from 'api/index.js'
+    import {getCookie} from '@/common/js/cookie.js'
+    export default{
+        name:'test',
+        data(){
+            return{
+                fileCategoryList: [],
+                columns: [
                     {
-                        title: 'parent 1',
-                        expand: true,
-                        selected: true,
-                        disableCheckbox: false,
-                        children: [
-                            {
-                                title: 'parent 1-1',
-                                expand: true,
-                                disableCheckbox: false,
-                                children: [
-                                    {
-                                        title: 'leaf 1-1-1',
-                                        disableCheckbox: false
-                                    },
-                                    {
-                                        title: 'leaf 1-1-2',
-                                        disableCheckbox: false
-                                    }
-                                ]
-                            },
-                            {
-                                title: 'parent 1-2',
-                                expand: true,
-                                disableCheckbox: false,
-                                children: [
-                                    {
-                                        title: 'leaf 1-2-1',
-                                        disableCheckbox: false
-                                    },
-                                    {
-                                        title: 'leaf 1-2-1',
-                                        disableCheckbox: false
-                                    }
-                                ]
-                            }
-                        ]
+                        text: '文件名称',
+                        dataIndex: 'filename',
+                        width:'20%'
+                    },
+                    {
+                        text: '文件大小',
+                        dataIndex: 'size',
+                        width:'10'
                     }
                 ]
             }
+        },
+        methods:{
+            // 获得本地/storage/serverData/
+        _getLocalDataList() {
+            let obj={
+                // "path":"/storage/serverData/",
+                "path":"/opt/NfsDir/PublicDir/demo/",
+                        // /opt/NfsDir/PublicDir/demo/  电信云
+                        // /storage/serverData/   159
+                "userId":getCookie("userid"),
+                "productId":"1"
+            }
+            data.getSingleForldList(obj).then((data)=>{
+
+                if(data.returnCode==0 || data.returnCode==200){
+                    if(M.isArray(data.data)) {
+                        this.fileCategoryList=data.data;
+                    }
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
+                }else{
+                    this.$Message.error(data.msg)
+                }
+                
+            }).catch((error)=>{
+
+            })
+        },
+        // 获得服务列表 /opt/NfsDir/PublicDir/demo/
+        // /storage/serverData/
+        _getServerDataList() {
+            let obj={
+                // "path":"/storage/serverData/",
+                "path":"/opt/NfsDir/PublicDir/demo/",
+                        // /opt/NfsDir/PublicDir/demo/  电信云
+                        // /storage/serverData/   159
+                "userId":getCookie("userid"),
+                "productId":"1"
+            }
+            data.getSingleForldList(obj).then((data)=>{
+                    // console.log(data)
+                if(data.returnCode==0 || data.returnCode==200){
+                    if(M.isArray(data.data)) {
+                        this.fileServerCategoryList=data.data;
+                    }
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
+                }else{
+                    this.$Message.error(data.msg)
+                }
+            }).catch((error)=>{
+
+            })
+        }
+        },
+        components:{
+            treeGrid
+        },
+        created(){
+            this._getLocalDataList();
         }
     }
 </script>

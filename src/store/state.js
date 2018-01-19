@@ -11,6 +11,7 @@ const state = {
     jobid: '',
     pip: '',
     file: '',
+    treeGrid: 1,
     patientInfo: {
         patientCode: '',
         patientId: ''

@@ -44,7 +44,7 @@
 
 </style>
 <template>
-    <div calss="task">
+    <div class="task">
 
         <Tabs type="card" @on-click="choice" >
             <TabPane label="罕见病"></TabPane>

@@ -315,11 +315,11 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     dataIndex: 'size',
                     width:'10'
                 },
-                {
-                    text: '传输时间',
-                    dataIndex: 'transition',
-                    width:'10'
-                }
+                // {
+                //     text: '传输时间',
+                //     dataIndex: 'transition',
+                //     width:'10'
+                // }
             ],
         samplesource: [{
             value: '对照样本',
@@ -569,8 +569,10 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         serverlocal(name){  //serverlocal
             if(name=='local') {
                 this._getLocalDataList();
+                this.$store.state.treeGrid=1;
             }else if(name=='server') {
                 this._getServerDataList();
+                this.$store.state.treeGrid=2;
             }
         },
         // 获得本地/storage/serverData/
@@ -583,7 +585,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 "userId":getCookie("userid"),
                 "productId":"2"
             }
-            data.getForldList(obj).then((data)=>{
+            data.getSingleForldList(obj).then((data)=>{
                 if(data.returnCode==0 || data.returnCode==200){
                     if(M.isArray(data.data)) {
                         this.fileCategoryList=data.data;
@@ -608,7 +610,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 "userId":getCookie("userid"),
                 "productId":"2"
             }
-            data.getForldList(obj).then((data)=>{
+            data.getSingleForldList(obj).then((data)=>{
                     // console.log(data)
                 if(data.returnCode==0 || data.returnCode==200){
                     if(M.isArray(data.data)) {

@@ -2,19 +2,19 @@
     <div style='width:100%;border:1px solid #dfe6ec' class="tree">
         <el-table :data="data" border style="width: 100%" :row-style="showTr" @row-click="rowClick" ref="treeTable" highlight-current-row>
             <el-table-column v-for="(column, index) in columns" :min-width="column.width" :key="column.dataIndex" :label="column.text" align="left">
-                <template slot-scope="scope">
+                 <template slot-scope="scope">
                     <span v-if="spaceIconShow(index)" v-for="(space, levelIndex) in scope.row._level" class="ms-tree-space"></span>
-                    <!-- <span v-if="!scope.row.children.length" class="ms-tree-space">---</span> -->
-                    <Button type="text" class="boult" v-if="toggleIconShow(index,scope.row)" @click="toggle(scope.$index)">
-                        <span v-if="!scope.row._expanded">
+                     <Button type="text" class="boult" v-if="toggleIconShow(index,scope.row)" @click="toggle(scope.$index)">
+                        <span v-if="!scope.row._expanded" @click="getChild(scope.$index)" style="padding: 6px 50px;">
                     <Icon type="chevron-right"></Icon>
                     </span>
-                        <span v-if="scope.row._expanded">
-                    <Icon type="chevron-down"></Icon>
-                    </span>
-                    </Button>
-                    <span v-else-if="index===0" class="ms-tree-space"></span> {{scope.row[column.dataIndex]}}
-                </template>
+                        <span v-if="scope.row._expanded" style="padding: 6px 50px;">
+                            <Icon type="chevron-down"></Icon>
+                        </span>
+                    </Button> 
+                       <span v-else-if="index===0" class="ms-tree-space"></span>   
+                     {{scope.row[column.dataIndex]}} 
+                </template> 
             </el-table-column>
             <el-table-column label="操作" v-if="treeType === 'normal'" min-width="10%" >
                 <template slot-scope="scope">
@@ -137,6 +137,17 @@ export default {
             let record = me.data[trIndex]
             record._expanded = !record._expanded
         },
+        //获取下一级数据
+        getChild:function(trIndex){
+            let me = this
+            let record = me.data[trIndex]
+            if(this.$store.state.treeGrid==1){
+                this._getForldList(record);
+            }else if(this.$store.state.treeGrid==2){
+                this._getForldList(record);
+            }
+            
+        },
         // 显示层级关系的空格和图标
         spaceIconShow(index) {
             let me = this
@@ -148,10 +159,57 @@ export default {
         // 点击展开和关闭的时候，图标的切换
         toggleIconShow(index, record) {
             let me = this
-            if (me.treeStructure && index === 0 && record.children && record.children.length > 0) {
+            if (me.treeStructure && record.status==0) {
                 return true
             }
             return false
+        },
+        // 获得服务上传列表
+        _getForldList(record) {
+            let obj={
+                "path":record.path,
+                "userId":getCookie("userid"),
+                "productId":this.$store.state.projectid
+            }
+            data.getSingleForldList(obj).then((data)=>{
+                if(data.returnCode==0 || data.returnCode==200){
+                    if(data.data.length>0 && M.isArray(data.data)) {
+                        record.children=data.data;
+                    }
+                    this.loading=false;
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
+                }else{
+                    this.$Message.error(data.msg)
+                    this.loading=false;
+                }
+                
+            }).catch((err)=>{
+                this.loading=false;
+            })
+        },
+        // 获得硬盘列表
+        _getServerList(record) {
+            let obj={
+                "path":"/opt/NfsDir/PublicDir/demo/",
+                "userId":getCookie("userid"),
+                "productId":this.$store.state.projectid
+            }
+            data.getSingleForldList(obj).then((data)=>{
+                if(data.returnCode==0 || data.returnCode==200){
+                    if(data.data.length>0 && M.isArray(data.data)) {
+                        record.children=data.data;
+                    }
+                    this.loading=false;
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
+                }else{
+                    this.$Message.error(data.msg)
+                    this.loading=false;
+                }                    
+            }).catch((err)=>{
+                this.loading=false;
+            })
         }
     }
 }

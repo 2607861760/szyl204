@@ -46,13 +46,7 @@
             <el-table-column label="状态" min-width="10%">
                 <template slot-scope="scope">
                     <div class="handle">
-                        <span class="status" v-if="scope.row.samplestatus=='1'">等待</span>
-                        <span class="status" v-else-if="scope.row.samplestatus=='0'">----</span>
-                        <span class="status" v-else-if="scope.row.samplestatus=='2'">正在运行</span>
-                        <span class="status" v-else-if="scope.row.samplestatus=='3'">已完成</span>
-                        <span class="status" v-else-if="scope.row.samplestatus=='4'">错误</span>
-                        <span class="status" v-else-if="scope.row.samplestatus=='5'">----</span>
-                        <span class="status" v-else-if="scope.row.samplestatus=='6'">未执行</span>
+                        <span class="status">{{scope.row.samplestatus | dataFormat}}</span>
                     </div>
                 </template>
             </el-table-column>
@@ -691,6 +685,24 @@ export default{
       if(this.flag && this.flag==1){
             this.finishBtnShow=false;
         }
+    },
+    filters: {
+        // 格式化数据
+        dataFormat(cellValue) {
+            if(cellValue=='0' || cellValue=='5'){
+                return cellValue = "----"
+            }else if(cellValue=='1' ) {
+                return cellValue = "等待"
+            }else if(cellValue=='2') {
+                return cellValue = "正在运行"
+            }else if(cellValue=='3') {
+                return cellValue = "已完成"
+            }else if(cellValue=='4') {
+                return cellValue = "错误"
+            }else if(cellValue=='6') {
+                return cellValue = "未执行"
+            }
+        },
     },
     components:{
         treeGrid,

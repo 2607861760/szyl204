@@ -536,32 +536,6 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             this.$store.state.patientInfo.patientCode=row.dchPatient.patientcode;
             this.$router.push('/admin/gene/edit')
         },
-        compare(property, reverse){
-            return function(a,b){
-                let value1 = a[property]
-                let value2 = b[property]
-                if (reverse) {
-                console.log('111')
-                return value1 + value2
-                } else {
-                return value1 - value2
-                }
-                
-            }
-        },
-        //排序方式
-        sortMethod(a,b){
-            // return this.tableData3.sort(this.compare(a.dchPatient.patientcode, b.dchPatient.patientcode))
-            // let value1=a.dchPatient.patientcode;
-            // let value2=b.dchPatient.patientcode;
-            // if(value1-value2>0){
-            //     return true;
-            // }else{
-            //     return false;
-            // }
-            return a.dchPatient.patientcode.localeCompare(b.dchPatient.patientcode)>0;
-            // return a.dchPatient.patientcode.localeCompare(b.dchPatient.patientcode)>0 ? 1:0;
-        },
         //每页显示改变
         handleSizeChange(val) {
             this.pageSize=val;
@@ -872,9 +846,11 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             if(name=='local') {
                 console.log(this.tabsVal)
                 this._getLocalDataList();
+                this.$store.state.treeGrid=1;
             }else if(name=='server') {
                 console.log(this.tabsVal)
                 this._getServerDataList();
+                this.$store.state.treeGrid=2;
             }
         },
         //关闭上传文件弹层清空数据
@@ -894,7 +870,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 "userId":getCookie("userid"),
                 "productId":"1"
             }
-            data.getForldList(obj).then((data)=>{
+            data.getSingleForldList(obj).then((data)=>{
+                console.log(data)
                 if(data.returnCode==0 || data.returnCode==200){
                     if(M.isArray(data.data)) {
                         this.fileCategoryList=data.data;
@@ -920,7 +897,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 "userId":getCookie("userid"),
                 "productId":"1"
             }
-            data.getForldList(obj).then((data)=>{
+            data.getSingleForldList(obj).then((data)=>{
                     // console.log(data)
                 if(data.returnCode==0 || data.returnCode==200){
                     if(M.isArray(data.data)) {

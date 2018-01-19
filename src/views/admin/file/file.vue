@@ -83,8 +83,10 @@ import {data} from 'api/index.js'
             clickTabs(name) {
                 if(name=="local") {
                     this._getForldList();
+                    this.$store.state.treeGrid=1;
                 }else if(name=="server"){
                     this._getServerList();
+                    this.$store.state.treeGrid=2;
                 }
             },
             // 获得服务上传列表
@@ -98,7 +100,7 @@ import {data} from 'api/index.js'
                     "productId":this.$store.state.projectid
                 }
                 console.log(obj)
-                data.getForldList(obj).then((data)=>{
+                data.getSingleForldList(obj).then((data)=>{
                     console.log(data)
                     if(data.returnCode==0 || data.returnCode==200){
                         if(data.data.length>0 && M.isArray(data.data)) {
@@ -126,7 +128,7 @@ import {data} from 'api/index.js'
                     "userId":getCookie("userid"),
                     "productId":this.$store.state.projectid
                 }
-                data.getForldList(obj).then((data)=>{
+                data.getSingleForldList(obj).then((data)=>{
                     console.log(data)
                     if(data.returnCode==0 || data.returnCode==200){
                         if(data.data.length>0 && M.isArray(data.data)) {

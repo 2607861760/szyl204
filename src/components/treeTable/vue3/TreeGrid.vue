@@ -1,6 +1,6 @@
 <template>
     <div style='width:100%;border:1px solid #dfe6ec' class="tree">
-        <el-table   :data="data" border style="width: 100%" :row-style="showTr" :cell-style="cellcenter" @row-click="rowClick" ref="treeTable" highlight-current-row>
+        <el-table   :data="data" border style="width: 1000px;margin:auto;" :row-style="showTr" :cell-style="cellcenter" @row-click="rowClick" ref="treeTable" highlight-current-row>
             <el-table-column v-for="(column, index) in columns" :min-width="column.width" :key="column.dataIndex" :label="column.text">
                 <template slot-scope="scope">
                     <span v-if="spaceIconShow(index)" v-for="(space, levelIndex) in scope.row._level" class="ms-tree-space"></span>
@@ -163,9 +163,9 @@ export default {
             let me = this
             let record = me.data[trIndex]
             if(this.$store.state.treeGrid==1){
-                this._getLocalDataList(record);
+                this._getForldList(record);
             }else if(this.$store.state.treeGrid==2){
-                this._getServerDataList(record);
+                this._getForldList(record);
             }
             
         },
@@ -185,11 +185,28 @@ export default {
             }
             return false
         },
+        handleDelete() {
+            this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'error'
+            }).then(() => {
+                this.$message({
+                    type: 'success',
+                    message: '删除成功!'
+                })
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                })
+            })
+        },
         // 获得本地/storage/serverData/
-        _getLocalDataList(record) {
+        _getLocalDataList() {
             let obj={
                 // "path":"/storage/serverData/",
-                "path":record.path,
+                "path":"/opt/NfsDir/PublicDir/demo/",
                         // /opt/NfsDir/PublicDir/demo/  电信云
                         // /storage/serverData/   159
                 "userId":getCookie("userid"),
@@ -198,7 +215,7 @@ export default {
             data.getSingleForldList(obj).then((data)=>{
                 if(data.returnCode==0 || data.returnCode==200){
                     if(M.isArray(data.data)) {
-                        record.children=data.data;
+                        this.fileCategoryList=data.data;
                     }
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
@@ -215,7 +232,7 @@ export default {
         _getServerDataList() {
             let obj={
                 // "path":"/storage/serverData/",
-                "path":record.path,
+                "path":"/opt/NfsDir/PublicDir/demo/",
                         // /opt/NfsDir/PublicDir/demo/  电信云
                         // /storage/serverData/   159
                 "userId":getCookie("userid"),
@@ -225,7 +242,7 @@ export default {
                     // console.log(data)
                 if(data.returnCode==0 || data.returnCode==200){
                     if(M.isArray(data.data)) {
-                        record.children=data.data;
+                        this.fileServerCategoryList=data.data;
                     }
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
