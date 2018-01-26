@@ -219,7 +219,7 @@ export default{
             let obj={
                 "userId":getCookie("userid"),
                 "idList":this.idList,
-                "productId":"1"
+                "productId":"2"
             }
             console.log(1)
             data.deletePatientById(obj).then((data)=>{
@@ -230,8 +230,6 @@ export default{
                         this.sign=false;
                         this.$emit('signs',this.sign)
                         this.$router.push('/admin/tumour')
-                    }else{
-                        this.$Message.error(data.msg);
                     }
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
@@ -252,7 +250,7 @@ export default{
         upPatient(){
             let obj={
                 gender:this.genderId,
-                patientid:this.url.paid,
+                patientid:this.$store.state.patientInfo.patientId,
                 userId:getCookie("userid"),
                 productId:"2",
                 birthday:String(this.birthday),
@@ -303,12 +301,10 @@ export default{
                     if(valid && valids){
                         data.addProject(this.basicInfo).then((data)=>{
                             if(data.returnCode==0 || data.returnCode==200){
-                                if(data.data=='null' || data.data==null){
-                                    // this.show = true;
-                                    this.$Message.error(data.msg);
-                                }else{
+                                if(data.data!=null){
                                     this.paid=data.data.patient.patientid;
-                                    this.$router.push('/admin/tumour/newsample?paid='+this.paid)
+                                    this.$store.state.patientInfo.patientId=data.data.patient.patientid;
+                                    this.$router.push('/admin/tumour/newsample')
                                 }
                             }else if(data.returnCode==422 || data.returnCode==204){
                                 this.flag=true;

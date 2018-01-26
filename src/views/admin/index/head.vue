@@ -72,8 +72,8 @@ export default {
     props:["cusername"],
     data() {
         return {
-            routes:"",
-            username:''
+            routes:"", //存放路径
+            username:''   //用户名
         }
     },
     methods: {

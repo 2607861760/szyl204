@@ -37,14 +37,66 @@
             <el-table-column prop="samplesource" label="样本类型" min-width="10%"></el-table-column>
             <el-table-column prop="sampletype" label="样本来源" min-width="10%"></el-table-column>
             <el-table-column prop="region" label="测序区域" min-width="10%"></el-table-column>
+            <el-table-column label="文件状态" width="200">
+                <template slot-scope="scope">
+                    <div v-for="(list,index) in scope.row.dchSampleList"  style="height:40px;" :key="index">
+                        <Poptip  placement="bottom-end" v-if="list.fastq_R1!=null" width="300">
+                            <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
+                                {{list.fastq_R1}}
+                            </div>
+                            <div class="imgbox">
+                                <div class="fastq_R1_on" ></div>
+                            </div>
+                        </Poptip>
+                        <div class="imgbox" v-else>
+                            <div class="fastq_R1_off"></div>
+                        </div>
+                        <Poptip  placement="bottom-end" v-if="list.fastq_R2!=null " width="300">
+                            <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
+                                {{list.fastq_R2}}
+                            </div>
+                            <div class="imgbox">
+                                <div class="fastq_R2_on" ></div>	
+                            </div>
+                        </Poptip>
+                        <div class="imgbox" v-else>
+                            <div class="fastq_R2_off"></div>
+                        </div>
+                        <Poptip  placement="bottom-end" v-if="list.vcf!=null" width="300">
+                            <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
+                                {{list.vcf}}
+                            </div>
+                            <div class="imgbox">
+                                <div class="vcf_on" ></div>
+                            </div>
+                        </Poptip>
+                        <div class="imgbox" v-else>
+                            <div class="vcf_off"></div>
+                        </div>
+                        <Poptip placement="bottom-end" v-if="list.etcFiles!=null " width="300">
+                            <div class="imgbox">
+                                <div class="etc_on" ></div>
+                            </div>
+                            <div  slot="content">
+                                <table>
+                                    <tbody>
+                                        <tr v-for="(item,index) in list.etcFiles" :key="index" style="height:60px;word-wrap: break-word;text-align: left;">
+                                            {{item}}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </Poptip>
+                        <div class="imgbox" v-else>
+                            <div class="etc_off"></div>
+                        </div>
+                    </div>
+                </template>
+            </el-table-column>
             <el-table-column label="状态" min-width="10%">
                 <template slot-scope="scope">
                     <div class="handle">
-                        <span class="status" v-if="scope.row.isexecute==1">等待</span>
-                        <span class="status" v-else-if="scope.row.isexecute==0">未执行</span>
-                        <span class="status" v-else-if="scope.row.isexecute==2">正在运行</span>
-                        <span class="status" v-else-if="scope.row.isexecute==3">已完成</span>
-                        <span class="status" v-else-if="scope.row.isexecute==4">错误</span>
+                        <span class="status">{{scope.row.samplestatus | dataFormat}}</span>
                     </div>
                 </template>
             </el-table-column>
@@ -347,6 +399,24 @@
         tabsVal:'upload'
         }
   },
+    filters: {
+        // 格式化数据
+        dataFormat(cellValue) {
+            if(cellValue=='0' || cellValue=='5'){
+                return cellValue = "----"
+            }else if(cellValue=='1' ) {
+                return cellValue = "等待"
+            }else if(cellValue=='2') {
+                return cellValue = "正在运行"
+            }else if(cellValue=='3') {
+                return cellValue = "已完成"
+            }else if(cellValue=='4') {
+                return cellValue = "错误"
+            }else if(cellValue=='6') {
+                return cellValue = "未执行"
+            }
+        },
+    },
   methods: {
       //关闭上传文件弹层清空数据
         clearData(){
@@ -544,9 +614,10 @@
                         // /opt/NfsDir/PublicDir/demo/  电信云
                         // /storage/serverData/   159
             "userId":getCookie("userid"),
-            "productId":"1"
+            "productId":"2",
+            "type":"2"
         }
-        data.getForldList(obj).then((data)=>{
+        data.getSingleForldList(obj).then((data)=>{
             // console.log(data)
             if(data.returnCode==0 || data.returnCode==200){
                 if(M.isArray(data.data)) {
@@ -569,9 +640,10 @@
                         // /opt/NfsDir/PublicDir/demo/  电信云
                         // /storage/serverData/   159
             "userId":getCookie("userid"),
-            "productId":"1"
+            "productId":"2",
+            "type":"2"
         }
-        data.getForldList(obj).then((data)=>{
+        data.getSingleForldList(obj).then((data)=>{
           // console.log(data)
             if(data.returnCode==0 || data.returnCode==200){
                 if(M.isArray(data.data)) {
@@ -598,11 +670,9 @@
         data.getSampleList(obj).then((data)=>{
           console.log(data)
             if(data.returnCode==0 || data.returnCode==200){
-                if(data.data==null || data.data=='null'){
-                    this.$Message.error(data.msg)
-                }else{
+                if(data.data!=null || data.data!='null'){
                     this.samplelist=data.data;
-                    this.total=this.samplelist.length;
+                    this.total=data.data.length;
                 }
             }else if(data.returnCode==422 || data.returnCode==204){
                 this.$router.push('/login')

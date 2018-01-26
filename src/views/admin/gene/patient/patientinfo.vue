@@ -71,13 +71,10 @@ export default{
     name: 'patientgene',
     data(){
         return {
-            sexs:[{value:"true",label:"男"},{value:"false",label:"女"}],
-            paid:'',
-            show: true,
-            birthday: '',
-            basicInfo: {},
-            sign:true,
-            rules:{
+            sexs:[{value:"true",label:"男"},{value:"false",label:"女"}],  //性别下拉菜单
+            birthday: '',  //绑定生日日期
+            basicInfo: {},  //基本信息
+            rules:{   //表单验证
               patientcode: [
                   { required: true, message: '病人编号不能为空', trigger: 'blur' }
               ]
@@ -109,8 +106,6 @@ export default{
                         console.log(data)
                         if(data.returnCode==0 || data.returnCode==200){
                             if(data.data!='null' || data.data!=null){
-                                this.paid=data.data.patient.patientid;
-                                console.log(this.paid);
                                 this.$store.state.patientInfo.patientId=data.data.patient.patientid;
                                 this.$router.push('/admin/gene/newsample')
                             }
@@ -120,7 +115,6 @@ export default{
                             this.$Message.error(data.msg);
                         }
                     }).catch((error)=>{
-                        this.show = true;
                     })
                 }
             })  

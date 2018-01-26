@@ -4,16 +4,18 @@
             <el-table-column v-for="(column, index) in columns" :min-width="column.width" :key="column.dataIndex" :label="column.text" align="left">
                  <template slot-scope="scope">
                     <span v-if="spaceIconShow(index)" v-for="(space, levelIndex) in scope.row._level" class="ms-tree-space"></span>
-                     <Button type="text" class="boult" v-if="toggleIconShow(index,scope.row)" @click="toggle(scope.$index)">
-                        <span v-if="!scope.row._expanded" @click="getChild(scope.$index)" style="padding: 6px 50px;">
-                    <Icon type="chevron-right"></Icon>
-                    </span>
-                        <span v-if="scope.row._expanded" style="padding: 6px 50px;">
-                            <Icon type="chevron-down"></Icon>
+                    <Button type="text"  v-if="toggleIconShow(index,scope.row)" @click="toggle(scope.$index)" style="padding:6px 20px;"> 
+                        <span style="color:#F2B217;font-size:17px;">
+                            <Icon type="folder"></Icon>
                         </span>
-                    </Button> 
-                       <span v-else-if="index===0" class="ms-tree-space"></span>   
-                     {{scope.row[column.dataIndex]}} 
+                    </Button>
+                    <span style="color:#999999;margin-left:20px;font-size:17px;" v-if="scope.row.type!=0">
+                        <Icon type="document"></Icon>
+                        <span  class="ms-tree-space"></span>
+                    </span>   
+                    <span>
+                        {{scope.row[column.dataIndex]}}
+                    </span> 
                 </template> 
             </el-table-column>
             <el-table-column label="操作" v-if="treeType === 'normal'" min-width="10%" >
@@ -136,6 +138,7 @@ export default {
             let me = this
             let record = me.data[trIndex]
             record._expanded = !record._expanded
+            this.getChild(trIndex)
         },
         //获取下一级数据
         getChild:function(trIndex){
@@ -169,7 +172,8 @@ export default {
             let obj={
                 "path":record.path,
                 "userId":getCookie("userid"),
-                "productId":this.$store.state.projectid
+                "productId":this.$store.state.projectid,
+                "type":"1"
             }
             data.getSingleForldList(obj).then((data)=>{
                 if(data.returnCode==0 || data.returnCode==200){
@@ -191,9 +195,10 @@ export default {
         // 获得硬盘列表
         _getServerList(record) {
             let obj={
-                "path":"/opt/NfsDir/PublicDir/demo/",
+                "path":record.path,
                 "userId":getCookie("userid"),
-                "productId":this.$store.state.projectid
+                "productId":this.$store.state.projectid,
+                "type":"1"
             }
             data.getSingleForldList(obj).then((data)=>{
                 if(data.returnCode==0 || data.returnCode==200){

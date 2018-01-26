@@ -111,38 +111,46 @@ $right-main-bg: #ECF0F5;
     <!-- 头部 -->
     <adminHead :cusername="cusername"></adminHead>
     <!-- 主体 -->
-    <Row class="admin-main" type="flex">
-          <i-col class="admin-layout-left" :span="spanLeft">
-              <!-- 菜单导航 -->
-              <el-menu theme="dark" :default-active="$route.path" class="el-menu-vertical-demo" :router="true">
-                  <div class="admin-layout-nav" >
-                      <!--<Icon type="navicon-round" style="margin-right:8%;"></Icon>-->
-                      <span class="menu">目录</span>
-                  </div>
-                  <el-menu-item index="/admin">
-                      <Icon type="android-list" style="margin-right:8%;"></Icon>
-                      罕见病
-                  </el-menu-item>
-                  <el-menu-item index="/admin/tumour">
-                      <Icon type="ios-pie" style="margin-right:8%;"></Icon>
-                      癌症
-                  </el-menu-item>                  
-                  <el-menu-item index="/admin/task-management">
-                      <Icon type="social-buffer" style="margin-right:8%;"></Icon>
-                      任务管理
-                  </el-menu-item>
-              </el-menu>
-          </i-col>
-          <!-- 右侧主内容区域 -->
-          <i-col id="layout-container" class="layout-container" :span="spanRight">
-              <div class="layout-content">
-                  <div class="layout-main">
-                      <!-- 子页面展示区域 -->
-                      <router-view v-if="show"></router-view>
-                  </div>
-              </div>
-          </i-col>
-    </Row>
+         <Layout class="admin-main" type="flex">
+            <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" class="admin-layout-left">
+                <el-menu theme="dark" :default-active="$route.path" :class="menuitemClasses" :router="true">
+                    <div class="admin-layout-nav" style="height:56px;">
+                        <span class="menu">目录</span>
+                        <Icon @click.native="collapsedSider" :class="rotateIcon"   type="navicon-round" size="24"></Icon>
+                    </div>
+                    <el-menu-item index="/admin">
+                        <Icon type="android-list" style="margin-right:8%;"></Icon>
+                        <span>罕见病</span>
+                    </el-menu-item>
+                    <el-menu-item index="/admin/tumour">
+                        <Icon type="ios-pie" style="margin-right:8%;"></Icon>
+                        <span>癌症</span>
+                    </el-menu-item>            
+                    <el-menu-item index="/admin/task-management">
+                        <Icon type="social-buffer" style="margin-right:8%;"></Icon>
+                        <span>任务管理</span>
+                    </el-menu-item>
+                    <el-menu-item index="/admin/fileManage">
+                        <Icon type="folder" style="margin-right:8%;"></Icon>
+                        <span>文件管理</span>
+                    </el-menu-item>
+                     <!-- <el-menu-item index="/admin/processtemp">
+                        <Icon type="network" style="margin-right:8%;"></Icon>
+                        <span>流程管理</span>
+                    </el-menu-item>   -->
+                </el-menu>
+            </Sider>
+            <Layout>
+                <Content :style="{margin: '20px', background: '#fff'}">
+                    <div class="layout-content">
+                        <div class="layout-main">
+                            <!-- 子页面展示区域 -->
+                            <router-view v-if="show"></router-view>
+                        </div>
+                    </div>
+                </Content>
+            </Layout>
+        </Layout>
 </div>
 </template>
 <script>
@@ -154,39 +162,30 @@ import {setCookie,getCookie} from '@/common/js/cookie.js'
 export default {
     data() {
         return {
-            cusername:"",
-            load:Boolean,
-            // 左侧导航列数
-            spanLeft: 3,
-            // 右侧内容列数
-            spanRight: 21,
-            // 当前菜单列表
-            datashow: true,
-            uid:'',
-            show:false,
-            menu: [{
-                  menuName: "数据管理",
-                  type: 'ios-pie',
-                  // path: '/admin/mydata',
-                  index: '2'
-              }, {
-                  menuName: "ICMDB",
-                  type: 'android-list',
-                  // path: '/admin/gene',
-                  index: '1'
-              }, {
-                  menuName: "任务管理",
-                  type: 'social-buffer',
-                  // path: '3',
-                  index: '3'
-            }]
+            isCollapsed: false,  //菜单展开还是收缩
+            cusername:"",   //用户名
+            load:Boolean,   //加载loading
+            show:false,    //子页面展示
         }
     },
     computed: {
-        // 导航图标大小
-        iconSize() {
-            return this.spanLeft === 4 ? 16 : 20;
+        rotateIcon () {  //目录图标变化
+            return [
+                'menu-icon',
+                this.isCollapsed ? 'rotate-icon' : ''
+            ];
         },
+        menuitemClasses () {  //菜单类名切换
+            return [
+                'el-menu-vertical-demo',
+                this.isCollapsed ? 'collapsed-menu' : ''
+            ]
+        }
+    },
+    methods:{
+        collapsedSider () {
+            this.$refs.side1.toggleCollapse();
+        }
     },
     created() {
         let search=window.location.search.slice(1,6);

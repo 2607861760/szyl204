@@ -220,10 +220,10 @@ export const consts = {
 
 // 全局图片路径
 export const imgUrl = {
-    
-    // imgurl: 'http://10.131.101.159:8080'   //本地
+
+    // imgurl: 'http://10.131.101.159:8080' //本地
     // imgurl: 'http://42.123.124.204:8081' //电信云
-    imgurl:'http://42.123.124.204:82/'
+    imgurl: 'http://42.123.124.204:82/'
 }
 
 //全局接口路径

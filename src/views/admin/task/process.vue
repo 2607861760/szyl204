@@ -69,7 +69,8 @@
                     <div style="padding-bottom:10px;">
                         <div style="width:80px;float:left;">错误日志:</div>
                         <div style="width:100%;">
-                            <a :href="'http://42.123.124.204:8081/dchealth-platform/1.0/job/errorLogFileDownload?jobid='+this.url.jobid" download class="download" style="padding:5px 15px;">下载错误日志</a>
+                            <!-- <a :href="'http://10.131.101.159:8080/dchealth-platform/1.0/job/errorLogFileDownload?jobid='+this.$store.state.jobid" download class="download" style="padding:5px 15px;">下载错误日志</a> -->
+                             <a :href="'http://42.123.124.204:8081/dchealth-platform/1.0/job/errorLogFileDownload?jobid='+this.$store.state.jobid" download class="download" style="padding:5px 15px;">下载错误日志</a> 
                         </div>
                     </div>
                 </Row>

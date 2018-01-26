@@ -22,10 +22,7 @@
         name:'cgdap',
         data(){
             return{
-                urlSrc:'',
-                // url:M.url(),
-                // show:true,
-                // loading:true,
+                urlSrc:'',  //vishuourlUrl
             }
         },
         methods:{

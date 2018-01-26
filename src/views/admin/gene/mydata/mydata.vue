@@ -28,6 +28,8 @@
     .pri-right-btn {
         margin-left: 20px;
     }
+    
+    
 </style>
 <template>
     <div class="mydata">
@@ -120,16 +122,72 @@
                         <div v-for="list in scope.row.dchSampleList" :key="list.sampleid" style="height:40px;line-height:40px;">{{list.designator}}</div>
                     </template>
                 </el-table-column> 
+                <el-table-column label="文件状态" width="200">
+    				<template slot-scope="scope">
+						<div v-for="(list,index) in scope.row.dchSampleList"  style="height:40px;" :key="index">
+                            <Poptip  placement="bottom-end" v-if="list.fastq_R1!=null" width="300">
+                                <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
+                                    {{list.fastq_R1}}
+                                </div>
+                                <div class="imgbox">
+                                    <div class="fastq_R1_on" ></div>
+                                </div>
+                            </Poptip>
+                            <div class="imgbox" v-else>
+                                <div class="fastq_R1_off"></div>
+                            </div>
+                            <Poptip  placement="bottom-end" v-if="list.fastq_R2!=null " width="300">
+                                <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
+                                    {{list.fastq_R2}}
+                                </div>
+                                <div class="imgbox">
+                                    <div class="fastq_R2_on" ></div>	
+                                </div>
+                            </Poptip>
+                            <div class="imgbox" v-else>
+                                <div class="fastq_R2_off"></div>
+                            </div>
+                            <Poptip  placement="bottom-end" v-if="list.vcf!=null" width="300">
+                                <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
+                                    {{list.vcf}}
+                                </div>
+                                <div class="imgbox">
+                                    <div class="vcf_on" ></div>
+                                </div>
+                            </Poptip>
+                            <div class="imgbox" v-else>
+                                <div class="vcf_off"></div>
+                            </div>
+                            <Poptip placement="bottom-end" v-if="list.etcFiles!=null " width="300">
+                                <div class="imgbox">
+                                    <div class="etc_on" ></div>
+                                </div>
+                                <div  slot="content">
+                                    <table>
+                                        <tbody>
+                                            <tr v-for="(item,index) in list.etcFiles" :key="index" style="height:60px;word-wrap: break-word;text-align: left;">
+                                                {{item}}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </Poptip>
+                            <div class="imgbox" v-else>
+                                <div class="etc_off"></div>
+                            </div>
+                        </div>
+    				</template>
+    			</el-table-column>
                 <el-table-column label="状态">
                     <template slot-scope="scope">
-                        <div v-for="(list,index) in scope.row.dchSampleList" class="handle" style="height:40px;">
+                        <div v-for="(list,index) in scope.row.dchSampleList" class="handle" style="height:40px;" :key="index">
                             <span class="status">{{list.samplestatus | dataFormat}}</span>
                         </div>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" min-width="150%">
                     <template slot-scope="scope">
-                        <div v-for="(list,index) in scope.row.dchSampleList" class="handle">
+                        <div v-for="(list,index) in scope.row.dchSampleList" class="handle" :key="index">
                             <button class="bian" style="border:none;background:none;color:#ccc;padding: 0px 10px;" disabled @click="run(index,scope.row)" v-if="list.samplestatus=='0'||list.samplestatus=='5'">运行</button>
                             <span class="bian" @click="run(index,scope.row)" v-else-if="list.samplestatus=='6'">运行</span>
                             <span class="bian" @click="delet(index,scope.row)">删除</span>
@@ -143,7 +201,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <div style="padding:40px 0px;">
+            <div style="padding-top:40px;">
                 <Row>
                     <Col span="12">
                         <el-pagination
@@ -343,52 +401,41 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
     data(){
       return {
         tabsVal:'upload',             //默认tabs的value值
-        parentId:'',
         disTableSelect:false,         // 禁用表格多选框
         disShowNo:true,               // 分配按钮禁用
         batchShowBtn:false,           // 右下角按钮的显示隐藏
-        oldRow:{},
         showSelection:false,          // 默认不显示选择数据，点击右上角分配数据后显示
-        slotModelData:[],             // 分配数据
-        showTabHead:true,             // 是否显示表头
         slotModel:false,              // 分配数据弹层，默认隐藏
         selectPcId:"All",             // 批次默认选中项
         piciList:[],                  // 批次下拉数据
         patientidList: [],            // 选中病人信息id列表
-        useridList: [],               // 选中组成员id列表
+        deptidList: [],               // 选中组成员id列表
         groupMemberData:[],           // 组、成员数据
         assignedData:[],              // 分配人的数据
         assinged:true,                //加载分配人时loading
-        more:false,                   //控制加载下一页的loading显示与隐藏  
         height:'500',                 //表格默认高              
         uploadDisabled: true,         //上传按钮是否禁用
-        platformId:'',
-        enrichmentkitId:'',
-        takendate:'',
+        platformId:'',                //绑定platform
+        enrichmentkitId:'',           //绑定enrichmentkit
+        takendate:'',                 //绑定日期
         receivedate:'',
         seqdate:'',
-        fastq:false,
-        sampleshow:false,
-        pageSize:50,
-        total:0,
-        pageIndex:1,
-        patid:'',
-        samid:'',
-        removeModel:false,
-        datashow: true,
-        sampleEdit: false,
-        upModal: false,
-        value: '',
-        sampleInfo: {},
-        samplefile:[],
-        fastlist:[],
+        sampleshow:false,             //显示样本文件信息弹窗
+        pageSize:50,                  //每页显示数量
+        total:0,                      //总条数
+        pageIndex:1,                  //页码
+        patid:'',                     //存放patientid
+        samid:'',                     //存放sampleid
+        removeModel:false,            //显示删除提示框
+        sampleEdit: false,            //显示样本弹窗
+        upModal: false,               //显示文件上传弹窗
+        sampleInfo: {},               //存放样本信息
+        samplefile:[],                //存放样本文件信息
         fileCategoryList: [],                // 本地
         fileServerCategoryList: [],          // 服务
-        choice:[],
-        choices:[],
-        pipeline:'',
-        allocation:false,
-        ruleCustom: {
+        pipeline:'',                         //存放pipeline 
+        allocation:false,                    //代表是否在分配状态
+        ruleCustom: {                        //表单验证规则
           samplecode: [
               { required: true, message: '样本编号不能为空', trigger: 'blur' }
           ],
@@ -398,7 +445,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
           region:[
               {required: true, message: '测序区域不能为空', trigger: 'blur' }
           ]},
-        columns: [
+        columns: [                          //上传树形表格的标题
             {
                 text: '文件名称',
                 dataIndex: 'filename',
@@ -487,8 +534,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             label: 'Panel',
             disabled:true
         }],
-        platform: [],
-        enrichmentkit: [],
+        platform: [],           //存放platform
+        enrichmentkit: [],      //存放enrichmentkit
         seqtype: [{    //测序类型
             value: 'DNA-Seq',
             label: 'DNA-Seq'
@@ -496,19 +543,9 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             value: 'RNA-Seq',
             label: 'RNA-Seq'
         }],
-        options: [{
-            value: "5",
-            label: "5"
-            }, {
-            value: "10",
-            label: "10"
-            }, {
-            value: "15",
-            label: "15"
-        }],
-        tableData3: [],
-        userId:'',
-        idList:[],
+        tableData3: [],     //数据列表
+        userId:'',          //存放userId
+        idList:[],          //sampleid的集合
         searchColumn:'',            //查询字段
         searchColumnList:[          //查询字段集合
             {
@@ -568,21 +605,21 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             console.log(JSON.stringify(value));
             
             // 存放成员id
-            let str = '';
-            this.useridList.length=0;
+            let num;
+            this.deptidList.length=0;
             // 获得勾选成员id
             if(M.isArray(value)) {
                 M.each(value,(item)=> {
-                    str = item.dchUserId;
+                    num = item.deptId;
                     if(item.children && item.children.length>0) {
                         this.clickCheckBtn(item.children);
                     }
-                    this.useridList.push(str);
+                    this.deptidList.push(num);
                     // 去掉数组中的重复
-                    this.useridList = M.uniqueArray(this.useridList);
+                    this.deptidList = M.uniqueArray(this.deptidList);
                 })
             }
-            console.log(this.useridList);
+            console.log(this.deptidList);
         },
         // 表格左侧选择事件
         handleSelectionChange(value) {
@@ -631,36 +668,37 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         },
         // 分配数据-确定事件
         handleSubmit() {
-            if(this.useridList.length==1){
+            // if(this.deptidList.length==1){
+                console.log(this.deptidList)
                 let obj = {
                     "userId":getCookie('userid'),
                     "patientidList":this.patientidList || [],
-                    "useridList":this.useridList || []
+                    "deptidList":this.deptidList
                 }
                 data.assignData(obj).then((data)=> {
                     if(data.returnCode==0 || data.returnCode==200) {
                         this.$Message.success(data.msg);
                         this.slotModel = false;
                         // this.patientidList= [];           // 置空
-                        this.useridList=[];               // 置空
+                        this.deptidList=[];               // 置空
                     }else if(data.returnCode==422 || data.returnCode==204){
                         this.$router.push('/login')
                     }else{
                         this.$Message.error("请选择分配组成员");
                     }
                 })
-            }else if(this.useridList.length==0){
-                this.$Message.error('请选择一位组成员')
-            }else{
-                this.$Message.error('只能选择一位组成员')
-            }
+            // }else if(this.deptidList.length==0){
+            //     this.$Message.error('请选择一位组成员')
+            // }else{
+            //     this.$Message.error('只能选择一位组成员')
+            // }
             
         },
         // 取消点击
         cancelBtn() {
             this.slotModel = false;
             this.patientidList= [];           // 置空
-            this.useridList=[];               // 置空
+            this.deptidList=[];               // 置空
         },
         // 批次改变事件
         SelectChangeData(val) {
@@ -868,7 +906,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                         // /opt/NfsDir/PublicDir/demo/  电信云
                         // /storage/serverData/   159
                 "userId":getCookie("userid"),
-                "productId":"1"
+                "productId":"1",
+                "type":"2"
             }
             data.getSingleForldList(obj).then((data)=>{
                 console.log(data)
@@ -895,7 +934,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                         // /opt/NfsDir/PublicDir/demo/  电信云
                         // /storage/serverData/   159
                 "userId":getCookie("userid"),
-                "productId":"1"
+                "productId":"1",
+                "type":"2"
             }
             data.getSingleForldList(obj).then((data)=>{
                     // console.log(data)

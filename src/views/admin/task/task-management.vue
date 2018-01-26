@@ -44,7 +44,7 @@
 
 </style>
 <template>
-    <div class="task">
+    <div calss="task">
 
         <Tabs type="card" @on-click="choice" >
             <TabPane label="罕见病"></TabPane>
@@ -65,7 +65,7 @@
         </div>
 
         <div class="cont-main">
-            <el-table :data="tableList" border default-expand-al="true" :height="height" v-scroll="loadMore">
+            <el-table :data="tableList" border default-expand-al="true" :height="height" >
                 <el-table-column type="index" min-width="5%"></el-table-column>
                 <el-table-column prop="samplecode" label="样本编号" min-width="10%">
                     <template slot-scope="scope">
@@ -89,10 +89,11 @@
                         
                     </template>
                 </el-table-column>
-                <el-table-column prop="path" label="vcf文件下载" min-width="10%" v-if="productId==1">
+                <el-table-column prop="path" label="vcf文件下载" min-width="10%" v-if="this.$store.state.projectid==1">
                     <template slot-scope="scope">
                        
-                        <a :href="'http://42.123.124.204:8081/dchealth-platform/1.0/data/vcfdownload?jobid='+scope.row.jobid" download class="download" v-if="scope.row.status==99">下载</a>
+                         <a :href="'http://42.123.124.204:8081/dchealth-platform/1.0/data/vcfdownload?jobid='+scope.row.jobid" download class="download" v-if="scope.row.status==99">下载</a> 
+                        <!-- <a :href="'http://10.131.101.159:8080/dchealth-platform/1.0/data/vcfdownload?jobid='+scope.row.jobid" download class="download" v-if="scope.row.status==99">下载</a> -->
                        
                         <a class="dis-download" href="javascript:;" download  disabled v-else>下载</a>
                     </template>
@@ -110,14 +111,18 @@
                         </Row>
                     </template>
                 </el-table-column>
-                <tr slot="append" style="height:50px;" v-if="more">
-                    <td colspan="7" style="text-align:center;" v-loading="loading"></td>
-                </tr>
             </el-table>
             <!-- 分页 -->
             <div class="per-page">
-                <div style="float:left;">当前显示1-{{pageIndex*pageSize}}条，共{{total}}条
-                </div>
+                <el-pagination
+                @size-change="handleSizeChanges"
+                @current-change="handleCurrentChanges"
+                :current-page="currentPage"
+                :page-sizes="[50, 100, 200, 500, 1000]"
+                :page-size="pageSizes"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="total">
+                </el-pagination>
             </div>
         </div>
         <!-- 删除模块提示框 -->
@@ -198,6 +203,7 @@ export default {
     name:"task",
     data() {
         return {
+            currentPage:1,         //当前页数
             height:'500',
             more:'',
             routes:'',
@@ -214,7 +220,9 @@ export default {
             btnType: null,
             pageIndexModel: 1,   // 弹层当前页
             pageSize: 20,
+            pageSizes:50,
             pageIndex: 1,
+            pageIndexs: 1,
             jobTotal: 0,      // 新建总数
             total: 0,
             newModel: false,    //新建任务弹层
@@ -225,22 +233,21 @@ export default {
             sampleList: [],     // 样本列表
             selectList: [],     // 样本选中项
             tabledata: [],
-            productId: 1,
         }
     },
-    directives: {  //监听滚动
-        scroll: {
-            bind: function (el, binding){
-                var ele=el.querySelector('.el-table__body-wrapper');
-                ele.addEventListener('scroll', function(){
-                    if(this.scrollTop + this.clientHeight >= this.scrollHeight) {
-                        let fnc = binding.value; 
-                        fnc();
-                    }
-                })
-            }
-        }
-    },
+    // directives: {  //监听滚动
+    //     scroll: {
+    //         bind: function (el, binding){
+    //             var ele=el.querySelector('.el-table__body-wrapper');
+    //             ele.addEventListener('scroll', function(){
+    //                 if(this.scrollTop + this.clientHeight >= this.scrollHeight) {
+    //                     let fnc = binding.value; 
+    //                     fnc();
+    //                 }
+    //             })
+    //         }
+    //     }
+    // },
     watch: {
     },
     filters: {
@@ -260,13 +267,32 @@ export default {
     },
     // 实例创建时
     created() {
+        this.$store.state.projectid=1;
         this._getTaskList();      
     },
     methods: {
-    
+        //每页显示改变
+        handleSizeChanges(val) {
+            this.pageSizes=val;
+            this._getTaskList();
+        },
+        //页码改变
+        handleCurrentChanges(val) {
+            this.pageIndexs=val;
+            this._getTaskList();
+        },
+         // 点击状态
+        clickStatus(row){
+            console.log(row)
+            this.$store.state.jobid=row.jobid;
+            this.$store.state.file=row.file.join(',');
+            this.$store.state.pip=row.pipeline;
+            this.$router.push('/admin/process')
+        },
         // tabs切换
         choice(name){
-            this.productId=name+1;
+            console.log(name)
+            this.$store.state.projectid=name+1;
             this._getTaskList(); 
             this.batchlist = [];
             this.sampleList = [];
@@ -275,10 +301,10 @@ export default {
         //点击样本编号
         routeChange(row){
             if(row.status==99){
-                if(this.productId==1){
-                    this.$router.push({path:'/admin/task-details?type=quality&jobid='+row.jobid+'&productId='+this.productId+'&samplecode='+row.samplecode})
-                }else if(this.productId==2){
-                    this.$router.push({path:'/admin/task-details-tumour?type=quality&jobid='+row.jobid+'&productId='+this.productId+'&samplecode='+row.samplecode})
+                if(this.$store.state.projectid==1){
+                    this.$router.push({path:'/admin/task-details?type=quality'})
+                }else if(this.$store.state.projectid==2){
+                    this.$router.push({path:'/admin/task-details-tumour?type=quality'})
                 }
             }else if(row.status==98){
                 this.$Message.error("该任务运行失败")
@@ -287,34 +313,11 @@ export default {
             }
             
         },
-        //加载更多
-        loadMore() {  
-            if(this.total%20==0){
-                if(this.pageIndex<this.total/20){
-                    this.pageIndex++;
-                    setTimeout(()=>{
-                        this._getTaskList(); 
-                    },2000);
-                }else{
-                    this.pageIndex=this.total/20;
-                    setTimeout(()=>{
-                        this._getTaskList(); 
-                    },2000);
-                }
-        }else{
-            if(this.pageIndex<(Math.ceil(this.total/20))){
-                this.pageIndex++;
-                setTimeout(()=>{
-                    this._getTaskList(); 
-                },2000);
-                }
-            }
-        },
         //获取样本批次
         _getBatchList(){
             let obj={
                 "userid":getCookie("userid"),
-                "productId":this.productId
+                "productId":this.$store.state.projectid
             }
             // 置空批次列表
             this.batchlist = [];
@@ -356,7 +359,7 @@ export default {
                 pageSize:this.pageSize,
                 pageIndex:pageIndexModel,
                 userid:getCookie('userid'),
-                productId:this.productId
+                productId:this.$store.state.projectid
             }
             // console.log(obj);
             task.getSampleByBatchId(obj).then((data)=>{
@@ -428,7 +431,7 @@ export default {
             let obj={
                 "sampleIds":this.selectList,
                 'userId':getCookie('userid'),
-                "productId":this.productId
+                "productId":this.$store.state.projectid
             }
             console.log(obj);
             task.executeJobBySampleIds(obj).then((data)=>{
@@ -476,7 +479,7 @@ export default {
             let obj = {
                 userId:this.cookies,
                 idList:idList,
-                productId:this.productId
+                productId:this.$store.state.projectid
             }; 
             // console.log(obj);  
             task.mergeJobById(obj).then((data) => {
@@ -501,7 +504,7 @@ export default {
             let obj = {
                 userId:this.cookies,
                 idList:idList,
-                productId:this.productId
+                productId:this.$store.state.projectid
             }; 
             task.mergeStopJob(obj).then((data) => {
                 if (data.returnCode == 0 || data.returnCode == 200) {
@@ -520,7 +523,6 @@ export default {
         // 每页显示条数改变
         handleSizeChange(val){ 
             this.pageSize=val;
-            this._getTaskList();
             // 每页显示条数改变
             this.getSampleList();
         },
@@ -528,7 +530,7 @@ export default {
         handleCurrentChange(val){ 
             this.pageIndex=val;
             console.log(this.pageIndex);
-            this._getTaskList(val);
+            this.getSampleList();
         },
         // 弹层页面改变
         handleChangPage(val) {
@@ -538,13 +540,12 @@ export default {
             this.getSampleList(val);
         },
         // 获得表格数据
-        _getTaskList(pageIndex=1) {
-            this.pageIndex = pageIndex;
+        _getTaskList() {
             let obj = {
-                "pageIndex": pageIndex,
-                "pageSize": this.pageSize,
+                "pageIndex": this.pageIndexs,
+                "pageSize": this.pageSizes,
                 "userId":this.cookies,
-                "productId":this.productId
+                "productId":this.$store.state.projectid
             }
             console.log(obj)
             task.getTaskList(obj).then((data) => {
@@ -555,12 +556,7 @@ export default {
                         this.tableList = [];
                     } else {
                         this.total = data.data.count;
-                        if (this.pageIndex == 1) {
-                            this.tabledata = data.data.jobList;
-                        } else {
-                            this.tabledata = this.tabledata.concat(data.data.jobList)
-                        }
-                        this.tableList=this.tabledata;
+                        this.tableList=data.data.jobList;
                     }
                 } else if (data.returnCode == 422 || data.returnCode == 204) {
                     this.$router.push('/login')

@@ -18,6 +18,7 @@
         cursor: pointer;
     }
 }
+
 </style>
 <template>
 <div class="sample-info">
@@ -43,6 +44,62 @@
             <el-table-column prop="sampletype" label="样本类型" min-width="10%"></el-table-column>
             <el-table-column prop="region" label="测序区域" min-width="10%"></el-table-column>
             <el-table-column prop="designator" label="亲属关系" min-width="10%"></el-table-column>
+            <el-table-column label="文件状态" width="200">
+                <template slot-scope="scope">
+                    <!-- <div v-for="(list,index) in scope.row"  style="height:40px;"> -->
+                        <Poptip  placement="bottom-end" v-if="scope.row.fastq_R1!=null" width="300">
+                            <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
+                                {{list.fastq_R1}}
+                            </div>
+                            <div class="imgbox">
+                                <div class="fastq_R1_on" ></div>
+                            </div>
+                        </Poptip>
+                        <div class="imgbox" v-else>
+                            <div class="fastq_R1_off"></div>
+                        </div>
+                        <Poptip  placement="bottom-end" v-if="scope.row.fastq_R2!=null " width="300">
+                            <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
+                                {{list.fastq_R2}}
+                            </div>
+                            <div class="imgbox">
+                                <div class="fastq_R2_on" ></div>	
+                            </div>
+                        </Poptip>
+                        <div class="imgbox" v-else>
+                            <div class="fastq_R2_off"></div>
+                        </div>
+                        <Poptip  placement="bottom-end" v-if="scope.row.vcf!=null" width="300">
+                            <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
+                                {{list.vcf}}
+                            </div>
+                            <div class="imgbox">
+                                <div class="vcf_on" ></div>
+                            </div>
+                        </Poptip>
+                        <div class="imgbox" v-else>
+                            <div class="vcf_off"></div>
+                        </div>
+                        <Poptip placement="bottom-end" v-if="scope.row.etcFiles!=null " width="300">
+                            <div class="imgbox">
+                                <div class="etc_on" ></div>
+                            </div>
+                            <div  slot="content">
+                                <table>
+                                    <tbody>
+                                        <tr v-for="(item,index) in scope.row.etcFiles" :key="index" style="height:60px;word-wrap: break-word;text-align: left;">
+                                            {{item}}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </Poptip>
+                        <div class="imgbox" v-else>
+                            <div class="etc_off"></div>
+                        </div>
+                    <!-- </div> -->
+                </template>
+            </el-table-column>
             <el-table-column label="状态" min-width="10%">
                 <template slot-scope="scope">
                     <div class="handle">
@@ -158,7 +215,7 @@
                 <Tabs type="card" @on-click="serverlocal" v-model="tabsVal">
                     <TabPane label="upload" name="upload">
                         <div>
-                            <Upload multiple action="/dchealth-platform/1.0/upload/fileUpload" show-upload-list :data="{'sampleid':this.samid,'userId':userId,'type':'vcf'}" 
+                            <Upload multiple action="/dchealth-platform/1.0/upload/fileUpload" show-upload-list :data="{'sampleid':this.samid,'userId':this.userId,'type':'vcf'}" 
                                 :on-success="upsuccess" :on-error="uperror"> 
                                 <Button type="ghost" style="background:#4578ad;">上传文件</Button>
                             </Upload>
@@ -214,7 +271,7 @@ export default{
     data(){
         return {
             finishBtnShow:true, //是否显示完成按钮
-            userId:getCookie("userid"),
+            userId:getCookie("userid"),  //存放userid
             sampleDataList: [],        // 样本列表弹层
             uploadDisabled:true,
             enrichmentkitId:'',        // ek
@@ -612,9 +669,10 @@ export default{
                             // /opt/NfsDir/PublicDir/demo/  电信云
                             // /storage/serverData/   159
                 "userId":getCookie("userid"),
-                "productId":"1"
+                "productId":"1",
+                "type":"2"
             }
-            data.getForldList(obj).then((data)=>{
+            data.getSingleForldList(obj).then((data)=>{
                 if(data.returnCode==0 || data.returnCode==200){
                     if(M.isArray(data.data)) {
                         this.fileServerCategoryList=data.data;
@@ -634,9 +692,10 @@ export default{
                             // /opt/NfsDir/PublicDir/demo/  电信云
                             // /storage/serverData/   159
                 "userId":getCookie("userid"),
-                "productId":"1"
+                "productId":"1",
+                "type":"2"
             }
-            data.getForldList(obj).then((data)=>{
+            data.getSingleForldList(obj).then((data)=>{
                 // console.log(data)
                 if(data.returnCode==0 || data.returnCode==200){
                     if(M.isArray(data.data)) {

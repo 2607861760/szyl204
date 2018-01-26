@@ -83,16 +83,14 @@ export default{
     name: 'patientedit',
     data(){
         return {
-            abandonModel:false,
-            genderId:null,
-            show: true,
-            sexs:[{value:"true",label:"男"},{value:"false",label:"女"}],
-            birthday: '',        
-            basicInfo: {},
-            idList:[],
-            removeModel:false,
-            sign:false,
-            oldInfo:{},
+            genderId:null,   //绑定性别
+            sexs:[{value:"true",label:"男"},{value:"false",label:"女"}],  //性别列表
+            birthday: '',    //绑定生日     
+            basicInfo: {},   //病人基本信息
+            idList:[],    //病人id集合
+            removeModel:false,  //显示删除提示框
+            sign:false,   //是否点击更新按钮的标志
+            oldInfo:{},   //初始病人信息
         }
     },  
     methods:{

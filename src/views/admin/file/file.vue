@@ -97,7 +97,8 @@ import {data} from 'api/index.js'
                     // /opt/NfsDir/PublicDir/demo/  电信云
                     // /storage/serverData/   159
                     "userId":getCookie("userid"),
-                    "productId":this.$store.state.projectid
+                    "productId":this.$store.state.projectid,
+                    "type":"1"
                 }
                 console.log(obj)
                 data.getSingleForldList(obj).then((data)=>{
@@ -126,7 +127,8 @@ import {data} from 'api/index.js'
                     // /opt/NfsDir/PublicDir/demo/  电信云
                     // /storage/serverData/   159
                     "userId":getCookie("userid"),
-                    "productId":this.$store.state.projectid
+                    "productId":this.$store.state.projectid,
+                    "type":"1"
                 }
                 data.getSingleForldList(obj).then((data)=>{
                     console.log(data)

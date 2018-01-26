@@ -33,7 +33,7 @@ module.exports = {
         // 使用 config/dev.env.js 中定义的编译环境
         env: require('./dev.env'),
         // 运行测试页面的端口
-        port: 9898,
+        port: 9897,
         // 自动打开浏览器
         autoOpenBrowser: true,
         // 编译输出的二级目录
@@ -49,7 +49,7 @@ module.exports = {
                 // target:'http://10.131.101.229:8080',
                 // target: 'http://10.131.101.55:8080',
                 // target: 'http://10.131.101.159:8080',
-                // target: 'http://10.131.101.81:8080',
+                // target: 'http://10.131.101.33:8080',
                 // 192.168.163.214 复旦
                 // 10.131.101.159:8080 公司
                 // http://42.123.124.204:8081

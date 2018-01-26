@@ -19,7 +19,7 @@ import 'static/jquery/jquery.min.js';
 // Mcake工具集
 import '@/frame/Mcake/Mcake.js';
 // 引入element-ui 组件
-import {Table,CheckboxGroup,Checkbox, TableColumn,Menu,Carousel,Pagination,CarouselItem,Select,Option, Submenu, MenuItem ,Loading,Button} from 'element-ui';
+import { Table, CheckboxGroup, Checkbox, TableColumn, Menu, Carousel, Pagination, CarouselItem, Select, Option, Submenu, MenuItem, Loading, Button } from 'element-ui';
 
 
 // 初始化路由状态
@@ -49,11 +49,9 @@ Vue.use(CheckboxGroup);
 
 // 创建应用
 new Vue({
-  el: '#app',
-  router,
-  store,
-  template: '<App/>',
-  components: { App }
+    el: '#app',
+    router,
+    store,
+    template: '<App/>',
+    components: { App }
 })
-
-

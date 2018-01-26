@@ -93,6 +93,10 @@ const router = new VueRouter({
                 name: "cgdap",
                 path: '/admin/tumour/cgdap',
                 component: resolve => require(['@/views/admin/information/patient/cgdap.vue'], resolve)
+            },{
+                name: "fileManage",
+                path: '/admin/fileManage',
+                component: resolve => require(['@/views/admin/fileManage/fileManage.vue'], resolve)
             }]
         },
         {

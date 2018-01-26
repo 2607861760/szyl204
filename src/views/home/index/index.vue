@@ -187,21 +187,21 @@
                 width: 40px;
                 height: 40px;
                 background-image:url('./img/left.png');
-                background-size:220% 200%;
+                background-size:200% 200%;
                 
             }
             .cooperate-left{
                 left:0;
-                background-position:1px 0px;
+                background-position:-1px -1px;
                 &:hover{
-                    background-position:-46px 0px;
+                    background-position:-1px -40px;
                 }
             }
             .cooperate-right{
                 right:0;
-                background-position:1px -40px;
+                background-position:-40px -1px;
                 &:hover{
-                    background-position:-46px -40px;
+                    background-position:-40px -40px;
                 }
             }
             .cooperate-content{

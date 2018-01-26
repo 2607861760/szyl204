@@ -36,17 +36,19 @@ export default{
     name: "patient",
     data(){
         return {
-            newInfo:{}
+            newInfo:{}   //存放新的病人信息
         }
     },
     components: {
         patientInfo
     },
     methods: {
-        basicinfo(val){
+        //从子组件中获取新的病人信息
+        basicinfo(val){   
             this.newInfo=val;
         }
     },
+    //在离开页面的时候
     beforeRouteLeave(to, from, next) {     
         M.each(this.newInfo,(value,key)=>{           
             if(value == "" || value==" "){

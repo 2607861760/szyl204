@@ -112,11 +112,11 @@ export const data = {
     },
     /**
      * [data  获取病人数据列表]
-     * @param  {[type]} param [userId,productId,pageSize,pageIndex]
+     * @param  {[type]} param [userId,productId,pageSize,pageIndex]   getProjectList
      * @return {[type]}   obj
      */
     getProjectList(obj) {
-        return $ajax.post(apiUrl.apiUrl + 'project/getProjectList', obj).then(function(res) {
+        return $ajax.post(apiUrl.apiUrl + 'project/getProjectLists', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -172,11 +172,11 @@ export const data = {
     },
     /**
      * [data  上传列表]
-     * @param  {[type]} param [excelList,productId,userId]
+     * @param  {[type]} param [excelList,productId,userId]   uploadExcelFile
      * @return {[type]}   obj
      */
     uploadExcelFile(obj) {
-        return $ajax.post(apiUrl.apiUrl + 'upload/uploadExcelFile', obj).then(function(res) {
+        return $ajax.post(apiUrl.apiUrl + 'upload/uploadExcelFiles', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -222,12 +222,22 @@ export const data = {
         })
     },
     /**
-     * [data  数据分配提交]
+     * [data  数据分配提交]   assignDeptData
      * @param  {[type]} param { "patientidList":["a","b"],"useridList":["c"]}
      * @return {[type]}   obj
      */
+    // assignData(obj) {
+    //     return $ajax.post(apiUrl.apiUrl + 'project/assignData', obj).then(function(res) {
+    //         return Promise.resolve(res.data)
+    //     })
+    // },
+    /**
+     * [data  数据分配提交]   assignDeptData
+     * @param  {[type]} param { "patientidList":["a","b"],"deptidList":[c]}
+     * @return {[type]}   obj
+     */
     assignData(obj) {
-        return $ajax.post(apiUrl.apiUrl + 'project/assignData', obj).then(function(res) {
+        return $ajax.post(apiUrl.apiUrl + 'project/assignDeptData', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -246,11 +256,11 @@ export const data = {
      * @param  {[type]} cookie
      * @return {[type]}   obj
      */
-    queryUserByDeptId(obj) {
-        return $ajax.post(apiUrl.apiUrl + 'usercenter/queryUserByDeptId', obj).then(function(res) {
-            return Promise.resolve(res.data)
-        })
-    },
+    // queryUserByDeptId(obj) {
+    //     return $ajax.post(apiUrl.apiUrl + 'usercenter/queryUserByDeptId', obj).then(function(res) {
+    //         return Promise.resolve(res.data)
+    //     })
+    // },
     /*
      *显示已分配成员
      */

@@ -64,7 +64,8 @@ export default {
                 console.log(data);
                 if (data.returnCode == 0 || data.returnCode == 200) {
                     if (data.msg == "成功") {
-                        this.urlSrc = "http://42.123.124.204:8081/jbrowse/JBrowse-1.11.5/index.html?data=file"
+                        // this.urlSrc = "http://42.123.124.204:8081/jbrowse/JBrowse-1.11.5/index.html?data=file"
+                        this.urlSrc = "http://10.131.101.159:8080/jbrowse/JBrowse-1.11.5/index.html?data=file"
                         this.loading = false;
                     } else {
                         this.dataShow = true;

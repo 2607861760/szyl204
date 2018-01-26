@@ -34,12 +34,14 @@
     <el-table ref="multipleTable" :data="sampleDataWithExcel" border tooltip-effect="dark" style="width: 100%" 
     align="left"  @select-all="handleSelectionAll" @select="handleSelection" >
         <el-table-column type="selection" width="55" :selectable="selectable"> </el-table-column>
-        <el-table-column label="文件名称">
+        <el-table-column label="文件名称" prop="samplecode">
         <template slot-scope="scope">
         {{scope.row.filename}}
         </template>
         </el-table-column>
-        <el-table-column min-width="40%" >
+        <el-table-column label="样本编号"  prop="samplecode"> </el-table-column>
+        <el-table-column label="病人编号"  prop="patientcode"> </el-table-column>
+        <el-table-column min-width="80%" >
         <template slot-scope="scope">
             <div>
                 <Button type="primary" size="small" style="padding:3px 20px;" v-if="scope.row.execelDataEnum =='keExecelDataType_FILE_EXIST'" @click="rename(scope.row)">重命名</Button>
