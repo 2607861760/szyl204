@@ -16,9 +16,8 @@
             </Tabs>
 		</div>
 		<div class="tabs">
-			<Tabs type="line" @on-click="choiceInner" v-model="cInner">
+			<Tabs type="line" v-model="cInner">
                 <TabPane label="批量上传文件" name="all"></TabPane>
-                <TabPane label="单个上传文件" class="tabcard" name="single"></TabPane>
             </Tabs>
 		</div>
 		<Row>
@@ -30,10 +29,11 @@
 			</Col>
 		</Row>
 		<div class="table-box">
-			<el-table :data="uploadSampleFileInfos" border style="width: 100%;" :height="600" v-loading="loading">
-    			<el-table-column align="center" prop="sampleID" label="样本编号"> </el-table-column>
-    			<el-table-column align="center" prop="patientID" label="病人编号"> </el-table-column>
+			<el-table :data="uploadSampleFileInfos" border style="width: 100%;" :highlight-current-row="true" :height="600" v-loading="loading">
     			<el-table-column align="center" prop="fileID" label="文件id"> </el-table-column>
+				<el-table-column align="center" prop="uploaddate"  label="文件上传时间"> </el-table-column>
+    			<el-table-column align="center" prop="patientID" label="病人编号"> </el-table-column>
+    			<el-table-column align="center" prop="sampleID" label="样本编号"> </el-table-column>
     			<el-table-column align="center"  label="文件状态">
     				<template slot-scope="scope">
 						<Poptip width="300" placement="bottom-end" v-if="scope.row.fastq_R1!=null">
@@ -120,7 +120,7 @@ import {getCookie} from '@/common/js/cookie.js'
 				piciList:'',    //批次号集合
 				uploadSampleFileInfos: [],
 				loading:false,  //加载loading
-				cInner:'all'
+				cInner:"all"
 			}
 		},
 		methods:{
@@ -128,9 +128,6 @@ import {getCookie} from '@/common/js/cookie.js'
 			choice(name){
 				this.$store.state.projectid=name+1;
 				this.cInner='all';
-				this.getBatchList(); 
-			},
-			choiceInner(){
 				this.getBatchList(); 
 			},
 			//每页显示改变
@@ -156,11 +153,19 @@ import {getCookie} from '@/common/js/cookie.js'
 					userId: getCookie('userid'),
 					productId:this.$store.state.projectid
 				}
+				this.batchId="";
 				task.getBatchList(obj).then((data)=> {
 					console.log(data);
 					if(data.returnCode==0 || data.returnCode==200) {
-						this.piciList = this.transformToSelect(data.data);
-						this.batchId=data.data[4]
+						if(data.data!=null){
+							this.piciList = this.transformToSelect(data.data);
+							M.each(data.data,(item,index)=>{
+								if(item==0){
+									data.data.splice(index, 1);
+								}
+							})
+							this.batchId=data.data[data.data.length-1]
+						}
 					}else if(data.returnCode==422 || data.returnCode==204){
 						this.$router.push('/login')
 					}else{
@@ -186,32 +191,36 @@ import {getCookie} from '@/common/js/cookie.js'
 				return array;
 			},
 			getFileList(){
-				let obj={
-					"productId": this.$store.state.projectid,
-					"userId": getCookie('userid'),
-					"pageSize":this.pageSize,
-					"pageIndex":this.pageIndex,
-					"batchId":this.batchId
-				}
 				this.uploadSampleFileInfos=[];
-				this.loading=true;
-				files.getUploadSamplesInfo(obj).then((data)=>{
-					console.log(data)
-					this.loading=false;
-					if(data.returnCode==0 || data.returnCode==200) {
-						if(data.data!=null){
-							this.uploadSampleFileInfos=data.data.uploadSampleFileInfos;
-							this.listTotal=data.data.count;
-						}
-						console.log(this.uploadSampleFileInfos)
-					}else if(data.returnCode==422 || data.returnCode==204){
-						this.$router.push('/login')
-					}else{
-						this.$Message.error(data.msg)
+				if(this.batchId!=""){
+					let obj={
+						"productId": this.$store.state.projectid,
+						"userId": getCookie('userid'),
+						"pageSize":this.pageSize,
+						"pageIndex":this.pageIndex,
+						"batchId":this.batchId
 					}
-				}).catch((err)=>{
-					this.loading=false;
-				})
+					
+					this.loading=true;
+					files.getUploadSamplesInfo(obj).then((data)=>{
+						console.log(data)
+						this.loading=false;
+						if(data.returnCode==0 || data.returnCode==200) {
+							if(data.data!=null){
+								this.uploadSampleFileInfos=data.data.uploadSampleFileInfos;
+								this.listTotal=data.data.count;
+							}
+							console.log(this.uploadSampleFileInfos)
+						}else if(data.returnCode==422 || data.returnCode==204){
+							this.$router.push('/login')
+						}else{
+							this.$Message.error(data.msg)
+						}
+					}).catch((err)=>{
+						this.loading=false;
+					})
+				}
+				
 			}
 		},
 		created(){

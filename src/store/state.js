@@ -11,6 +11,7 @@ const state = {
     jobid: '',
     pip: '',
     file: '',
+    path: '',
     treeGrid: 1,
     patientInfo: {
         patientCode: '',
@@ -18,7 +19,9 @@ const state = {
     },
     sampleInfo: {
         samplecode: ''
-    }
+    },
+    processTempId: '' ,//流程模板id
+    processTempName:'' //流程模板名称
 };
 
 export default state;

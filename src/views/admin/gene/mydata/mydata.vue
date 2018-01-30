@@ -44,10 +44,10 @@
                                     <Icon type="android-add"></Icon>
                                     新建数据
                                 </Button>
-                                <div class="data">
+                                 <div class="data">
                                     <div @click="single">单个数据</div>
                                     <div @click="files">批量数据</div>
-                                </div>
+                                </div> 
                             </Dropdown>
                         </div>
                     </Col>
@@ -79,9 +79,11 @@
         
         <!-- 内容区域 -->
         <div class="mydata-content"> 
-            <el-table :data="tableData3" border style="width: 100%;" :height="height"  @selection-change="handleSelectionChange">
+            <el-table :data="tableData3" :highlight-current-row="true" border style="width: 100%;" :height="height"  @selection-change="handleSelectionChange">
+                <el-table-column type="index" min-width="5%"></el-table-column>
                 <el-table-column type="selection"width="55" v-if="showSelection" :disabled="disTableSelect">
                 </el-table-column>
+                
                 <el-table-column label="病人编号" width="250" sortable prop="dchPatient.patientcode" >
                     <template slot-scope="scope">
                     	<Poptip placement="bottom-start" width="300" @on-popper-show="getUserBySample(scope.row)">
@@ -318,7 +320,10 @@
         </Modal>
         <!--样本文件信息-->
         <Modal width="835px" v-model="sampleshow" :mask-closable="false">
-            <div class="sample-title">样本文件信息</div>
+            <div class="sample-title">
+                 样本文件信息:
+                <span>{{sampcode}}</span>
+            </div>
             <div class="sample-inner">
                 <div style="padding:20px 10px;">
                     <el-table border align="center" :data="samplefile">
@@ -426,6 +431,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         pageIndex:1,                  //页码
         patid:'',                     //存放patientid
         samid:'',                     //存放sampleid
+        sampcode:'',
         removeModel:false,            //显示删除提示框
         sampleEdit: false,            //显示样本弹窗
         upModal: false,               //显示文件上传弹窗
@@ -549,7 +555,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         searchColumn:'',            //查询字段
         searchColumnList:[          //查询字段集合
             {
-                label:'--请选择--',
+                label:'全部数据',
                 value:'all'
             },{
                 label:'病人编号',
@@ -588,6 +594,10 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             this.pageIndex=1;
             this.currentPage=1;
             this.keyword='';
+            if(val=="all"){
+                this.load();
+                this.searchColumn="";
+            }
             switch(val){
                 case 'patientcode':
                   this.searchColumn="1";
@@ -842,7 +852,9 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 console.log(data.data);
                 if(data.returnCode=="200" || data.returnCode =="0"){
                     let a = document.createElement('a');
-						a.setAttribute('href',"http://tgex-dev.dchgenecloud.com:88/#/analyses/"+data.data);
+                    // http://10.131.101.173:88/#/analyses/
+                    // http://tgex-dev.dchgenecloud.com:88/#/analyses/
+						a.setAttribute('href',"http://10.131.101.173:88/#/analyses/"+data.data);
 						a.setAttribute('target', '_blank');
 						document.body.appendChild(a)
 						a.click(); 
@@ -901,8 +913,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         // 获得本地/storage/serverData/
         _getLocalDataList() {
             let obj={
-                // "path":"/storage/serverData/",
-                "path":"/opt/NfsDir/PublicDir/demo/",
+                "path":"/storage/serverData/",
+                // "path":"/opt/NfsDir/PublicDir/demo/",
                         // /opt/NfsDir/PublicDir/demo/  电信云
                         // /storage/serverData/   159
                 "userId":getCookie("userid"),
@@ -929,8 +941,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         // /storage/serverData/
         _getServerDataList() {
             let obj={
-                // "path":"/storage/serverData/",
-                "path":"/opt/NfsDir/PublicDir/demo/",
+                "path":"/storage/serverData/",
+                // "path":"/opt/NfsDir/PublicDir/demo/",
                         // /opt/NfsDir/PublicDir/demo/  电信云
                         // /storage/serverData/   159
                 "userId":getCookie("userid"),
@@ -999,16 +1011,18 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         	if(len && len>0){
         		let obj={
         			"userid": userid,
-        			"sampleid":row.dchSampleList[0].sampleid
+                    // "sampleid":row.dchSampleList[0].sampleid
+                    "patientid":row.dchPatient.patientid
         		}
         		data.getUsesBySampleId(obj).then((data)=>{
+                    console.log(data)
 	        		if(data.returnCode==200 || data.returnCode==0){
 	        			if(data.data && data.data.length>0){
-	        				if(data.data.length==1 && data.data[0].dchUserId==userid){ //当只有一条数据时
-	        					this.assignedData=[{"username":"暂未分配","dept":{"name":""}}];
-	        				}else if(data.data.length>1){
-	        					this.assignedData=data.data;
-	        				}
+	        				// if(data.data.length==1 && data.data[0].dchUserId==userid){ //当只有一条数据时
+	        				// 	this.assignedData=[{"username":"暂未分配","dept":{"name":""}}];
+	        				// }else if(data.data.length>1){
+	        				this.assignedData=data.data;
+	        				// }
 	        			}
 	        		}else if(data.returnCode==422 || data.returnCode==204){
                         this.$router.push('/login')
@@ -1115,6 +1129,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             this.idList.push(row.dchSampleList[index].sampleid)
         },
         samcode(index,row){ //点击样本编号
+            this.sampcode=row.dchSampleList[index].samplecode;
             this.sampleshow=true;
             this.samplefile=[];
             let obj={

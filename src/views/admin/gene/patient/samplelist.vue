@@ -35,7 +35,7 @@
     	</Button>
     </Dropdown>
     <div style="width:100%;padding:15px 20px;box-sizing:border-box;">
-        <el-table :data="samplelist" border style="width: 100%;" height="250" v-loading="listload">
+        <el-table :data="samplelist" border style="width: 100%;" height="250" v-loading="listload" :highlight-current-row="true">
             <el-table-column label="样本编号" min-width="10%">
                 <template slot-scope="scope">
                     <span style="color:#3c8dbc;cursor:pointer;" @click="clickSample(scope.row)">{{ scope.row.samplecode }}</span>
@@ -49,7 +49,7 @@
                     <!-- <div v-for="(list,index) in scope.row"  style="height:40px;"> -->
                         <Poptip  placement="bottom-end" v-if="scope.row.fastq_R1!=null" width="300">
                             <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
-                                {{list.fastq_R1}}
+                                {{scope.row.fastq_R1}}
                             </div>
                             <div class="imgbox">
                                 <div class="fastq_R1_on" ></div>
@@ -60,7 +60,7 @@
                         </div>
                         <Poptip  placement="bottom-end" v-if="scope.row.fastq_R2!=null " width="300">
                             <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
-                                {{list.fastq_R2}}
+                                {{scope.row.fastq_R2}}
                             </div>
                             <div class="imgbox">
                                 <div class="fastq_R2_on" ></div>	
@@ -71,7 +71,7 @@
                         </div>
                         <Poptip  placement="bottom-end" v-if="scope.row.vcf!=null" width="300">
                             <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
-                                {{list.vcf}}
+                                {{scope.row.vcf}}
                             </div>
                             <div class="imgbox">
                                 <div class="vcf_on" ></div>
@@ -240,7 +240,10 @@
     </Modal>
     <!--样本文件信息-->
     <Modal width="835px" v-model="sampleshow" :mask-closable="false">
-        <div class="sample-title">样本文件信息</div>
+        <div class="sample-title">
+            样本文件信息:
+            <span>{{sampcode}}</span>
+        </div>
         <div class="sample-inner">
             <div style="padding:20px 10px;">
                 <el-table border aligin="left" :data="sampleDataList">
@@ -285,6 +288,7 @@ export default{
             loading:true,
             sampleid:"",
             samid:'',
+            sampcode:'',
             sampleModal:false,
             change: true,
             sampleshow:false,
@@ -559,6 +563,7 @@ export default{
         //点击样本编号
         clickSample(row){  
             // console.log(row);
+            this.sampcode=row.samplecode;
             this.sampleshow=true; 
             // 调用方法
             this.getSampleList(row);
@@ -664,8 +669,8 @@ export default{
         // 获得服务
         _getServerDataList() {
             let obj={
-                // "path":"/storage/serverData/",
-                "path":"/opt/NfsDir/PublicDir/demo/",
+                "path":"/storage/serverData/",
+                // "path":"/opt/NfsDir/PublicDir/demo/",
                             // /opt/NfsDir/PublicDir/demo/  电信云
                             // /storage/serverData/   159
                 "userId":getCookie("userid"),
@@ -687,8 +692,8 @@ export default{
         // 获得本地
         _getLocalDataList(){
             let obj={
-                // "path":"/storage/serverData/",
-                "path":"/opt/NfsDir/PublicDir/demo/",
+                "path":"/storage/serverData/",
+                // "path":"/opt/NfsDir/PublicDir/demo/",
                             // /opt/NfsDir/PublicDir/demo/  电信云
                             // /storage/serverData/   159
                 "userId":getCookie("userid"),

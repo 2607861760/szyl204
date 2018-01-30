@@ -145,7 +145,6 @@
                     </div>
                 </Col>
                 <Col span="12">
-                    <!--<a href="https://auth-dch-qa.genecards.cn/account/LogOff/?RetUrl=http://42.123.124.204:8081&app=DCHDM">下载</a>-->
                     <ul class="home-header-top-right">
                         <li>
                             <Icon type="ios-telephone" color="#1996CD" size="16"></Icon>
@@ -161,7 +160,8 @@
                                     <router-link to="/admin"  class="avatar-admin" style="margin-left:30px;">{{currentUserName}}</router-link>
                                 </div>
                                 <div v-else>
-                                    <router-link to="/login"  @click="loginModal = true" class="active" v-show="showBtn">登录</router-link>
+                                     <a href="javascript:;" @click="loginModal" class="active" v-show="showBtn">登录</a> 
+                                     <!-- <router-link to="/login"  @click="loginModal = true" class="active" v-show="showBtn">登录</router-link>  -->
                                     <span>|</span>
                                     <!-- <router-link to="/register" v-show="showBtn">
                                         注册
@@ -234,6 +234,9 @@
     </header>
 </template>
 <script>
+import {
+    login
+} from 'api/index.js'
 import {getCookie} from '@/common/js/cookie.js'
 export default {
     name: "header",
@@ -268,7 +271,32 @@ export default {
                 this.currentUserName = userName;
                 this.showBtn = false;
                 this.avatarShow = true;
+            }else{
+                this.currentUserName="";
+                this.showBtn = true;
+                this.avatarShow = false;
             }
+        },
+        loginModal(){
+            login.getSystemSetting().then((data)=>{
+                console.log(data)
+                if(data.returnCode==0 || data.returnCode==200){
+                    if(data.data.redirecttype==1){
+                        this.$router.push('/login')
+                    }else if(data.data.redirecttype==2){
+                        login.jump().then((data)=> {
+                            if(data.returnCode==0 || data.returnCode==200){
+                                let url = data.data;
+                                if(url) {
+                                    window.location.href = url;
+                                }
+                            }else{
+                                this.$Message.error(data.msg)
+                            }
+                        })
+                    }
+                }
+            })
         }
     },
     created() {

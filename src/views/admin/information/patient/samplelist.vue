@@ -28,7 +28,7 @@
         </Button>
     </Dropdown>
     <div style="width:100%;padding:15px 20px;box-sizing:border-box;">
-        <el-table :data="samplelist" border style="width: 100%;" height="250">
+        <el-table :data="samplelist" border style="width: 100%;" height="250" :highlight-current-row="true">
             <el-table-column label="样本编号" min-width="10%" >
                 <template slot-scope="scope">
                     <span style="color:#3c8dbc;cursor:pointer;" @click="sam(scope.row)">{{ scope.row.samplecode }}</span>
@@ -609,8 +609,8 @@
       // 获得服务
     _getServerDataList() {
         let obj={
-            // "path":"/storage/serverData/",
-            "path":"/opt/NfsDir/PublicDir/demo/",
+            "path":"/storage/serverData/",
+            // "path":"/opt/NfsDir/PublicDir/demo/",
                         // /opt/NfsDir/PublicDir/demo/  电信云
                         // /storage/serverData/   159
             "userId":getCookie("userid"),
@@ -635,8 +635,8 @@
     // 获得本地
     _getLocalDataList(){
         let obj={
-            // "path":"/storage/serverData/",
-            "path":"/opt/NfsDir/PublicDir/demo/",
+            "path":"/storage/serverData/",
+            // "path":"/opt/NfsDir/PublicDir/demo/",
                         // /opt/NfsDir/PublicDir/demo/  电信云
                         // /storage/serverData/   159
             "userId":getCookie("userid"),

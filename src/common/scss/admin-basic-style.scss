@@ -1,5 +1,9 @@
 /* 后台主容器 html */
 
+a {
+    color: #3c8dbc;
+}
+
 .admin {
     /* 公共头部操作区域 */
     .admin-base-tools {
@@ -73,6 +77,10 @@
                 color: #fff;
             }
         }
+        .ivu-tooltip,
+        .ivu-tooltip-rel {
+            width: 100%;
+        }
         .menu-icon {
             transition: all .3s;
         }
@@ -109,14 +117,12 @@
         }
         .admin-layout-nav .menu-icon {
             margin-right: 10px;
+            margin-top: 16px;
             float: right;
-            line-height: 60px;
+            // line-height: 60px;
         }
         .admin-layout-nav .rotate-icon {
-            padding: 20px;
-            margin-right: 0;
-            float: none;
-            line-height: normal;
+            margin-right: 36px;
             transform: rotate(-90deg);
         }
     }
@@ -129,6 +135,9 @@
     }
     .el-table tr {
         background: none;
+        &:hover>td {
+            background: #ECF5FF;
+        }
     }
     .el-table td {
         height: 40px;
@@ -152,7 +161,9 @@
             text-align: center;
         }
         .ivu-btn.build {
-            padding: 6px 15px;
+            // padding: 6px 15px;
+            padding: 0 15px;
+            height: 30px;
         }
         .ivu-dropdown:hover {
             .data {
@@ -175,7 +186,7 @@
         }
         .data {
             position: absolute;
-            top: 35px;
+            top: 30px;
             left: 0;
             text-align: center;
             box-shadow: 2px 2px 10px #909090;
@@ -487,4 +498,12 @@
 .ivu-btn:focus,
 .ivu-btn-text:focus {
     box-shadow: none;
+}
+
+#toolModel .ivu-modal-footer {
+    display: block;
+}
+
+.ivu-form-item textarea.ivu-input {
+    line-height: 1.5;
 }

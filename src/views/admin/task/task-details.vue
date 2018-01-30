@@ -101,8 +101,8 @@
                 </Col>
                 <Col span="12">
                     <div class="task-right">
-                         <a class="task-download" :href="'http://42.123.124.204:8081/dchealth-platform/1.0/data/vcfdownload?jobid='+this.$store.state.jobid" download>下载vcf文件</a> 
-                        <!-- <a class="task-download" :href="'http://10.131.101.159:8080/dchealth-platform/1.0/data/vcfdownload?jobid='+this.url.jobid" download>下载vcf文件</a> -->
+                         <!-- <a class="task-download" :href="'http://42.123.124.204:8081/dchealth-platform/1.0/data/vcfdownload?jobid='+this.$store.state.jobid" download>下载vcf文件</a>  -->
+                         <a class="task-download" :href="'http://10.131.101.159:8080/dchealth-platform/1.0/data/vcfdownload?jobid='+this.$store.state.jobid" download>下载vcf文件</a> 
                     </div>
                 </Col>
             </Row>

@@ -65,7 +65,7 @@
         </div>
 
         <div class="cont-main">
-            <el-table :data="tableList" border default-expand-al="true" :height="height" >
+            <el-table :data="tableList" border default-expand-al="true" :height="height" :highlight-current-row="true">
                 <el-table-column type="index" min-width="5%"></el-table-column>
                 <el-table-column prop="samplecode" label="样本编号" min-width="10%">
                     <template slot-scope="scope">
@@ -287,6 +287,8 @@ export default {
             this.$store.state.jobid=row.jobid;
             this.$store.state.file=row.file.join(',');
             this.$store.state.pip=row.pipeline;
+            this.$store.state.path=row.path;
+            console.log(this.$store.state.file)
             this.$router.push('/admin/process')
         },
         // tabs切换
@@ -300,7 +302,9 @@ export default {
         },
         //点击样本编号
         routeChange(row){
+            console.log(row)
             if(row.status==99){
+                this.$store.state.jobid=row.jobid;
                 if(this.$store.state.projectid==1){
                     this.$router.push({path:'/admin/task-details?type=quality'})
                 }else if(this.$store.state.projectid==2){

@@ -39,6 +39,15 @@
             padding: 10px 30px;
         }
     }
+    .process_title{
+        width:80px;
+        float: left;
+        vertical-align: top;
+    }
+    .process_filepath{
+        word-wrap: break-word;
+        width: 100%;
+    }
 }
 </style>
 <template>
@@ -56,26 +65,30 @@
             </div>
             <div class="process-step">
                 <Row>
-                    <div style="width:80px;float:left;">文件名称:</div>
+                    <div class="process_title">文件名称:</div>
                     <div style="width:100%;"><div style="white-space:nowrap;">{{file}}</div></div>
+                </Row>
+                <Row style="margin-top:10px;">
+                    <div class="process_title">文件路径:</div>
+                    <div class="process_filepath">{{path}}</div>
                 </Row>
                 <Row>
                     <div class="process-mid">
-                        <div style="width:80px;float:left;">运行流程:</div>
+                        <div class="process_title">运行流程:</div>
                         <div style="width:100%;">{{pipeline}}</div>
                     </div>
                 </Row>
                 <Row v-show="errorShow">
                     <div style="padding-bottom:10px;">
-                        <div style="width:80px;float:left;">错误日志:</div>
+                        <div class="process_title">错误日志:</div>
                         <div style="width:100%;">
-                            <!-- <a :href="'http://10.131.101.159:8080/dchealth-platform/1.0/job/errorLogFileDownload?jobid='+this.$store.state.jobid" download class="download" style="padding:5px 15px;">下载错误日志</a> -->
-                             <a :href="'http://42.123.124.204:8081/dchealth-platform/1.0/job/errorLogFileDownload?jobid='+this.$store.state.jobid" download class="download" style="padding:5px 15px;">下载错误日志</a> 
+                             <a :href="'http://10.131.101.159:8080/dchealth-platform/1.0/job/errorLogFileDownload?jobid='+this.$store.state.jobid" download class="download" style="padding:5px 15px;">下载错误日志</a> 
+                             <!-- <a :href="'http://42.123.124.204:8081/dchealth-platform/1.0/job/errorLogFileDownload?jobid='+this.$store.state.jobid" download class="download" style="padding:5px 15px;">下载错误日志</a>  -->
                         </div>
                     </div>
                 </Row>
                 <Row>
-                    <div style="width:80px;float:left;">运行状态:</div>
+                    <div class="process_title">运行状态:</div>
                     <div style="width:100%;">
                         <div class="process-ver"> 
                             <Steps :current="currentStatus" direction="vertical" :status="runStatus">
@@ -105,6 +118,8 @@ export default {
             currentStatus: -1, 
             // 文件名称
             file:this.$store.state.file,
+            // 文件路径
+            path:this.$store.state.path,
             // 流程
             pipeline:this.$store.state.pip,
             //运行错误

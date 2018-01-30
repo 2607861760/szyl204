@@ -43,12 +43,12 @@ module.exports = {
         // 代理
         proxyTable: {
             '/dchealth-platform': {
-                target: 'http://42.123.124.204:8081',
+                // target: 'http://42.123.124.204:8081',
                 // target: 'http://gene.dchealth.com',
                 // target: 'http://localhost:8080',
                 // target:'http://10.131.101.229:8080',
                 // target: 'http://10.131.101.55:8080',
-                // target: 'http://10.131.101.159:8080',
+                target: 'http://10.131.101.159:8080',
                 // target: 'http://10.131.101.33:8080',
                 // 192.168.163.214 复旦
                 // 10.131.101.159:8080 公司

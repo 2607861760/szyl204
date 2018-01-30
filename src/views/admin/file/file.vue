@@ -92,8 +92,8 @@ import {data} from 'api/index.js'
             // 获得服务上传列表
             _getForldList() {
                 let obj={
-                    // "path":"/storage/serverData/",
-                    "path":"/opt/NfsDir/PublicDir/demo/",
+                    "path":"/storage/serverData/",
+                    // "path":"/opt/NfsDir/PublicDir/demo/",
                     // /opt/NfsDir/PublicDir/demo/  电信云
                     // /storage/serverData/   159
                     "userId":getCookie("userid"),
@@ -122,8 +122,8 @@ import {data} from 'api/index.js'
             // 获得硬盘列表
             _getServerList() {
                 let obj={
-                    // "path":"/storage/serverData/",
-                    "path":"/opt/NfsDir/PublicDir/demo/",
+                    "path":"/storage/serverData/",
+                    // "path":"/opt/NfsDir/PublicDir/demo/",
                     // /opt/NfsDir/PublicDir/demo/  电信云
                     // /storage/serverData/   159
                     "userId":getCookie("userid"),

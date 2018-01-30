@@ -7,7 +7,7 @@ export const task = {
      * @return {[type]}   list
      */
     getTaskList(obj) {
-        return $ajax.post(apiUrl.apiUrl + 'job/getJobList', obj).then(function(res) {
+        return $ajax.post(apiUrl.apiUrl + 'job/getJobLists', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -57,7 +57,7 @@ export const task = {
      * @return list
      */
     getBatchList(obj) {
-        return $ajax.post(apiUrl.apiUrl + 'sample/getBatchList', obj).then(function(res) {
+        return $ajax.post(apiUrl.apiUrl + 'sample/getBatchLists', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },

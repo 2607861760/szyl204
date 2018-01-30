@@ -191,10 +191,7 @@ export default {
         // 获得本地/storage/serverData/
         _getLocalDataList(record) {
             let obj={
-                // "path":"/storage/serverData/",
                 "path":record.path,
-                        // /opt/NfsDir/PublicDir/demo/  电信云
-                        // /storage/serverData/   159
                 "userId":getCookie("userid"),
                 "productId":this.$store.state.projectid,
                 "type":"2"
@@ -214,14 +211,9 @@ export default {
 
             })
         },
-        // 获得服务列表 /opt/NfsDir/PublicDir/demo/
-        // /storage/serverData/
-        _getServerDataList() {
+        _getServerDataList(record) {
             let obj={
-                // "path":"/storage/serverData/",
                 "path":record.path,
-                        // /opt/NfsDir/PublicDir/demo/  电信云
-                        // /storage/serverData/   159
                 "userId":getCookie("userid"),
                 "productId":this.$store.state.projectid,
                 "type":"2"

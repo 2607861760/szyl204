@@ -56,7 +56,7 @@
                 <a href="javascript:void(0)" class="user-name">{{cusername}}</a>
             </Dropdown>
             <div class="admin-exit" @click="exit">
-                <!--<a href="https://auth-dch-qa.genecards.cn/account/LogOff/?RetUrl=http://42.123.124.204:8081&app=DCHDM" style="color:#fff;"></a>-->
+                <!--<a href="https://auth-dch-qa.genecards.cn/account/LogOff/?RetUrl=http://10.131.101.159:8080&app=DCHDM" style="color:#fff;"></a>-->
                 <Icon type="log-out"></Icon>
             </div>
 
@@ -110,8 +110,8 @@ export default {
                         clearAllCookie();
                         this.$store.state.code='';
                         this.currentUserName='';
-                        // window.location.href='https://auth-dch-qa.genecards.cn/account/LogOff/?returnUrl=http://10.131.101.159:8080&app=DCHDM';
-                        window.location.href='https://auth-dch-qa.genecards.cn/account/LogOff/?returnUrl=http://42.123.124.204:8081&app=DCHDM';
+                        window.location.href='https://auth-dch-qa.genecards.cn/account/LogOff/?returnUrl=http://10.131.101.159:8080&app=DCHDM';
+                        // window.location.href='https://auth-dch-qa.genecards.cn/account/LogOff/?returnUrl=http://42.123.124.204:8081&app=DCHDM';
                     }else if(data.returnCode==422 || data.returnCode==204){
                         this.$router.push('/login')
                     }else{

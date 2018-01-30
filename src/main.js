@@ -16,6 +16,10 @@ import iView from 'iview';
 import 'common/less/iview-theme.less';
 // 引入jQuery
 import 'static/jquery/jquery.min.js';
+// muse UI框架
+import MuseUI from 'muse-ui'
+import 'muse-ui/dist/muse-ui.css'
+import 'muse-ui/dist/theme-light.css' // 使用 light 主题
 // Mcake工具集
 import '@/frame/Mcake/Mcake.js';
 // 引入element-ui 组件
@@ -28,6 +32,8 @@ sync(store, router);
 // 注册组件
 Vue.use(iView);
 Vue.config.productionTip = false;
+// 注册muse-ui
+Vue.use(MuseUI);
 
 // 注册element-ui 组件
 Vue.use(Table);
@@ -48,7 +54,7 @@ Vue.use(CheckboxGroup);
 
 
 // 创建应用
-new Vue({
+let vm = new Vue({
     el: '#app',
     router,
     store,

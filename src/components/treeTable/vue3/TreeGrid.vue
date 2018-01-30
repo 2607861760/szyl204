@@ -205,8 +205,8 @@ export default {
         // 获得本地/storage/serverData/
         _getLocalDataList() {
             let obj={
-                // "path":"/storage/serverData/",
-                "path":"/opt/NfsDir/PublicDir/demo/",
+                "path":"/storage/serverData/",
+                // "path":"/opt/NfsDir/PublicDir/demo/",
                         // /opt/NfsDir/PublicDir/demo/  电信云
                         // /storage/serverData/   159
                 "userId":getCookie("userid"),
@@ -231,8 +231,8 @@ export default {
         // /storage/serverData/
         _getServerDataList() {
             let obj={
-                // "path":"/storage/serverData/",
-                "path":"/opt/NfsDir/PublicDir/demo/",
+                "path":"/storage/serverData/",
+                // "path":"/opt/NfsDir/PublicDir/demo/",
                         // /opt/NfsDir/PublicDir/demo/  电信云
                         // /storage/serverData/   159
                 "userId":getCookie("userid"),

@@ -18,3 +18,6 @@ from './basic/task/task.js';
 //文件管理
 export { files }
 from './basic/files/files.js';
+//流程管理
+export { process }
+from './basic/process/process.js';

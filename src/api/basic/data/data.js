@@ -262,10 +262,10 @@ export const data = {
     //     })
     // },
     /*
-     *显示已分配成员
+     *显示已分配成员   patient/getUsesByPatientId    sample/getUsesBySampleId
      */
     getUsesBySampleId(obj) {
-        return $ajax.post(apiUrl.apiUrl + 'sample/getUsesBySampleId', obj).then(function(res) {
+        return $ajax.post(apiUrl.apiUrl + 'patient/getUsesByPatientId', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },

@@ -156,6 +156,7 @@ export default {
                 jobId:this.$store.state.jobid,
                 analysisStep:"1"
             }
+            console.log(obj)
             task.getTaskInfoById(obj).then((data)=> {
                 if(data.returnCode==0 || data.returnCode==200){
                     let obj = data.data.jobProcessDataList;

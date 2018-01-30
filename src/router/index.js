@@ -97,6 +97,14 @@ const router = new VueRouter({
                 name: "fileManage",
                 path: '/admin/fileManage',
                 component: resolve => require(['@/views/admin/fileManage/fileManage.vue'], resolve)
+            }, {
+                name: "processManage",
+                path: '/admin/process_index',
+                component: resolve => require(['@/views/admin/process/process-index.vue'], resolve)
+            },{
+                name: "processtemp",
+                path: '/admin/processtemp',
+                component: resolve => require(['@/views/admin/process/processtemp.vue'], resolve)
             }]
         },
         {

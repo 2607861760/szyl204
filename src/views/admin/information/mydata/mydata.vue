@@ -39,7 +39,7 @@
                     </Row>
         
                     <div style="width:100%;padding:15px 20px;box-sizing:border-box;">
-                        <el-table :data="tableData3" border  :height="height" v-loading="loadone">
+                        <el-table :data="tableData3" border  :height="height" v-loading="loadone" :highlight-current-row="true">
                             <el-table-column label="病人编号" sortable prop="dchPatient.patientcode">
                                 <template slot-scope="scope">
                                     <a  @click="clickPatientcode(scope.row)" href='javascript:;' class="bian">
@@ -144,8 +144,8 @@
                             <el-table-column label="报告下载">
                                 <template slot-scope="scope">
                                     <div v-for="(list,index) in scope.row.dchSampleList" class="handle" style="height:40px;">
-                                         <a class="download" :href="'http://42.123.124.204:8081/dchealth-platform/1.0/data/ftpupdate?jobid='+list.jobid" download v-if="list.jobtype=='Y'">下载</a> 
-                                        <!-- <a class="download" :href="'http://10.131.101.159:8080/dchealth-platform/1.0/data/ftpupdate?jobid='+list.jobid" download  v-if="list.jobtype=='Y'">下载</a> -->
+                                         <!-- <a class="download" :href="'http://42.123.124.204:8081/dchealth-platform/1.0/data/ftpupdate?jobid='+list.jobid" download v-if="list.jobtype=='Y'">下载</a>  -->
+                                         <a class="download" :href="'http://10.131.101.159:8080/dchealth-platform/1.0/data/ftpupdate?jobid='+list.jobid" download  v-if="list.jobtype=='Y'">下载</a> 
                                         <a class="dis-download" href="javascript:;" download  disabled v-else>下载</a>
                                         
                                     </div>
@@ -635,8 +635,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         // 获得本地/storage/serverData/
         _getLocalDataList() {
             let obj={
-                // "path":"/storage/serverData/",
-                "path":"/opt/NfsDir/PublicDir/demo/",
+                "path":"/storage/serverData/",
+                // "path":"/opt/NfsDir/PublicDir/demo/",
                         // /opt/NfsDir/PublicDir/demo/  电信云
                         // /storage/serverData/   159
                 "userId":getCookie("userid"),
@@ -661,8 +661,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         // /storage/serverData/
         _getServerDataList() {
             let obj={
-                // "path":"/storage/serverData/",
-                "path":"/opt/NfsDir/PublicDir/demo/",
+                "path":"/storage/serverData/",
+                // "path":"/opt/NfsDir/PublicDir/demo/",
                         // /opt/NfsDir/PublicDir/demo/  电信云
                         // /storage/serverData/   159
                 "userId":getCookie("userid"),
