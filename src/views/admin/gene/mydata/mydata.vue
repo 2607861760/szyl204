@@ -86,9 +86,9 @@
                 
                 <el-table-column label="病人编号" width="250" sortable prop="dchPatient.patientcode" >
                     <template slot-scope="scope">
-                    	<Poptip placement="bottom-start" width="300" @on-popper-show="getUserBySample(scope.row)">
+                    	<Poptip placement="bottom-start"  width="300" @on-popper-show="getUserBySample(scope.row)">
                     		<Icon style="padding:0 10px;cursor:pointer;" type="android-person"></Icon>
-                    		<div class="api"  slot="content">
+                    		<div class="api"  style="max-height:200px;" slot="content">
                     			<el-table v-loading="assinged"  align="center" :data="assignedData">
                         			<el-table-column  label="分配人姓名">
                         				<template slot-scope="scope2">
