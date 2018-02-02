@@ -63,7 +63,7 @@
                             <el-table-column label="文件状态" width="200">
                                 <template slot-scope="scope">
                                     <div v-for="(list,index) in scope.row.dchSampleList"  style="height:40px;" :key="index">
-                                        <Poptip  placement="bottom-end" v-if="list.fastq_R1!=null" width="300">
+                                        <Poptip  :placement="scope.$index<=2?'bottom-end':'top-end'" v-if="list.fastq_R1!=null" width="300">
                                             <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
                                                 {{list.fastq_R1}}
                                             </div>
@@ -74,7 +74,7 @@
                                         <div class="imgbox" v-else>
                                             <div class="fastq_R1_off"></div>
                                         </div>
-                                        <Poptip  placement="bottom-end" v-if="list.fastq_R2!=null " width="300">
+                                        <Poptip  :placement="scope.$index<=2?'bottom-end':'top-end'" v-if="list.fastq_R2!=null " width="300">
                                             <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
                                                 {{list.fastq_R2}}
                                             </div>
@@ -85,7 +85,7 @@
                                         <div class="imgbox" v-else>
                                             <div class="fastq_R2_off"></div>
                                         </div>
-                                        <Poptip  placement="bottom-end" v-if="list.vcf!=null" width="300">
+                                        <Poptip  :placement="scope.$index<=2?'bottom-end':'top-end'" v-if="list.vcf!=null" width="300">
                                             <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
                                                 {{list.vcf}}
                                             </div>
@@ -96,7 +96,7 @@
                                         <div class="imgbox" v-else>
                                             <div class="vcf_off"></div>
                                         </div>
-                                        <Poptip placement="bottom-end" v-if="list.etcFiles!=null " width="300">
+                                        <Poptip :placement="scope.$index<=2?'bottom-end':'top-end'" v-if="list.etcFiles!=null " width="300">
                                             <div class="imgbox">
                                                 <div class="etc_on" ></div>
                                             </div>

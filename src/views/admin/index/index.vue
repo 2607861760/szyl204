@@ -202,6 +202,7 @@ export default {
         }
     },
     beforeRouteEnter(to, from, next){
+        // console.log(vm)
         next(vm=>{
             console.log(vm)
             let search=window.location.search.slice(1,6);
