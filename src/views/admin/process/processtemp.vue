@@ -16,7 +16,7 @@
 			line-height: 44px;
 			text-align: center;
 			position: absolute;
-			bottom: 0px;
+			bottom: 60px;
 			right: -256px;
 			z-index: 555;
 			.drawer_fun_icon{
@@ -138,13 +138,14 @@
 <template>
 	<div v-loading="loadding" class="drawer_box">
 		<div id="drawer">
-           <mu-drawer style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.35);" right :open="open" @close="toggle()">
+           <mu-drawer class="mu-drawer" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.35);" right :open="open" @close="toggle()">
              <mu-list v-for="(item,index) in drawerlist">
                <mu-list-item v-if="checked">
                    <mu-checkbox name="group" :label="item.tooldescribe" :nativeValue="item.toolId" v-model="drawerListId" class="demo-checkbox"/>
                </mu-list-item>
                <p v-else :data-index="index" class="drag-item"><mu-list-item :title="item.tooldescribe"/></p >
               </mu-list>
+				<p class="null" style="width:100%;height:44px;"></p>
          </mu-drawer>
             <span class="close-drawer" @click="toggle()" ><i v-if="!open" class="el-icon-d-arrow-left"></i><i v-if="open" class="el-icon-d-arrow-right"></i></span>	
             <div class="drawer_fun">
@@ -395,7 +396,7 @@
 						if(data.data&& data.data.length>0){
 							this.drawerlist=data.data;
 						}else{
-							$("#drawer").html("暂无可用工具，请先添加工具！")
+							$(".mu-drawer").html("暂无可用工具，请先添加工具！");
 						}
 					}else if(data.returnCode==422 || data.returnCode==204){
 						this.$router.push('/login')
