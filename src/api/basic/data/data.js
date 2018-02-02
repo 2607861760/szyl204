@@ -191,12 +191,12 @@ export const data = {
         })
     },
     /**
-     * [data  vshoo接口]
-     * @param  {[type]} param [paientId]
+     * [data  vshoo接口]                 createCaseByPaientId
+     * @param  {[type]} param [paientId]        
      * @return {[type]}   obj
      */
     createCaseByPaientId(obj) {
-        return $ajax.post(apiUrl.apiUrl + 'workflow/createCaseByPaientId', obj).then(function(res) {
+        return $ajax.post(apiUrl.apiUrl + 'workflow/getCaseid', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },
@@ -212,12 +212,12 @@ export const data = {
     },
     /**
      * [data  根据样本批次获得病人信息接口]
-     * @param  {[type]} param {"productId":"1" ,"batchId":"YM_102th",
+     * @param  {[type]} param {"productId":"1" ,"batchId":"YM_102th",  getProjectListByBatchId
      * "pageSize":10,"pageIndex":1}
      * @return {[type]}   obj
      */
     getProjectListByBatchId(obj) {
-        return $ajax.post(apiUrl.apiUrl + 'project/getProjectListByBatchId', obj).then(function(res) {
+        return $ajax.post(apiUrl.apiUrl + 'project/getProjectListByBatchIds', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     },

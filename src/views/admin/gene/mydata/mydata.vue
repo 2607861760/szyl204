@@ -79,7 +79,7 @@
         
         <!-- 内容区域 -->
         <div class="mydata-content"> 
-            <el-table :data="tableData3" :highlight-current-row="true" border style="width: 100%;" :height="height"  @selection-change="handleSelectionChange">
+            <el-table :data="tableData3" :highlight-current-row="true" border style="width: 100%;" :height="height"  @selection-change="handleSelectionChange" :empty-text="emptytext" v-loading="dataloading">
                 <el-table-column type="index" min-width="5%"></el-table-column>
                 <el-table-column type="selection"width="55" v-if="showSelection" :disabled="disTableSelect">
                 </el-table-column>
@@ -570,6 +570,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         ],
         keyword:'',             //查询内容
         currentPage:1,         //当前页数
+        dataloading:false,     //数据加载状态 
+        emptytext:''         //空数据
       }
     },
     methods: {
@@ -1222,7 +1224,9 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 "productId" : "1",
                 "userId":getCookie('userid'),
             }  
-            this.tableData3.length=0;
+            this.tableData3=[];
+            this.dataloading=true;
+            this.emptytext="   ";
             if(this.searchColumn!='' && this.searchColumn!="all"){
                 obj.searchColumn=this.searchColumn;
                 obj.keyword=this.keyword;
@@ -1234,11 +1238,16 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     if(data.data!=null){
                         this.total=data.data.count;
                         this.tableData3= data.data.projectList;
+                    }else{
+                        this.total=0;
+                        this.emptytext="暂无数据"
                     }
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
                 }
+                this.dataloading=false;
             }).catch((error)=>{
+                this.dataloading=false;
                 this.$Message.error(error.statusText);
             })
         },

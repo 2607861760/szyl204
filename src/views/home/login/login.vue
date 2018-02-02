@@ -207,6 +207,7 @@ export default{
                             login.login(obj).then((data) => {
                                 console.log(data)
                                     if(data.returnCode==0 || data.returnCode==200){
+                                        console.log(2)
                                         M.extend(this.$store.state.currentUser,data.data)
                                         setCookie('email',data.data.user.email,null);
                                         setCookie('userid',data.data.user.dchUserId,null);

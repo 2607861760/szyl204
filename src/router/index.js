@@ -93,7 +93,7 @@ const router = new VueRouter({
                 name: "cgdap",
                 path: '/admin/tumour/cgdap',
                 component: resolve => require(['@/views/admin/information/patient/cgdap.vue'], resolve)
-            },{
+            }, {
                 name: "fileManage",
                 path: '/admin/fileManage',
                 component: resolve => require(['@/views/admin/fileManage/fileManage.vue'], resolve)
@@ -101,10 +101,14 @@ const router = new VueRouter({
                 name: "processManage",
                 path: '/admin/process_index',
                 component: resolve => require(['@/views/admin/process/process-index.vue'], resolve)
-            },{
+            }, {
                 name: "processtemp",
                 path: '/admin/processtemp',
                 component: resolve => require(['@/views/admin/process/processtemp.vue'], resolve)
+            }, {
+                name: "test",
+                path: '/admin/test',
+                component: resolve => require(['@/views/admin/test/test.vue'], resolve)
             }]
         },
         {

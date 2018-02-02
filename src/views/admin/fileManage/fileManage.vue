@@ -24,17 +24,24 @@
 			<Col span="6">
 				<div style="float:left;width:75px;margin-left:20px;">批次筛选:</div>
 				<Select style="float:left;width:120px;" v-model="batchId" @on-change="SelectChangeData">
+					<Option value="all">全部批次</Option>
+                    <Option value="0">无批次</Option>
 					<Option v-for="(item, index) in piciList" :value="item.value" :label="item.label" :key="index">{{item.label}}</Option>
 				</Select>
 			</Col>
 		</Row>
 		<div class="table-box">
 			<el-table :data="uploadSampleFileInfos" border style="width: 100%;" :highlight-current-row="true" :height="600" v-loading="loading">
-    			<el-table-column align="center" prop="fileID" label="文件id"> </el-table-column>
+    			<el-table-column align="center" label="样本批次">
+					 <template slot-scope="scope">
+						{{scope.row.batchID | foreignFlag}}
+					</template> 
+				</el-table-column>
+				<el-table-column align="center" prop="fileID" label="文件id" min-width="150%"> </el-table-column>
 				<el-table-column align="center" prop="uploaddate"  label="文件上传时间"> </el-table-column>
     			<el-table-column align="center" prop="patientID" label="病人编号"> </el-table-column>
     			<el-table-column align="center" prop="sampleID" label="样本编号"> </el-table-column>
-    			<el-table-column align="center"  label="文件状态">
+    			<el-table-column align="center"  label="文件状态" width="250">
     				<template slot-scope="scope">
 						<Poptip width="300" placement="bottom-end" v-if="scope.row.fastq_R1!=null">
 							<div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
@@ -223,7 +230,7 @@ import {getCookie} from '@/common/js/cookie.js'
 				
 			}
 		},
-		created(){
+		mounted(){
 			// let _this=this;
 			// this.getBatchList(1,function(){
 			// 	_this.batchId=_this.batchIds[4];
@@ -231,7 +238,18 @@ import {getCookie} from '@/common/js/cookie.js'
 			// });
 			this.$store.state.projectid=1;
 			this.getBatchList();
-		}
+		},
+		filters:{
+        // 格式化数据
+			foreignFlag(cellValue) {
+				console.log(cellValue)
+				if(cellValue == '0'){
+					return cellValue = "----"
+				}else if(cellValue){
+					return cellValue
+				}
+			},
+    	},
 	}
 </script>
 

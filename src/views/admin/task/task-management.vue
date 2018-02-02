@@ -386,7 +386,7 @@ export default {
         },
         //是否可以勾选
         selectable(row,index){
-            if(row.samplestatus==='0'){
+            if(row.samplestatus!='6'){
                 return 1;
             }else{
                 return 0;

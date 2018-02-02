@@ -22,6 +22,8 @@ import 'muse-ui/dist/muse-ui.css'
 import 'muse-ui/dist/theme-light.css' // 使用 light 主题
 // Mcake工具集
 import '@/frame/Mcake/Mcake.js';
+//echats图表
+import echarts from "echarts"
 // 引入element-ui 组件
 import { Table, CheckboxGroup, Checkbox, TableColumn, Menu, Carousel, Pagination, CarouselItem, Select, Option, Submenu, MenuItem, Loading, Button } from 'element-ui';
 

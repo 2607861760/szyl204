@@ -154,7 +154,7 @@ $right-main-bg: #ECF0F5;
                 <div class="layout-content">
                     <div class="layout-main">
                         <!-- 子页面展示区域 -->
-                            <router-view v-if="show"></router-view>
+                        <router-view v-if="show"></router-view>
                     </div>
                 </div>
             </Content>
@@ -216,11 +216,12 @@ export default {
                             setCookie('email',data.data.user.email,null);
                             setCookie('userid',data.data.user.dchUserId,null);
                             setCookie('username',data.data.user.username,null)
-                            vm.cusername=getCookie('username');
+                            vm.cusername=decodeURI(data.data.user.username);
                             vm.$store.state.uid=data.data.user.dchUserId;
                             vm.$store.state.code=code;
                             vm.show=true;
                             // vm.load=false;
+                            console.log(vm.cusername)
                         }
                         // vm.load=false;
                     }else if(data.returnCode==422 || data.returnCode==204){
@@ -235,7 +236,8 @@ export default {
             }else{
                 // vm.load=false;
                 vm.show=true;
-                vm.cusername=getCookie('username');
+                vm.cusername=decodeURI(getCookie('username'));
+                console.log(vm.cusername)
             }
         })
     },

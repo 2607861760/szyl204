@@ -12,7 +12,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "datatables.net-bs4": "^1.10.16",
-    "echarts": "^3.7.0",
+    "echarts": "^3.8.5",
     "element-ui": "^2.0.7",
     "iview": "^2.4.0",
     "muse-ui": "^2.1.0",
