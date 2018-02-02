@@ -88,7 +88,7 @@
                     <template slot-scope="scope">
                     	<Poptip placement="bottom-start" width="300" @on-popper-show="getUserBySample(scope.row)">
                     		<Icon style="padding:0 10px;cursor:pointer;" type="android-person"></Icon>
-                    		<div class="api"  slot="content">
+                    		<div class="api" style="max-height:200px" slot="content">
                     			<el-table v-loading="assinged"  align="center" :data="assignedData">
                         			<el-table-column  label="分配人姓名">
                         				<template slot-scope="scope2">
@@ -127,7 +127,7 @@
                 <el-table-column label="文件状态" width="200">
     				<template slot-scope="scope">
 						<div v-for="(list,index) in scope.row.dchSampleList"  style="height:40px;" :key="index">
-                            <Poptip  placement="bottom-end" v-if="list.fastq_R1!=null" width="300">
+                            <Poptip  :placement="scope.$index<=2?'bottom-end':'top-end'" v-if="list.fastq_R1!=null" width="300">
                                 <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
                                     {{list.fastq_R1}}
                                 </div>
@@ -138,7 +138,7 @@
                             <div class="imgbox" v-else>
                                 <div class="fastq_R1_off"></div>
                             </div>
-                            <Poptip  placement="bottom-end" v-if="list.fastq_R2!=null " width="300">
+                            <Poptip  :placement="scope.$index<=2?'bottom-end':'top-end'" v-if="list.fastq_R2!=null " width="300">
                                 <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
                                     {{list.fastq_R2}}
                                 </div>
@@ -149,7 +149,7 @@
                             <div class="imgbox" v-else>
                                 <div class="fastq_R2_off"></div>
                             </div>
-                            <Poptip  placement="bottom-end" v-if="list.vcf!=null" width="300">
+                            <Poptip  :placement="scope.$index<=2?'bottom-end':'top-end'" v-if="list.vcf!=null" width="300">
                                 <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
                                     {{list.vcf}}
                                 </div>
@@ -160,7 +160,7 @@
                             <div class="imgbox" v-else>
                                 <div class="vcf_off"></div>
                             </div>
-                            <Poptip placement="bottom-end" v-if="list.etcFiles!=null " width="300">
+                            <Poptip :placement="scope.$index<=2?'bottom-end':'top-end'" v-if="list.etcFiles!=null " width="300">
                                 <div class="imgbox">
                                     <div class="etc_on" ></div>
                                 </div>
@@ -844,12 +844,13 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         // 解读跳转
         jumpTgexPage(row) {
             // console.log(row.dchPatient.patientid)
-            let loadingInstance = Loading.service({target:document.querySelector(".mydata-content")});
+            // let loadingInstance = Loading.service({target:document.querySelector(".mydata-content")});
             let obj = {
                 "userId":getCookie("userid"),
                 paientId:row.dchPatient.patientid
             }
             // console.log(obj)
+            this.dataloading=true;
             data.createCaseByPaientId(obj).then((data)=> {
                 console.log(data.data);
                 if(data.returnCode=="200" || data.returnCode =="0"){
@@ -866,10 +867,10 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 }else{
                     this.$Message.error(data.msg)
                 }
-                loadingInstance.close();
+                this.dataloading=false;
             }).catch((error)=>{
             	this.$Message.error(error.statusText);
-				loadingInstance.close();
+				this.dataloading=false;
             })
         },
         clearFiles(){

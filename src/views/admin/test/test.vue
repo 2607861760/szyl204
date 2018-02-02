@@ -259,13 +259,19 @@ export default{
                 width:'1000px',
                 bottom: 10,
                 left: 'center',
-                data: ['幽州','荆州','西凉', '兖州','益州','中州']
+                data: ['幽州','荆州','西凉','兖州','益州','中州']
             },
-            // color:['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83'],
+            color:['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83'],
             series : [
                 {
                     type: 'bar',
-                    data:[10, 52, 200, 334, 390, 330, 220],
+                    data:[
+                        {value:1548,name:'幽州'},
+                        {value:535,name:'荆州'},
+                        {value:510,name:'西凉'},
+                        {value:634,name:'兖州'},
+                        {value:735,name:'益州'},
+                        {value:330,name:'中州'}],
                     itemStyle: {  
                         normal:{  
         　　　　　　　　　　　　//每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组

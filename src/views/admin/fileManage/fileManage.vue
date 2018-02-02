@@ -43,7 +43,7 @@
     			<el-table-column align="center" prop="sampleID" label="样本编号"> </el-table-column>
     			<el-table-column align="center"  label="文件状态" width="250">
     				<template slot-scope="scope">
-						<Poptip width="300" placement="bottom-end" v-if="scope.row.fastq_R1!=null">
+						<Poptip width="300" :placement="scope.$index<=2?'bottom-end':'top-end'" v-if="scope.row.fastq_R1!=null">
 							<div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
 								{{scope.row.fastq_R1}}
 							</div>
@@ -54,7 +54,7 @@
 						<div class="imgbox" v-else>
 							<div class="fastq_R1_off"></div>
 						</div>
-						<Poptip width="300" placement="bottom-end" v-if="scope.row.fastq_R2!=null ">
+						<Poptip width="300" :placement="scope.$index<=2?'bottom-end':'top-end'" v-if="scope.row.fastq_R2!=null ">
 							<div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
 								{{scope.row.fastq_R2}}
 							</div>
@@ -65,7 +65,7 @@
     					<div class="imgbox" v-else>
 							<div class="fastq_R2_off"></div>
 						</div>
-						<Poptip width="300" placement="bottom-end" v-if="scope.row.vcf!=null">
+						<Poptip width="300" :placement="scope.$index<=2?'bottom-end':'top-end'" v-if="scope.row.vcf!=null">
 							<div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
 								{{scope.row.vcf}}
 							</div>
@@ -76,7 +76,7 @@
     					<div class="imgbox" v-else>
 							<div class="vcf_off"></div>
 						</div>
-						<Poptip placement="bottom-end" v-if="scope.row.etcFiles!=null " width="300">
+						<Poptip :placement="scope.$index<=2?'bottom-end':'top-end'" v-if="scope.row.etcFiles!=null " width="300">
 							<div class="imgbox">
 								<div class="etc_on" ></div>
 							</div>
