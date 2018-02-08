@@ -20,8 +20,9 @@ const state = {
     sampleInfo: {
         samplecode: ''
     },
-    processTempId: '' ,//流程模板id
-    processTempName:'' //流程模板名称
+    processTempId: '', //流程模板id
+    processTempName: '', //流程模板名称
+    projecttype: 0,
 };
 
 export default state;

@@ -283,13 +283,19 @@ export default{
         next(name,names){  //点击下一步
             M.extend(this.basicInfo,this.check);
             let obj={
-                userId:getCookie("userid"),
+                // userId:getCookie("userid"),
                 productname:"TGex",
-                productId:"2",
+                // productId:"2",
                 birthday:String(this.birthday),
                 gender:this.genderId,
             }
             M.extend(this.basicInfo,obj);
+            let newobj={
+                userId:getCookie("userid"),
+                projecttype:0,    //1是早期筛查，2是诊断治疗，3是术后跟踪
+                productId:"2",
+            }
+            newobj.patient=this.basicInfo;
             console.log(JSON.stringify(this.basicInfo))
             console.log(names);
             console.log(name);
@@ -299,7 +305,7 @@ export default{
                     this.$refs[name].validate((valid) => {
                     console.log(valid);
                     if(valid && valids){
-                        data.addProject(this.basicInfo).then((data)=>{
+                        data.addProject(newobj).then((data)=>{
                             if(data.returnCode==0 || data.returnCode==200){
                                 if(data.data!=null){
                                     this.paid=data.data.patient.patientid;

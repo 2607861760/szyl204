@@ -106,15 +106,26 @@ const router = new VueRouter({
                 path: '/admin/processtemp',
                 component: resolve => require(['@/views/admin/process/processtemp.vue'], resolve)
             }, {
+                name: "tomourindex",
+                path: '/admin/tomour/index',
+                component: resolve => require(['@/views/admin/tomour/index/index.vue'], resolve)
+            }, {
+                name: "tomoursample",
+                path: '/admin/tomour/sample',
+                component: resolve => require(['@/views/admin/tomour/sample/sample.vue'], resolve)
+            }, {
+                name: "tomourpatient",
+                path: '/admin/tomour/patient',
+                component: resolve => require(['@/views/admin/tomour/patient/patient.vue'], resolve)
+            }, {
+                name: "tomourpatient",
+                path: '/admin/tomour/patientInfo',
+                component: resolve => require(['@/views/admin/tomour/patient/patientInfo.vue'], resolve)
+            }, {
                 name: "test",
-                path: '/admin/test',
-                component: resolve => require(['@/views/admin/test/test.vue'], resolve)
+                path: '/admin/tomour/test',
+                component: resolve => require(['@/views/test/test.vue'], resolve)
             }]
-        },
-        {
-            path: '/test',
-            name: "测试",
-            component: resolve => require(['@/views/test/test.vue'], resolve)
         }
     ]
 });

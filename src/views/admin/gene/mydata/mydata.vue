@@ -1014,18 +1014,14 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         	if(len && len>0){
         		let obj={
         			"userid": userid,
-                    // "sampleid":row.dchSampleList[0].sampleid
-                    "patientid":row.dchPatient.patientid
+                    "patientid":row.dchPatient.patientid,
+                    "productId":"1"
         		}
         		data.getUsesBySampleId(obj).then((data)=>{
                     console.log(data)
 	        		if(data.returnCode==200 || data.returnCode==0){
 	        			if(data.data && data.data.length>0){
-	        				// if(data.data.length==1 && data.data[0].dchUserId==userid){ //当只有一条数据时
-	        				// 	this.assignedData=[{"username":"暂未分配","dept":{"name":""}}];
-	        				// }else if(data.data.length>1){
 	        				this.assignedData=data.data;
-	        				// }
 	        			}
 	        		}else if(data.returnCode==422 || data.returnCode==204){
                         this.$router.push('/login')

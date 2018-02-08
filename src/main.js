@@ -25,7 +25,7 @@ import '@/frame/Mcake/Mcake.js';
 //echats图表
 import echarts from "echarts"
 // 引入element-ui 组件
-import { Table, CheckboxGroup, Checkbox, TableColumn, Menu, Carousel, Pagination, CarouselItem, Select, Option, Submenu, MenuItem, Loading, Button } from 'element-ui';
+import { Table, CheckboxGroup, RadioGroup, RadioButton, Checkbox, TableColumn, Menu, Carousel, Pagination, CarouselItem, Select, Option, Submenu, MenuItem, Loading, Button } from 'element-ui';
 
 
 // 初始化路由状态
@@ -52,6 +52,8 @@ Vue.use(Option);
 Vue.use(Pagination);
 Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
+Vue.use(RadioGroup);
+Vue.use(RadioButton);
 
 
 

@@ -277,7 +277,6 @@
         upModal: false,
         upshow:false,
         fastq:false,
-        sampleModal: false,
         choice:[],
         choices:[],
         fileCategoryList: [],
@@ -310,31 +309,31 @@
           sampletype: [{
             value: '石蜡切片',
             label: '石蜡切片'
-          }, {
+            }, {
             value: '手术/穿刺组织',
             label: '手术/穿刺组织'
-          }, {
+            }, {
             value: '胸水',
             label: '胸水'
-          }, {
+            }, {
             value: '腹水',
             label: '腹水'
-          }, {
+            }, {
             value: '静脉血',
             label: '静脉血'
-          }, {
+            }, {
             value: '淋巴',
             label: '淋巴'
-          }, {
+            }, {
             value: '冰冻组织',
             label: '冰冻组织'
-          }, {
+            }, {
             value: '全血',
             label: '全血'
-          }, {
+            }, {
             value: '口腔拭子',
             label: '口腔拭子'
-          }, {
+            }, {
             value: '唾液',
             label: '唾液'
         }],

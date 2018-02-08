@@ -94,15 +94,21 @@ export default{
         },
         next(name){
             let obj={
-                userId:getCookie("userid"),
+                // userId:getCookie("userid"),
                 productname:"TGex",
-                productId:"1",
+                // productId:"1",
                 birthday:String(this.birthday),
             }
             M.extend(this.basicInfo,obj)
+            let newobj={
+                userId:getCookie("userid"),
+                projecttype:0,
+                productId:"1",
+            }
+            newobj.patient=this.basicInfo;
             this.$refs[name].validate((valid) => {
                 if(valid){
-                    data.addProject(this.basicInfo).then((data)=>{
+                    data.addProject(newobj).then((data)=>{
                         console.log(data)
                         if(data.returnCode==0 || data.returnCode==200){
                             if(data.data!='null' || data.data!=null){

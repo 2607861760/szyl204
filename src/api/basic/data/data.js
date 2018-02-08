@@ -270,10 +270,18 @@ export const data = {
         })
     },
     /*
-     *显示已分配成员
+     *
      */
     getSingleForldList(obj) {
         return $ajax.post(apiUrl.apiUrl + 'upload/getSingleForldList', obj).then(function(res) {
+            return Promise.resolve(res.data)
+        })
+    },
+    /*
+     *
+     */
+    getCounts(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'project/getCounts', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
     }
