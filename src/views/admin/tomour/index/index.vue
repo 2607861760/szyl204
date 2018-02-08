@@ -681,10 +681,14 @@ export default{
                 "pageIndex" : this.pageIndex,
                 "productId" : "2",
                 "userId":getCookie("userid"),
-                "searchColumn":searchValue || "",
-                "keyword":keyWord || "",
             }
             this.tableData3=[];
+            this.total=0;
+            this.currentPage=1;
+            if(searchValue!='' && searchValue!="all"){
+                obj.searchColumn=searchValue;
+                obj.keyword=keyWord;
+            }
             data.getProjectList(obj).then((data)=>{
                 console.log(data)
                 if(data.returnCode==0 || data.returnCode==200){
@@ -879,9 +883,6 @@ export default{
             this.currentPage=1;
             this.keyword='';
             switch(val){
-                case 'all':
-                  this.searchValue="";
-                  break;  
                 case 'patientcode':
                   this.searchValue="1";
                   break;
@@ -930,10 +931,6 @@ export default{
                 "userId":getCookie("userid")
             }
             this.tableData3=[];
-            if(this.searchColumn!='' && this.searchColumn!="all"){
-                obj.searchColumn=this.searchColumn;
-                obj.keyword=this.keyword;
-            }
             data.getProjectList(obj).then((data)=>{
                 if(data.returnCode==0 || data.returnCode==200){
                     if(data.data!=null){
