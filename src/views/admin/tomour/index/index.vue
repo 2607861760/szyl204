@@ -172,7 +172,7 @@
                     </div>
                 </Col>
                 <Col span="4">
-                    <div class="tomour_nav_card tomour_nav_card1" @click="dataChange('4')">
+                    <div class="tomour_nav_card tomour_nav_card1" @click="dataChange('4','2')">
                         <Row type="flex" justify="space-between">
                             <Col span="12">
                                 <p>{{dataSize.notUploadCount}}</p>
@@ -185,7 +185,7 @@
                     </div>
                 </Col>
                 <Col span="4">
-                    <div class="tomour_nav_card tomour_nav_card2" @click="dataChange('5')">
+                    <div class="tomour_nav_card tomour_nav_card2" @click="dataChange('5','2')">
                         <Row type="flex" justify="space-between">
                             <Col span="12">
                                 <p>{{dataSize.pipelineFinishCount}}</p>
@@ -198,7 +198,7 @@
                     </div>
                 </Col>
                 <Col span="4">
-                    <div class="tomour_nav_card tomour_nav_card3" @click="dataChange('6')">
+                    <div class="tomour_nav_card tomour_nav_card3" @click="dataChange('6','2')">
                         <Row type="flex" justify="space-between">
                             <Col span="12">
                                 <p>{{dataSize.downloadCount}}</p>
@@ -323,16 +323,10 @@
              <div class="domain_echats"> 
                  <div class="domain_echats_graph">
                     <div class="domain_echats_title">不同癌种样本量</div>
-                    <!-- <div id="piecharts" style="width:'100%',height:'300px'"> -->
-                        <!-- <div id="piecharts_main" :style="{width:'100%',height:'300px'}"></div> -->
-                    <!-- </div> -->
                     <div style="height:300px;background:#ECF5FF;"></div>
                  </div>
                 <div class="domain_echats_graph">
                     <div class="domain_echats_title">每月处理样本数量</div>
-                    <!-- <div id="barcharts" style="width:'100%',height:'300px';"> -->
-                        <!-- <div id="barcharts_main" :style="{width:'100%',height:'300px'}"></div> -->
-                    <!-- </div> -->
                     <div style="height:300px;background:#ECF5FF;"></div>
                  </div>
              </div> 
@@ -675,6 +669,60 @@ export default{
         }
     },
     methods:{
+        // 获得本地/storage/serverData/
+        _getLocalDataList() {
+            let obj={
+                "path":"/storage/serverData/",
+                // "path":"/opt/NfsDir/PublicDir/demo/",
+                        // /opt/NfsDir/PublicDir/demo/  电信云
+                        // /storage/serverData/   159
+                "userId":getCookie("userid"),
+                "productId":"1",
+                "type":"2"
+            }
+            data.getSingleForldList(obj).then((data)=>{
+                console.log(data)
+                if(data.returnCode==0 || data.returnCode==200){
+                    if(M.isArray(data.data)) {
+                        this.fileCategoryList=data.data;
+                    }
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
+                }else{
+                    this.$Message.error(data.msg)
+                }
+                
+            }).catch((error)=>{
+
+            })
+        },
+        // 获得服务列表 /opt/NfsDir/PublicDir/demo/
+        // /storage/serverData/
+        _getServerDataList() {
+            let obj={
+                "path":"/storage/serverData/",
+                // "path":"/opt/NfsDir/PublicDir/demo/",
+                        // /opt/NfsDir/PublicDir/demo/  电信云
+                        // /storage/serverData/   159
+                "userId":getCookie("userid"),
+                "productId":"1",
+                "type":"2"
+            }
+            data.getSingleForldList(obj).then((data)=>{
+                    // console.log(data)
+                if(data.returnCode==0 || data.returnCode==200){
+                    if(M.isArray(data.data)) {
+                        this.fileServerCategoryList=data.data;
+                    }
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
+                }else{
+                    this.$Message.error(data.msg)
+                }
+            }).catch((error)=>{
+
+            })
+        },
         dataChange(searchValue,keyWord){
             let obj={
                 "pageSize" : this.pageSize,
@@ -964,66 +1012,6 @@ export default{
     mounted(){
         this.load();
         this.getCounts();
-        // let myChartpie=echarts.init(document.getElementById('piecharts_main'));
-        // let myChartbar=echarts.init(document.getElementById('barcharts_main'));
-        // myChartpie.setOption({
-        //     tooltip : {
-        //         trigger: 'item',
-        //         formatter: "{a} <br/>{b} : {c} ({d}%)"
-        //     },
-        //     legend: {
-        //         bottom: 10,
-        //         left: 'center',
-        //         data: ['西凉', '益州','兖州','荆州','幽州']
-        //     },
-        //     series : [
-        //         {
-        //             type: 'pie',
-        //             radius : '65%',
-        //             center: ['50%', '50%'],
-        //             selectedMode: 'single',
-        //             data:[
-        //                 {value:1548,name: '幽州'},
-        //                 {value:535, name: '荆州'},
-        //                 {value:510, name: '兖州'},
-        //                 {value:634, name: '益州'},
-        //                 {value:735, name: '西凉'}
-        //             ],
-        //         }
-        //     ]
-
-        // })
-        // myChartbar.setOption({
-        //     xAxis: {
-        //         type: 'category',
-        //         // data: ['1', '2', '3', '4', '5', '6']
-        //         data: ['幽州','荆州','西凉','兖州','益州','中州']
-        //     },
-        //     yAxis: {
-        //         type: 'value'
-        //     },
-        //     legend: {
-        //         bottom: 10,
-        //         left: 'center',
-        //         data: ['幽州','荆州','西凉','兖州','益州','中州']
-        //     },
-        //     series : [
-        //         {   
-        //             name:['幽州','荆州','西凉','兖州','益州','中州'],
-        //             type: 'bar',
-        //             data:['1548','535','510','634','735','330'],
-        //             itemStyle: {  
-        //                 normal:{  
-        // 　　　　　　　　　　　　//每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-        //                     color: function (params){
-        //                         var colorList = ['#c23531','#2f4554','#61a0a8','#d48265','#91c7ae','#749f83'];
-        //                         return colorList[params.dataIndex];
-        //                     }
-        //                 },
-        //             }
-        //         }
-        //     ]
-        // })
     },
     components: {treeGrid},
     filters: {
