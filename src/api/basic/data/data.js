@@ -284,5 +284,14 @@ export const data = {
         return $ajax.post(apiUrl.apiUrl + 'project/getCounts', obj).then(function(res) {
             return Promise.resolve(res.data)
         })
+    },
+    /**
+     * [data  获取疾病名称列表]
+     * @param  {[type]} param [userId,productId,patientid,病人信息]
+     */
+    getAddNewProjectTemplate(obj) {
+        return $ajax.get(apiUrl.apiUrl + 'template/getAddNewProjectTemplate', { params: obj }).then(function(res) {
+            return Promise.resolve(res.data)
+        })
     }
 }

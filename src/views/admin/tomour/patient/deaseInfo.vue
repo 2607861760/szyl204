@@ -47,9 +47,13 @@
             line-height: 55px;
         }
     }
-    .diseaset_about_footer {
-        button {
-            margin: 0 10px;
+    .el-table tr{
+        background: none;
+        &:hover>td{
+            background: #fff;
+        }
+        &:hover>.cell_active{
+            background: #3c3f60;
         }
     }
     .el-table thead tr th {
@@ -72,7 +76,7 @@
                 <Icon type="plus"></Icon>
                 <span>疾病信息</span>
             </div>
-            <div>
+            <!-- <div>
                 <Form class="disease_info_form" :label-width="80" :model="formData" ref="modalForm" :rules="ruleValidate">
                     <Row type="flex" justify="center" class="basic_info_form_row">
                         <Col class="row" span="7">
@@ -108,6 +112,23 @@
                         <Col class="row" span="7"></Col>
                     </Row>
                 </Form>
+           
+           
+           
+            </div> -->
+            <div>
+                <p>{{diseaseInfoData}}</p>
+                <Form class="disease_info_form" :label-width="100" :model="diseaseInfoData">
+                    <Row type="flex" justify="start" class="disease_info_form_row" v-for="(item,index) of (diseaseInfoData.blockModels)" :key="index">
+                        <Col class="row" span="8" v-for="(list,indexs) of item.itemNodes" :key="indexs">
+                            <FormItem style="width:30%;" class="disease_info_form_item" :required="list.bRequired" :prop="list.itemValue" :label="list.itemName">
+                                <Select style="max-width:200px" v-if="list.itemType==itemType.apiSelect" v-model="list.itemValue" @on-change="getTemplatebyid">
+                                    <Option v-for="(cont,ids) of list.content" :key="ids" :value="cont.templateid">{{cont.name}}</Option>
+                                </Select>
+                            </FormItem>
+                        </Col>
+                    </Row>
+                </Form>
             </div>
         </div>
         <div style="width:100%;height:30px;background:#f5f7f9;"></div>
@@ -116,7 +137,7 @@
                 <Icon type="flash"></Icon>
                 <span>疾病风险因素</span>
             </div>
-            <div>
+            <!-- <div>
                 <Form class="disease_risk_form" :label-width="80" :model="formData" ref="modalForm" :rules="ruleValidate">
                     <Row type="flex" justify="center" class="disease_risk_form_row">
                         <Col class="row" span="7">
@@ -128,24 +149,24 @@
                         <Col class="row" span="7"></Col>
                     </Row>
                 </Form>
-            </div>
-        </div>
-        <div class="disease_about_footer">
-            <Row type="flex" justify="end" class="code-row-bg">
-                <Col col="8">
-                <Button type="ghost" @click="upStep">返回</Button>
-                <Button @click="nextStep" type="primary">下一步</Button>
-                </Col>
-            </Row>
+            </div> -->
         </div>
     </div>
 </template>
 
 <script>
+import { getCookie } from '@/common/js/cookie.js';
+import { data, task } from 'api/index.js'
 export default {
     data() {
         return {
-            formData: {},  //表单数据
+            itemType:{
+               "apiSelect":9,  //调用接口的下拉菜单
+            },
+            diseaseInfoData:{},//疾病信息数据
+            diseaseNameData:{},//疾病名称数据
+            diseaseRiskInfoData:{},//疾病风险因素数据
+            pageTempList:{},//当前页病人数据
             border: true,   //表格纵列 边框
             tnmList: [{
                 "T": "TX",
@@ -168,30 +189,9 @@ export default {
                 "N": "Any N",
                 "M": ""
             }],
-            //验证必填
-            ruleValidate: {
-                patientCode: [{
-                    required: true,
-                    message: '病人编号不能为空'
-                }
-                ],
-                patientName: [{
-                    required: true,
-                    message: '病人姓名不能为空'
-                }
-                ]
-            },
-
         }
     },
     methods: {
-        upStep(){
-            this.$router.push('/admin/tomour/index')
-        },
-        //下一步
-        nextStep() {
-            this.$router.push('/admin/tomoursample');
-        },
         cellClick(row, column, cell, event) {
             //移除当前列所有的选中效果
             $("." + column.id).removeClass("cell_active");
@@ -210,16 +210,49 @@ export default {
                 };
             }
         },
+        //获取模板页面数据
+        getTemplatebyid(a){
+
+        },
+        //获取疾病名称
+        getDiseaseName(){
+            let obj = {
+                "userId": getCookie('userid'),
+                "productId":2
+            }
+            data.getAddNewProjectTemplate(obj).then((data)=> {
+                if(data.returnCode=="200" || data.returnCode =="0"){
+                    this.dobuildDiseaseNameData(data.data);
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
+                }else{
+                    this.$Message.error(data.msg)
+                }
+            }).catch((error)=>{
+            	this.$Message.error(error.statusText);
+            })
+        },
+        //创建疾病名称数据结构
+        dobuildDiseaseNameData(data){
+            if(data.pageModels && data.pageModels.length>0){
+                let pageM=data.pageModels[0];
+                if(pageM.blockModels && pageM.blockModels.length>0){
+                    this.diseaseNameData = pageM.blockModels[0];
+                    this.diseaseInfoData.blockModels= pageM.blockModels;
+                }
+            }
+            console.log(this.diseaseInfoData);
+        },
         //重置按钮
         resetActive() {
 
         }
     },
     mounted() {
-        $(".el-table").removeClass("el-table--enable-row-hover");
+       
     },
     created() {
-
+        this.getDiseaseName(); 
     }
 }
 </script>

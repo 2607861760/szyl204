@@ -54,6 +54,15 @@
             margin: 0 10px;
         }
     }
+    .el-table tr{
+        background: none;
+        &:hover>td{
+            background: #fff;
+        }
+        &:hover>.cell_active{
+            background: #3c3f60;
+        }
+    }
     .el-table thead tr th {
         color: #fff;
         background: #525C79;
@@ -110,36 +119,36 @@
                         <Col class="row" span="7"></Col>
                     </Row> -->
             
-                    <Row type="flex" justify="left" class="disease_info_form_row" v-for="(item,index) of formData" :key="index">
-                        <Col class="row" span="7" v-for="(list,indexs) of item.itemNodes" :key="indexs">
+                    <Row type="flex" justify="start" class="disease_info_form_row" v-for="(item,index) of formData" :key="index">
+                        <Col class="row" span="8" v-for="(list,indexs) of item.itemNodes" :key="indexs">
                             <FormItem style="width:30%;" class="disease_info_form_item" :required="list.bRequired" :prop="list.value" :label="list.itemName">
                                 <Poptip placement="bottom-start" width="400" v-if="list.itemType==0">
-                                <Button class="tnm_btn" size="small" type="primary">点击选择</Button>
-                                <div class="api" slot="content">
-                                    <el-table @cell-click="cellClick" :span-method="spanMethod" border="border" align="center" :data="tnmList">
-                                        <el-table-column prop="T" label="T"></el-table-column>
-                                        <el-table-column prop="N" label="N"></el-table-column>
-                                        <el-table-column prop="M" label="M"></el-table-column>
-                                        <el-table-column label="肿瘤分期">
-                                            <template slot-scope="scope">
-                                                <span v-if="scope.$index==0">对应值</span>
-                                            </template>
-                                        </el-table-column>
-                                    </el-table>
-                                    <Row type="flex" justify="end" class="code-row-bg">
-                                        <Col col="8">
-                                        <Button @click="resetActive" type="ghost">重置</Button>
-                                        <Button type="primary">确定</Button>
-                                        </Col>
-                                    </Row>
-                                </div>
-                            </Poptip>
+                                    <Button class="tnm_btn" size="small" type="primary">点击选择</Button>
+                                    <div class="api" slot="content">
+                                        <el-table @cell-click="cellClick" :span-method="spanMethod" border="border" align="center" :data="tnmList">
+                                            <el-table-column prop="T" label="T"></el-table-column>
+                                            <el-table-column prop="N" label="N"></el-table-column>
+                                            <el-table-column prop="M" label="M"></el-table-column>
+                                            <el-table-column label="肿瘤分期">
+                                                <template slot-scope="scope">
+                                                    <span v-if="scope.$index==0">对应值</span>
+                                                </template>
+                                            </el-table-column>
+                                        </el-table>
+                                        <Row type="flex" justify="end" class="code-row-bg">
+                                            <Col col="8">
+                                            <Button @click="resetActive" type="ghost">重置</Button>
+                                            <Button type="primary">确定</Button>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                </Poptip>
                                 <!-- <Button   type="primary">点击选择</Button> -->
                                 <Select v-else-if="list.itemType==2" >
                                     <Option v-for="(cont,ids) of list.content" :key="ids" :value="cont">{{cont}}</Option>
                                 </Select>
-                                <Input v-else-if="list.itemType==4" v-modal="list.value" type="textarea" style="margin-bottom:10px;"></Input>
-                                <Input v-else-if="list.itemType==1" v-modal="list.value" type="text"></Input>
+                                <Input v-else-if="list.itemType==4"  v-modal="list.value" type="textarea" style="margin-bottom:10px;"></Input>
+                                <Input v-else-if="list.itemType==1"  v-modal="list.value"></Input>
                                 <Radio v-else-if="list.itemType==3" v-model="single">Radio</Radio>
                                 <Checkbox v-else-if="list.itemType==5" v-model="single">Checkbox</Checkbox>
                             </FormItem>
@@ -437,7 +446,7 @@ export default {
         }
     },
     mounted() {
-        $(".el-table").removeClass("el-table--enable-row-hover");
+        $(".api .el-table").removeClass("el-table--enable-row-hover");
         
     },
     created() {

@@ -159,7 +159,7 @@
         <!-- 顶部nav 开始-->
         <div class="tomour_nav">
             <Row type="flex" justify="space-between">
-                <Col span="4">
+                <Col span="5">
                     <div class="tomour_nav_card tomour_nav_card4" @click="newCase">
                         <Row type="flex" justify="space-between">
                             <Col span="12">
@@ -171,7 +171,7 @@
                         </Row>
                     </div>
                 </Col>
-                <Col span="4">
+                <Col span="5">
                     <div class="tomour_nav_card tomour_nav_card1" @click="dataChange('4','2')">
                         <Row type="flex" justify="space-between">
                             <Col span="12">
@@ -184,7 +184,7 @@
                         </Row>
                     </div>
                 </Col>
-                <Col span="4">
+                <Col span="5">
                     <div class="tomour_nav_card tomour_nav_card2" @click="dataChange('5','2')">
                         <Row type="flex" justify="space-between">
                             <Col span="12">
@@ -197,7 +197,7 @@
                         </Row>
                     </div>
                 </Col>
-                <Col span="4">
+                <Col span="5">
                     <div class="tomour_nav_card tomour_nav_card3" @click="dataChange('6','2')">
                         <Row type="flex" justify="space-between">
                             <Col span="12">
