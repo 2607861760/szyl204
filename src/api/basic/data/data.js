@@ -293,5 +293,14 @@ export const data = {
         return $ajax.get(apiUrl.apiUrl + 'template/getAddNewProjectTemplate', { params: obj }).then(function(res) {
             return Promise.resolve(res.data)
         })
+    },
+    /**
+     * [data  根据模板id获取模板]
+     * @param  {[type]} param [userId,productId,templateId,病人信息]
+     */
+    getPageTemplateById(obj) {
+        return $ajax.get(apiUrl.apiUrl + 'template/getPageTemplateById', { params: obj }).then(function(res) {
+            return Promise.resolve(res.data)
+        })
     }
 }

@@ -16,7 +16,7 @@
         <p class="patientInfo_title">病人信息</p>
         <basicInfo></basicInfo>
         <div style="width:100%;height:30px;background:#f5f7f9;"></div>
-        <deaseInfo></deaseInfo>
+        <deaseInfo @diseaseinfo-data="getDiseaseInfoData"></deaseInfo>
         <div class="patient_info_footer">
             <Row type="flex" justify="end" class="code-row-bg">
                 <Col col="8">
@@ -40,6 +40,10 @@ export default {
     methods: {
         sortable() {
             
+        },
+        //获取疾病信息所有数据
+        getDiseaseInfoData(data){
+            // console.log(data);
         },
         //返回
         upStep(){
