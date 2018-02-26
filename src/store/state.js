@@ -23,6 +23,11 @@ const state = {
     processTempId: '', //流程模板id
     processTempName: '', //流程模板名称
     projecttype: 0,
+
+    tumourPatientInfo: {
+        tumourPatientId: '', //肿瘤二期 病人id
+        tumourpatientCode: '', //肿瘤二期 病人编号
+    },
 };
 
 export default state;

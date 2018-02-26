@@ -922,9 +922,9 @@ export default{
         },
         //点击病人编号
         clickPatientcode(row){
-            this.$store.state.patientInfo.patientId=row.dchPatient.patientid;
-            this.$store.state.patientInfo.patientCode=row.dchPatient.patientcode;
-            this.$router.push('/admin/tomour/patientInfo')
+            this.$store.state.tumourPatientInfo.tumourPatientId=row.dchPatient.patientid;
+            this.$store.state.tumourPatientInfo.tumourpatientCode=row.dchPatient.patientcode;
+            this.$router.push('/admin/tomour/deaseInfo');
         },
         selectChange(val){          //关键词选择
             this.pageIndex=1;
@@ -965,7 +965,9 @@ export default{
         handleSubmit(){
             if(this.scenceUrl!=''){
                 // this.$router.push(this.scenceUrl)
-                this.$router.push('/admin/tomour/patient')
+                this.$store.state.tumourPatientInfo.tumourPatientId="";
+                this.$store.state.tumourPatientInfo.tumourpatientCode="";
+                this.$router.push('/admin/tomour/deaseInfo');
             }else{
                 this.$Message.error("请选择场景")
             }

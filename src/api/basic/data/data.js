@@ -291,7 +291,7 @@ export const data = {
      */
     getAddNewProjectTemplate(obj) {
         return $ajax.get(apiUrl.apiUrl + 'template/getAddNewProjectTemplate', { params: obj }).then(function(res) {
-            return Promise.resolve(res.data)
+            return Promise.resolve(res.data);
         })
     },
     /**
@@ -300,7 +300,27 @@ export const data = {
      */
     getPageTemplateById(obj) {
         return $ajax.get(apiUrl.apiUrl + 'template/getPageTemplateById', { params: obj }).then(function(res) {
-            return Promise.resolve(res.data)
+            return Promise.resolve(res.data);
+        })
+    },
+    /**
+     * [data  提交病人表单]
+     * @param  {[type]} param data
+     */
+    //肿瘤二期 新建病人
+    newAddProject(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'project/addProject', obj).then(function(res) {
+            return Promise.resolve(res.data);
+        })
+    },
+    /**
+     * [data  提交病人表单]
+     * @param  {[type]} param {patientcode:"",patientid:""}
+     */
+    //肿瘤二期获取病人页面数据
+    getProjectDetail(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'project/getProjectDetail', obj).then(function(res) {
+            return Promise.resolve(res.data);
         })
     }
 }

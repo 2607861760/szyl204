@@ -110,6 +110,10 @@ const router = new VueRouter({
                 path: '/admin/tomour/index',
                 component: resolve => require(['@/views/admin/tomour/index/index.vue'], resolve)
             }, {
+                name: "tomourDiease",
+                path: '/admin/tomour/deaseInfo',
+                component: resolve => require(['@/views/admin/tomour/patient/deaseInfo.vue'], resolve)
+            }, {
                 name: "tomoursample",
                 path: '/admin/tomour/sample',
                 component: resolve => require(['@/views/admin/tomour/sample/sample.vue'], resolve)

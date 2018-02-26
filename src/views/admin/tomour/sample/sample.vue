@@ -120,7 +120,7 @@
 		<div class="sample_content_footer">
 			<Row type="flex" justify="end" class="code-row-bg">
 				<Col col="8">
-					<Button type="ghost">上一步</Button>
+					<Button @click="backAddDiease" type="ghost">上一步</Button>
 					<Button type="primary">保存</Button>
 				</Col>
 			</Row>
@@ -160,15 +160,12 @@
 			}
 		},
 		methods:{
-			sortable(){
-				 $( ".row" ).sortable({
-				 	connectWith: ".row",
-				    handle: ".handle",
-				 });
+			backAddDiease(){
+				this.$router.push('/admin/tomour/deaseInfo');
 			}
 		},
 		mounted(){
-			this.sortable();
+
 		},
 		created(){
 			
