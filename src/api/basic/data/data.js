@@ -322,5 +322,33 @@ export const data = {
         return $ajax.post(apiUrl.apiUrl + 'project/getProjectDetail', obj).then(function(res) {
             return Promise.resolve(res.data);
         })
-    }
+    },
+    /**
+     * [data  修改病人表单]
+     * @param  {[type]} param {patientcode:"",patientid:""}
+     */
+    //修改病人表单
+    updateProject(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'project/updateProject', obj).then(function(res) {
+            return Promise.resolve(res.data);
+        })
+    },
+    /**
+     * [data  获取不同癌种的样本数量
+     */
+    //获取不同癌种的样本数量
+    getDiseaseStatistics(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'project/getDiseaseStatistics', obj).then(function(res) {
+            return Promise.resolve(res.data);
+        })
+    },
+    /**
+     * [data  获取当前月不同癌种的样本数量
+     */
+    //获取当前月不同癌种的样本数量
+    statisticalchart(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'project/statisticalchart', obj).then(function(res) {
+            return Promise.resolve(res.data);
+        })
+    },
 }

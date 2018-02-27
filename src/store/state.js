@@ -27,6 +27,7 @@ const state = {
     tumourPatientInfo: {
         tumourPatientId: '', //肿瘤二期 病人id
         tumourpatientCode: '', //肿瘤二期 病人编号
+        tumourProjectId: '', //肿瘤二期 项目id
     },
 };
 

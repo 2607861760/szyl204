@@ -72,13 +72,31 @@
             .domain_echats_graph{
                 background: #fff;
                 margin-bottom: 15px;
-                .domain_echats_title{
-                    height:43px;
-                    background: rgba(82, 92, 121, 1);
-                    color:#fff;
-                    text-align: center;
-                    line-height: 43px;
+                .domain_echats_header{
+                    position: relative;
+                    .domain_echats_title{
+                        height:43px;
+                        background: rgba(82, 92, 121, 1);
+                        color:#fff;
+                        text-align: center;
+                        line-height: 43px;
+                    }
+                    .domain_echats_exchange{
+                        position: absolute;
+                        top:0;
+                        width:100%;
+                        height:43px;
+                        line-height:43px;
+                        color:#fff;
+                        span{
+                            float: right;
+                            margin-right:15px;
+                            font-size:16px;
+                            cursor:pointer;
+                        }
+                    }
                 }
+                
             }
         }
     }
@@ -322,12 +340,24 @@
             <!-- 图表 开始 -->
              <div class="domain_echats"> 
                  <div class="domain_echats_graph">
-                    <div class="domain_echats_title">不同癌种样本量</div>
-                    <div style="height:300px;background:#ECF5FF;"></div>
+                    <div class="domain_echats_header">
+                        <p class="domain_echats_title">不同癌种样本量</p>
+                        <p class="domain_echats_exchange">
+                            <span @click="drawDiseaseStatisticsPie"><Icon type="pie-graph"></Icon></span>
+                            <span @click="drawDiseaseStatisticsBar"><Icon type="stats-bars"></Icon></span>
+                        </p>
+                    </div>
+                    <div id="difTumNum" style="height:300px;background:#ECF5FF;"></div>
                  </div>
                 <div class="domain_echats_graph">
-                    <div class="domain_echats_title">每月处理样本数量</div>
-                    <div style="height:300px;background:#ECF5FF;"></div>
+                    <div class="domain_echats_header">
+                        <p class="domain_echats_title">每月处理样本数量</p>
+                        <p class="domain_echats_exchange">
+                            <span @click="drawCurStatisticsLine"><Icon type="ios-pulse"></Icon></span>
+                            <span @click="drawCurStatisticsBar"><Icon type="stats-bars"></Icon></span>
+                        </p>
+                    </div>
+                    <div id="curMouthNum" style="height:300px;background:#ECF5FF;"></div>
                  </div>
              </div> 
             <!-- 图表 结束 -->
@@ -539,6 +569,8 @@ export default{
                 projecttype:2,
             }],
             tableData3:[],         //表格数据    
+            difTumNumList:[],      //不同癌种的样本数量
+            curMouthList:[],     //当前月不同癌种的样本数量
             loadone:false,         //加载loading
             currentPage:1,
             pageSize:10,
@@ -565,6 +597,11 @@ export default{
             takendate:'',  //日期
             receivedate:'',
             seqdate:'',
+            cancelStyle: {
+                "lungCancel": "1",      //肺癌
+                "gastricCancer": "2",   //胃癌
+                "colorectalCancer": "3" //结直肠癌
+            },
             samplesource: [{  //样本类型下拉
                 value: '对照样本',
                 label: '对照样本'
@@ -922,6 +959,7 @@ export default{
         },
         //点击病人编号
         clickPatientcode(row){
+            console.log(row);
             this.$store.state.tumourPatientInfo.tumourPatientId=row.dchPatient.patientid;
             this.$store.state.tumourPatientInfo.tumourpatientCode=row.dchPatient.patientcode;
             this.$router.push('/admin/tomour/deaseInfo');
@@ -967,6 +1005,7 @@ export default{
                 // this.$router.push(this.scenceUrl)
                 this.$store.state.tumourPatientInfo.tumourPatientId="";
                 this.$store.state.tumourPatientInfo.tumourpatientCode="";
+                this.$store.state.tumourPatientInfo.tumourProjectId = "";
                 this.$router.push('/admin/tomour/deaseInfo');
             }else{
                 this.$Message.error("请选择场景")
@@ -1009,11 +1048,272 @@ export default{
                     this.$router.push('/login')
                 }
             })
-        }
+        },
+        //获取当前月份不同癌种的样本数量数据
+        getCurMouthNum(){
+            let obj= {
+                    "productId": "2",
+                    "type":"mm",
+                    "userId": getCookie("userid")
+            };
+            data.statisticalchart(obj).then((data) => {
+                if (data.returnCode == 0 || data.returnCode == 200) {
+                    this.buildCurMouthList(data.data);
+                    this.drawCurStatisticsBar();
+                } else if (data.returnCode == 422 || data.returnCode == 204) {
+                    this.$router.push('/login')
+                } else {
+                    this.$Message.error(data.msg)
+                }
+            }).catch((error) => {
+                this.$Message.error(error.statusText);
+            });          
+        },
+        //获取不同癌种的样本数量数据
+        getDiftumNum(){
+            let obj={
+                "productId" : "2",
+                "userId":getCookie("userid")
+            };
+            data.getDiseaseStatistics(obj).then((data)=>{
+                if(data.returnCode==0 || data.returnCode==200){
+                    this.difTumNumList=data.data;
+                    this.drawDiseaseStatisticsPie();
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
+                }else {
+                    this.$Message.error(data.msg)
+                }
+            }).catch((error)=>{
+                this.$Message.error(error.statusText);
+            });
+        },
+        //当前月不同癌种的样本数量 柱状图
+        drawCurStatisticsBar(){
+            let echart = echarts.init(document.getElementById('curMouthNum'));
+            let diseaseName = this.getDiseaseName(this.curMouthList);
+            let diseaseCount = this.getDiseaseCount(this.curMouthList);
+            let option = {
+                xAxis: {
+                    data: diseaseName
+                },
+                yAxis: {
+                    splitLine: { show: false }  //改设置不显示坐标区域内的y轴分割线
+                },
+                legend: {
+                    bottom: "10",
+                    data: diseaseName,
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    },
+                },
+                series: [{
+                    name: "数量",
+                    type: 'bar',
+                    data: diseaseCount,
+                    //设置柱子的宽度
+                    barWidth: 30,
+                    //配置样式
+                    itemStyle: {
+                        //通常情况下：
+                        normal: {
+                            //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                            color: function(params) {
+                                var colorList = ['rgb(21,154,141)', 'rgb(215,57,73)', 'rgb(0,204,0)', 'rgb(53,160,214)', 'rgb(217,123,36)'];
+                                return colorList[params.dataIndex];
+                            }
+                        },
+                        //鼠标悬停时：
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    },
+                }],
+                //控制边距　
+                grid: {
+                    left: '10%',
+                    right: '10%',
+                    containLabel: true,
+                },
+            };
+            echart.clear();
+            echart.setOption(option);
+        },
+        //当前月不同癌种的样本数量 折线图
+        drawCurStatisticsLine(){
+            let echart = echarts.init(document.getElementById('curMouthNum'));
+            let diseaseName = this.getDiseaseName(this.curMouthList);
+            let diseaseCount = this.getDiseaseCount(this.curMouthList);
+            let option = {
+                xAxis: {
+                    type: 'category',
+                    data: diseaseName
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: diseaseCount,
+                    type: 'line'
+                }]
+            };
+            echart.clear();
+            echart.setOption(option);
+        },
+        //不同癌肿的样本数量 柱状图
+        drawDiseaseStatisticsBar(){
+            let echart = echarts.init(document.getElementById('difTumNum'));
+            let diseaseName=this.getDiseaseName(this.difTumNumList);
+            let diseaseCount= this.getDiseaseCount(this.difTumNumList);
+            let option = {
+                xAxis: {
+                    data: diseaseName
+                },
+                yAxis: {
+                    splitLine: { show: false }  //改设置不显示坐标区域内的y轴分割线
+                },
+                legend: {
+                    bottom:"10",
+                    data:diseaseName,
+                },
+                tooltip:{
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    },
+                },
+                series: [{
+                    name: "数量",
+                    type: 'bar',
+                    data: diseaseCount,
+                    //设置柱子的宽度
+                    barWidth: 30,
+                    //配置样式
+                    itemStyle: {
+                        //通常情况下：
+                        normal: {
+                            //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                            color: function(params) {
+                                var colorList = ['rgb(21,154,141)', 'rgb(215,57,73)', 'rgb(0,204,0)', 'rgb(53,160,214)' , 'rgb(217,123,36)'];
+                                return colorList[params.dataIndex];
+                            }
+                        },
+                        //鼠标悬停时：
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    },
+                }],
+                //控制边距　
+                grid: {
+                    left: '10%',
+                    right: '10%',
+                    containLabel: true,
+                },
+            };
+            echart.clear();
+            echart.setOption(option);
+        },
+        //不同癌肿的样本数量 饼状图
+        drawDiseaseStatisticsPie(){
+            let echart = echarts.init(document.getElementById('difTumNum'));
+            let diseaseName=this.getDiseaseName(this.difTumNumList);
+            let data= this.getData(this.difTumNumList);
+            let option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                legend: {
+                    bottom: 0,
+                    left: 'center',
+                    data: diseaseName
+                },
+                series: [
+                    {
+                        name: '癌种',
+                        type: 'pie',
+                        center: ['50%', '42%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                            },
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data: data
+                    }
+                ]
+            };
+            echart.clear();
+            echart.setOption(option);
+        },
+        //创建当前月 癌种数量数据结构
+        buildCurMouthList(data){
+            let _this=this;
+            for(var i=0;i<data.length;i++){
+                if(data[i].cancertype==_this.cancelStyle.lungCancel){
+                    data[i].cancertype="肺癌";
+                }else if(data[i].cancertype==_this.cancelStyle.gastricCancer){
+                    data[i].cancertype="胃癌";
+                }else if(data[i].cancertype==_this.cancelStyle.colorectalCancer){
+                    data[i].cancertype="结直肠癌";
+                };
+                var obj={
+                    "count":data[i].count,
+                   "name":data[i].cancertype
+                }
+                this.curMouthList.push(obj || {});
+            }
+        },
+        //获取不同癌种的名称
+        getDiseaseName(list){
+            let ret=[];
+            M.each(list, function(item) {
+                let name = item.name;
+                ret.push(name || "");
+            });
+            return ret;
+        },
+        //获取不同癌种的数量
+        getDiseaseCount(list){
+            let ret=[];
+            M.each(list, function(item) {
+                let count = item.count;
+                ret.push(count || "");
+            });
+            return ret;
+        },
+        //获取不同癌种的样本数量 饼状图数据结构
+        getData(list){
+            let ret=[];
+            M.each(list, function(item) {
+                let obj={
+                    "value": item.count,
+                    "name" : item.name
+                };
+                ret.push(obj || {});
+            });
+            return ret;
+        },
     },
     mounted(){
         this.load();
         this.getCounts();
+        //获取不同癌肿样本量
+        this.getDiftumNum();
+        this.getCurMouthNum();
     },
     components: {treeGrid},
     filters: {

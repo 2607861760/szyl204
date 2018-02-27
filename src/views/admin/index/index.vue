@@ -124,7 +124,7 @@ $right-main-bg: #ECF0F5;
                     </el-menu-item>
                 </Tooltip> 
                 <Tooltip placement="right" content="癌症" :disabled="!isCollapsed">
-                    <el-menu-item index="/admin/tumour">
+                    <el-menu-item index="/admin/tomour/index">
                         <Icon type="ios-pie" style="margin-right:8%;"></Icon>
                         <span>癌症</span>
                     </el-menu-item> 
