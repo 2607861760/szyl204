@@ -2,7 +2,35 @@
 // 引入公共变量及方法
 @import '~common/scss/public/base-url.scss';
 .disease_about {
-    
+    .patientInfo_title{
+        padding-left:22px;
+        height:40px;
+        line-height:40px;
+        font-size:18px;
+        color:#666;
+    }
+    .basic_info {
+        padding: 0 22px;
+        width: 100%;
+        background: #fff;
+        .basic_info_title{
+            height: 50px;
+            line-height: 50px;
+            background: #fff;
+            border-bottom: 1px solid #ccc;
+            span {
+                margin-left: 5px;
+            }
+        }
+        .basic_info_form {
+            padding-top: 20px;
+            margin-top: 0;
+            .basic_info_form_row {
+                height: 55px;
+                line-height: 55px;
+            }
+        }
+    }
     background: #fff;
     .disease_about_title {
         height: 50px;
@@ -67,21 +95,94 @@
         cursor: pointer;
         padding: 8px 0;
     }
+    .patient_info_footer{
+        button {
+            margin: 0 10px;
+        }
+        margin-bottom:10px;
+    }
 }
 </style>
 <template>
     <div class="disease_about">
+        <p class="patientInfo_title">病人信息</p>
+        <!--基本信息-->
+         <div class="basic_info">
+            <div class="basic_info_title">
+                <Icon type="android-person"></Icon>
+                <span>基本信息（ * 为必填项）</span>
+            </div>
+            <div>
+                <Form class="basic_info_form" :label-width="80" :model="formData" ref="modalForm">
+                    <Row type="flex" justify="center" class="basic_info_form_row">
+                        <Col class="row" span="7">
+                        <FormItem style="width:30%;"  required class="basic_info_form_item" label="病人编号">
+                            <Input style="max-width:200px" v-if="editType==0" v-model="formData.patientcode"></Input>
+                            <Input style="max-width:200px" v-if="editType==1" disabled="disabled" v-model="formData.patientcode"></Input>
+                        </FormItem>
+                        </Col>
+                        <Col class="row" span="7">
+                        <FormItem style="width:30%;" required class="basic_info_form_item" label="病人姓名">
+                            <Input style="max-width:200px" v-model="formData.patientname"></Input>
+                        </FormItem>
+                        </Col>
+                        <Col class="row" span="7">
+                        <FormItem style="width:30%;" required class="basic_info_form_item" label="性别">
+                            <Select style="max-width:200px" v-model="formData.gender" class="basic_info_form_select">
+                                <Option value="true">男</Option>
+                                <Option value="false">女</Option>
+                            </Select>
+                        </FormItem>
+                        </Col>
+                    </Row>
+                    <Row type="flex" justify="center" class="basic_info_form_row">
+                        <Col class="row" span="7">
+                            <FormItem style="width:30%;" class="basic_info_form_item" label="身份证号">
+                                <Input style="max-width:200px" v-model="formData.idcard"></Input>
+                            </FormItem>
+                        </Col>
+                        <Col class="row" span="7">
+                            <FormItem style="width:30%;" class="basic_info_form_item" label="出生日期">
+                                <DatePicker style="max-width:200px" type="date" v-model="formData.birthday"></DatePicker>
+                            </FormItem>
+                        </Col>
+                        <Col class="row" span="7">
+                            <FormItem style="width:30%;" class="basic_info_form_item" label="电话">
+                                <Input style="max-width:200px" v-model="formData.phone"></Input>
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row type="flex" justify="center" class="basic_info_form_row">
+                        <Col class="row" span="7">
+                        <FormItem style="width:30%;" label="种族">
+                            <Select style="max-width:200px" v-model="formData.nation" class="basic_info_form_select">
+                                <Option value="东亚">东亚</Option>
+                                <Option value="南亚">南亚</Option>
+                                <Option value="东南亚">东南亚</Option>
+                                <Option value="欧洲">欧洲</Option>
+                                <Option value="非洲">非洲</Option>
+                                <Option value="美洲">美洲</Option>
+                            </Select>
+                        </FormItem>
+                        </Col>
+                        <Col class="row" span="7"></Col>
+                        <Col class="row" span="7"></Col>
+                    </Row>
+                </Form>
+            </div>
+        </div>
+        <!--疾病信息-->
         <div class="disease_info">
             <div class="disease_about_title">
                 <Icon type="plus"></Icon>
                 <span>疾病信息</span>
             </div>
             <div>
-                <Form class="disease_info_form" :label-width="100" :model="diseaseInfoData" v-if="diseaseInfoData.pageModels && diseaseInfoData.pageModels.blockModels && diseaseInfoData.pageModels.blockModels.length>0">
-                    <Row type="flex" justify="start" class="disease_info_form_row" v-for="(item,index) of (diseaseInfoData.pageModels.blockModels)" :key="index">
+                <Form class="disease_info_form" :label-width="100" :model="diseaseInfoData" v-if="diseaseInfoData.pageModel && diseaseInfoData.pageModel.blockModels && diseaseInfoData.pageModel.blockModels.length>0">
+                    <Row type="flex" justify="start" class="disease_info_form_row" v-for="(item,index) of (diseaseInfoData.pageModel.blockModels)" :key="index">
                         <Col class="row" span="8" v-for="(list,indexs) of item.itemNodes" :key="indexs">
                             <FormItem v-if="list.itemType!=itemType.checkbox"  style="width:30%;" class="disease_info_form_item" :required="list.bRequired" :label="list.itemName">
-                                <Select style="max-width:200px" v-if="list.itemType==itemType.apiSelect" v-model="list.itemValue" @on-change="getTemplatebyid">
+                                <Select id="cancelSelect" style="max-width:200px" v-if="list.itemType==itemType.apiSelect" v-model="list.itemValue" @on-change="getTemplatebyid">
                                     <Option v-for="(cont,ids) of list.content" :key="ids" :value="cont.templeid">{{cont.name}}</Option>
                                 </Select>
                                  <Select style="max-width:100px" v-else-if="list.itemType==itemType.smallSelect" v-model="list.itemValue">
@@ -123,6 +224,7 @@
                 </Form>
             </div>
         </div>
+        <!--疾病风险因素-->
         <div style="width:100%;height:30px;background:#f5f7f9;"></div>
         <div class="disease_risk">
             <div class="disease_about_title">
@@ -130,9 +232,9 @@
                 <span>疾病风险因素</span>
             </div>
              <div>
-               <Form class="disease_info_form" :label-width="100" :model="diseaseInfoData" v-if="diseaseRiskInfoData.pageModels && diseaseInfoData.pageModels.blockModels && diseaseInfoData.pageModels.blockModels.length>0">
-                    <Row type="flex" justify="start" class="disease_info_form_row" v-for="(item,index) of (diseaseInfoData.pageModels.blockModels)" :key="index">
-                        <Col class="row" :span="colLength(item.itemNodes.length)" v-for="(list,indexs) of item.itemNodes" :key="indexs">
+               <Form class="disease_info_form" :label-width="100" :model="diseaseRiskInfoData" v-if="diseaseRiskInfoData.pageModel && diseaseRiskInfoData.pageModel.blockModels && diseaseRiskInfoData.pageModel.blockModels.length>0">
+                    <Row type="flex" justify="start" class="disease_info_form_row" v-for="(item,index) of (diseaseRiskInfoData.pageModel.blockModels)" track-by="$index" :key="index">
+                        <Col class="row" :span="colLength(item.itemNodes.length)" v-for="(list,indexs) of item.itemNodes" track-by="$index" :key="indexs">
                             <FormItem v-if="list.itemType!=itemType.checkbox" style="width:30%;" class="disease_info_form_item" :required="list.bRequired" :label="list.itemName">
                                 <!--可以调用接口的下拉菜单-->
                                 <Select style="max-width:200px" v-if="list.itemType==itemType.apiSelect" v-model="list.itemValue" @on-change="getTemplatebyid">
@@ -184,6 +286,15 @@
                 </Form>
             </div>
         </div>
+        <!--底部按钮-->
+        <div class="patient_info_footer">
+            <Row type="flex" justify="end" class="code-row-bg">
+                <Col col="8">
+                <Button type="ghost" @click="upStep">返回</Button>
+                <Button @click="nextStep" type="primary">下一步</Button>
+                </Col>
+            </Row>
+        </div>
     </div>
 </template>
 
@@ -193,6 +304,7 @@ import { data, task } from 'api/index.js'
 export default {
     data() {
         return {
+            editType:0,  //0 创建 ， 1 修改
             itemType:{
                "apiSelect":9,  //调用接口的下拉菜单
                "smallSelect":2,      //长度较小的下拉菜单
@@ -203,7 +315,14 @@ export default {
                "dataTimePick":7, //时间选择器
                "checkbox":8      //复选框
             },
-            diseaseInfoData:{},//疾病信息数据           
+            cancelStyle: {
+                "lungCancel" : "1",      //肺癌
+                "gastricCancer" : "2",   //胃癌
+                "colorectalCancer" : "3" //结直肠癌
+            },
+            formData: {},  //基本信息表单数据
+            diseaseInfoData:{},//疾病信息数据 
+            pageContentId:"",  //页面id          
             diseaseNameData:{},//疾病名称数据
             diseaseRiskInfoData:{},//疾病风险因素数据
             pageTempList:{},//当前页病人数据
@@ -253,6 +372,15 @@ export default {
         //获取模板页面数据
         getTemplatebyid(id){
             if(id==""){
+                this.diseaseInfoData={
+                   pageModel:{
+                       blockModels:[{
+                           itemNodes:[]
+                       }]
+                   } 
+                };
+                this.diseaseInfoData.pageModel.blockModels[0].itemNodes.unshift(this.diseaseNameData.blockModels[0].itemNodes[0]);
+                this.diseaseRiskInfoData={};
                 return;
             }
             let obj = {
@@ -261,6 +389,7 @@ export default {
                 "templateId":id
             }
             data.getPageTemplateById(obj).then((data)=> {
+                console.log(data);
                 if(data.returnCode=="200" || data.returnCode =="0"){
                     this.buildDiesaeData(data.data);
                     this.buildDieseaRiskInfoData(data.data);
@@ -295,49 +424,253 @@ export default {
         buildDiesaeData(data){
             this.diseaseInfoData = {};
             this.diseaseInfoData.templateId=data.templateId;
-            this.diseaseInfoData.pageModels=data.pageModels[0];
-            this.diseaseInfoData.pageModels.blockModels[0].itemNodes.unshift(this.diseaseNameData.blockModels[0].itemNodes[0]);
+            if(data.pageModels && data.pageModels.length>0){
+                this.diseaseInfoData.pageModel=data.pageModels[0];
+                this.diseaseInfoData.pageModel.blockModels[0].itemNodes.unshift(this.diseaseNameData.blockModels[0].itemNodes[0]);
+            }
         },
         //创建疾病相关数据结构
         buildDieseaRiskInfoData(data){
             this.diseaseRiskInfoData={};
-            if(data.pageModels.length>1){
-                this.diseaseRiskInfoData.pageModels = data.pageModels[1];
+            if(data.pageModels && data.pageModels.length>1){
+                this.diseaseRiskInfoData.templateId = data.templateId;
+                this.diseaseRiskInfoData.pageModel = data.pageModels[1];
             }
         },
         //创建疾病名称数据结构
         dobuildDiseaseNameData(data){
             this.diseaseInfoData={};
-            this.diseaseInfoData.pageModels={};
-            this.diseaseInfoData.pageModels.blockModels=[];
+            this.diseaseInfoData.pageModel={};
+            this.diseaseInfoData.pageModel.blockModels=[];
             if(data.pageModels && data.pageModels.length>0){
                 this.diseaseNameData= data.pageModels[0];
-                this.diseaseInfoData.pageModels=data.pageModels[0];
+                this.diseaseInfoData.pageModel=data.pageModels[0];
             }
         },
         //每行个数
         colLength(length){
             return Math.ceil(24/length);
         },
+        //返回
+        upStep() {
+            this.$router.push('/admin/tomour/index')
+        },
+        //下一步
+        nextStep() {
+            if(this.doRequired()){
+                return;
+            }
+            this.doSubmitData();
+        },
+        //验证必填
+        doRequired(){
+            let flag=false;
+            if(this.doBasicInfoRequired()){
+                flag=true;
+            }else if(this.doDeaseInfoReq()){
+                flag = true;
+            }else if(this.doDeaseRiskInfoReq()){
+                flag=true;
+            }
+            return flag;
+        },
+        //验证基本信息必填选项
+        doBasicInfoRequired(){
+            let ret=false;
+            if(this.formData=={}){
+                this.$Message.error("请填写病人基本信息内必填选项");
+                ret=true;
+            }else{
+                if(this.formData.patientcode=="" || !this.formData.patientcode || this.formData.patientcode==null){
+                    this.$Message.error("病人编号不能为空");
+                    ret=true;
+                }else if(this.formData.patientname == "" || !this.formData.patientname || this.formData.patientname == null){
+                    this.$Message.error("病人姓名不能为空");
+                    ret=true;
+                } else if (this.formData.gender == "" || !this.formData.gender || this.formData.gender == null) {
+                    this.$Message.error("病人性别不能为空");
+                    ret=true;
+                }
+            }
+            return ret;
+        },
+        //验证疾病信息必填选项
+        doDeaseInfoReq(){
+            let ret = false;
+            if(this.diseaseInfoData!={} && this.diseaseInfoData.pageModel){
+                for (var i = 0; i < this.diseaseInfoData.pageModel.blockModels.length; i++) {
+                    var bm = this.diseaseInfoData.pageModel.blockModels[i];
+                    if(bm && bm.itemNodes.length>0){
+                        for (var j = 0; j < bm.itemNodes.length; j++) {
+                            var item = bm.itemNodes[j];
+                            if (item.bRequired) {
+                                if (item.itemValue == null || item.itemValue == "") {
+                                    this.$Message.error(item.itemName + "不能为空");
+                                    ret = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return ret;
+        },
+        //验证疾病风险因素必填选项
+        doDeaseRiskInfoReq(){
+            let ret = false;
+            if(this.diseaseRiskInfoData!={} && this.diseaseRiskInfoData.pageModel){
+                for (var i = 0; i < this.diseaseRiskInfoData.pageModel.blockModels.length; i++) {
+                    var bm = this.diseaseRiskInfoData.pageModel.blockModels[i];
+                    if(bm && bm.itemNodes.length>0){
+                        for (var j = 0; j < bm.itemNodes.length; j++) {
+                            var item = bm.itemNodes[j];
+                            if (item.bRequired) {
+                                if (item.itemValue == null || item.itemValue == "") {
+                                    this.$Message.error(item.itemName + "不能为空");
+                                    ret = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return ret;
+        },
+        //提交表单
+        doSubmitData(){
+            let pageContents=[];
+            let postData={};
+            let templateId=this.diseaseInfoData.templateId;
+            let diseaseProfile=this.getCancelType();
+            pageContents.push(this.diseaseInfoData);
+            pageContents.push(this.diseaseRiskInfoData);
+            let patient=this.getBasicInfo();
+            let obj={
+                "productId":"2",
+                "projectId":this.$store.state.tumourPatientInfo.tumourProjectId,
+                "pageContentId": this.pageContentId,
+                "paientId": this.$store.state.tumourPatientInfo.tumourPatientId,
+                "templateId":templateId,
+                "patient":patient,
+                "pageContents":pageContents,
+                "diseaseProfile": diseaseProfile
+            };
+            console.log(obj);
+            if(this.editType == 0){
+                postData=data.newAddProject(obj);
+            }else if(this.editType == 1){
+                postData = data.updateProject(obj);
+            }
+            postData.then((data) => {
+                if (data.returnCode == "200" || data.returnCode == "0") {
+                   console.log(data);
+                   this.$Message.success(data.msg);
+                   this.$store.state.tumourPatientInfo.tumourPatientId=data.data.patient.patientid;
+                   this.$store.state.tumourPatientInfo.tumourpatientCode = data.data.patient.patientcode;
+                   this.$store.state.tumourPatientInfo.tumourProjectId= data.data.patient.projectid;
+                   this.$router.push('/admin/tomour/sample');
+                } else if (data.returnCode == 422 || data.returnCode == 204) {
+                    this.$router.push('/login')
+                } else {
+                    this.$Message.error(data.msg)
+                }
+            }).catch((error) => {
+                this.$Message.error(error.statusText);
+            })
+
+        },
+        //整理病人基本信息数据
+        getBasicInfo(){
+            if(this.formData.birthday){
+                this.formData.birthday=String(this.formData.birthday);
+            }
+            this.formData.patientid= this.$store.state.tumourPatientInfo.tumourPatientId;
+            console.log("基本信息")  
+            console.log(this.formData);
+            return this.formData;
+        },
+        //编辑状态下 获取页面数据
+        getPageDetail(){
+            let obj={
+                "userId": getCookie('userid'),
+                "productId": "2",
+                "patientcode":this.$store.state.tumourPatientInfo.tumourpatientCode,
+                "patientid": this.$store.state.tumourPatientInfo.tumourPatientId
+            };
+            console.log(obj);
+            data.getProjectDetail(obj).then((data) => {
+                if (data.returnCode == "200" || data.returnCode == "0") {
+                   console.log(data);
+                   this.buildPageData(data.data);
+                } else if (data.returnCode == 422 || data.returnCode == 204) {
+                    this.$router.push('/login')
+                } else {
+                    this.$Message.error(data.msg)
+                }
+            }).catch((error) => {
+                this.$Message.error(error.statusText);
+            })
+        },
+        //编辑状态下 构造页面数据
+        buildPageData(data){
+            this.formData=data.dchPatient;
+            this.formData.gender=String(this.formData.gender);
+            if(data && data.pageContents && data.pageContents.length>0){
+                //创建疾病名称数据结构
+                this.diseaseNameData= {
+                    blockModels:data.pageContents[0].pageModel.blockModels
+                }
+                this.diseaseInfoData=data.pageContents[0];
+                this.diseaseRiskInfoData=data.pageContents[1];
+            }
+            this.$store.state.tumourPatientInfo.tumourProjectId = data.dchPatient.projectid;
+            this.pageContentId=data.pageContentId;
+        },
+        //提交表单时 获取所选择的癌种
+        getCancelType(){
+            var  ret=null;
+            console.log($("#cancelSelect .ivu-select-selection").find("span[class=ivu-select-selected-value]").html());
+            var  text=   $("#cancelSelect .ivu-select-selection").find("span[class=ivu-select-selected-value]").html();
+            switch(text){
+                case "肺癌":
+                    ret= this.cancelStyle.lungCancel;
+                    break;
+                case "胃癌":
+                    ret=this.cancelStyle.gastricCancer;
+                    break;
+                case "结直肠癌":
+                    ret = this.cancelStyle.colorectalCancer;
+                    break;
+                default:
+                    ret=null;
+            }
+            return ret;
+        },
         //重置按钮
         resetActive() {
-
+        
         }
     },
     mounted() {
        
     },
     watch:{
-        diseaseInfoData(){
-            console.log(this.diseaseInfoData);
-        }
+        
     },
-    // updated(){
-    //     console.log(this.diseaseInfoData);
-    //     this.$emit('diseaseinfo-data', this.diseaseInfoData)
-    // },
     created() {
-        this.getDiseaseName();
+        console.log(this.$store.state.tumourPatientInfo.tumourPatientId);
+        console.log(this.$store.state.tumourPatientInfo.tumourpatientCode);
+        if(this.$store.state.tumourPatientInfo.tumourPatientId=="" && this.$store.state.tumourPatientInfo.tumourpatientCode==""){
+            this.editType=0;
+            this.getDiseaseName();
+            this.pageContentId="";
+        }else{
+            this.editType=1;
+            this.getPageDetail();
+        }
+        
     }
 }
 </script>

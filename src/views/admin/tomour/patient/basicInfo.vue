@@ -31,21 +31,21 @@
             <span>基本信息（ * 为必填项）</span>
         </div>
         <div>
-            <Form class="basic_info_form" :label-width="80" :model="formData" ref="modalForm" :rules="ruleValidate">
+            <Form class="basic_info_form" :label-width="80" :model="formData" ref="modalForm">
                 <Row type="flex" justify="center" class="basic_info_form_row">
                     <Col class="row" span="7">
-                    <FormItem style="width:30%;" class="basic_info_form_item" label="病人编号" prop="patientCode">
-                        <Input style="max-width:200px" v-model="formData.sampleCode"></Input>
+                    <FormItem style="width:30%;" class="basic_info_form_item" label="病人编号">
+                        <Input style="max-width:200px" v-model="formData.patientcode"></Input>
                     </FormItem>
                     </Col>
                     <Col class="row" span="7">
-                    <FormItem style="width:30%;" class="basic_info_form_item" label="病人姓名" prop="patientName">
-                        <Input style="max-width:200px" v-model="formData.sampleFrom"></Input>
+                    <FormItem style="width:30%;" class="basic_info_form_item" label="病人姓名">
+                        <Input style="max-width:200px" v-model="formData.patientname"></Input>
                     </FormItem>
                     </Col>
                     <Col class="row" span="7">
-                    <FormItem style="width:30%;" class="basic_info_form_item" label="性别" prop="sex">
-                        <Select style="max-width:200px" v-model="formData.sex" class="basic_info_form_select">
+                    <FormItem style="width:30%;" class="basic_info_form_item" label="性别">
+                        <Select style="max-width:200px" v-model="formData.gender" class="basic_info_form_select">
                             <Option value="0">男</Option>
                             <Option value="1">女</Option>
                         </Select>
@@ -55,24 +55,24 @@
                 <Row type="flex" justify="center" class="basic_info_form_row">
                     <Col class="row" span="7">
                         <FormItem style="width:30%;" class="basic_info_form_item" label="身份证号">
-                            <Input style="max-width:200px" v-model="formData.patientIdNumber"></Input>
+                            <Input style="max-width:200px" v-model="formData.idcard"></Input>
                         </FormItem>
                     </Col>
                     <Col class="row" span="7">
                         <FormItem style="width:30%;" class="basic_info_form_item" label="出生日期">
-                            <DatePicker style="max-width:200px" type="date"></DatePicker>
+                            <DatePicker style="max-width:200px" type="date" v-model="formData.birthday"></DatePicker>
                         </FormItem>
                     </Col>
                     <Col class="row" span="7">
                         <FormItem style="width:30%;" class="basic_info_form_item" label="电话">
-                            <Input style="max-width:200px" v-model="formData.telNumber"></Input>
+                            <Input style="max-width:200px" v-model="formData.phone"></Input>
                         </FormItem>
                     </Col>
                 </Row>
                 <Row type="flex" justify="center" class="basic_info_form_row">
                     <Col class="row" span="7">
                     <FormItem style="width:30%;" label="种族">
-                        <Select style="max-width:200px" class="basic_info_form_select">
+                        <Select style="max-width:200px" v-model="formData.nation" class="basic_info_form_select">
                             <Option value="0">东亚</Option>
                             <Option value="1">南亚</Option>
                             <Option value="2">东南亚</Option>
@@ -95,25 +95,6 @@ export default {
     data() {
         return {
             formData: {},  //表单数据
-            //验证必填
-            ruleValidate: {
-                patientCode: [{
-                    required: true,
-                    message: '病人编号不能为空'
-                }
-                ],
-                patientName: [{
-                    required: true,
-                    message: '病人姓名不能为空'
-                }
-                ],
-                sex: [{
-                    required: true,
-                    message: '病人姓名不能为空'
-                }
-                ]
-            },
-
         }
     },
     methods: {
