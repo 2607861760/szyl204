@@ -92,10 +92,10 @@ import {data} from 'api/index.js'
             // 获得服务上传列表
             _getForldList() {
                 let obj={
-                    "path":"/storage/serverData/",
+                    "path":"/opt/serverData/",
                     // "path":"/opt/NfsDir/PublicDir/demo/",
                     // /opt/NfsDir/PublicDir/demo/  电信云
-                    // /storage/serverData/   159
+                    // /opt/serverData/   159
                     "userId":getCookie("userid"),
                     "productId":this.$store.state.projectid,
                     "type":"1"
@@ -122,10 +122,10 @@ import {data} from 'api/index.js'
             // 获得硬盘列表
             _getServerList() {
                 let obj={
-                    "path":"/storage/serverData/",
+                    "path":"/opt/serverData/",
                     // "path":"/opt/NfsDir/PublicDir/demo/",
                     // /opt/NfsDir/PublicDir/demo/  电信云
-                    // /storage/serverData/   159
+                    // /opt/serverData/   159
                     "userId":getCookie("userid"),
                     "productId":this.$store.state.projectid,
                     "type":"1"

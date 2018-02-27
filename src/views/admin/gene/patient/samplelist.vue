@@ -669,10 +669,10 @@ export default{
         // 获得服务
         _getServerDataList() {
             let obj={
-                "path":"/storage/serverData/",
+                "path":"/opt/serverData/",
                 // "path":"/opt/NfsDir/PublicDir/demo/",
                             // /opt/NfsDir/PublicDir/demo/  电信云
-                            // /storage/serverData/   159
+                            // /opt/serverData/   159
                 "userId":getCookie("userid"),
                 "productId":"1",
                 "type":"2"
@@ -692,10 +692,10 @@ export default{
         // 获得本地
         _getLocalDataList(){
             let obj={
-                "path":"/storage/serverData/",
+                "path":"/opt/serverData/",
                 // "path":"/opt/NfsDir/PublicDir/demo/",
                             // /opt/NfsDir/PublicDir/demo/  电信云
-                            // /storage/serverData/   159
+                            // /opt/serverData/   159
                 "userId":getCookie("userid"),
                 "productId":"1",
                 "type":"2"

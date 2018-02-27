@@ -669,13 +669,13 @@ export default{
         }
     },
     methods:{
-        // 获得本地/storage/serverData/
+        // 获得本地/opt/serverData/
         _getLocalDataList() {
             let obj={
-                "path":"/storage/serverData/",
+                "path":"/opt/serverData/",
                 // "path":"/opt/NfsDir/PublicDir/demo/",
                         // /opt/NfsDir/PublicDir/demo/  电信云
-                        // /storage/serverData/   159
+                        // /opt/serverData/   159
                 "userId":getCookie("userid"),
                 "productId":"1",
                 "type":"2"
@@ -697,13 +697,13 @@ export default{
             })
         },
         // 获得服务列表 /opt/NfsDir/PublicDir/demo/
-        // /storage/serverData/
+        // /opt/serverData/
         _getServerDataList() {
             let obj={
-                "path":"/storage/serverData/",
+                "path":"/opt/serverData/",
                 // "path":"/opt/NfsDir/PublicDir/demo/",
                         // /opt/NfsDir/PublicDir/demo/  电信云
-                        // /storage/serverData/   159
+                        // /opt/serverData/   159
                 "userId":getCookie("userid"),
                 "productId":"1",
                 "type":"2"

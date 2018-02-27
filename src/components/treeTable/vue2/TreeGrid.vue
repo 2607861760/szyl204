@@ -188,7 +188,7 @@ export default {
             }
             return false
         },
-        // 获得本地/storage/serverData/
+        // 获得本地/opt/serverData/
         _getLocalDataList(record) {
             let obj={
                 "path":record.path,

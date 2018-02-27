@@ -685,7 +685,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 let obj = {
                     "userId":getCookie('userid'),
                     "patientidList":this.patientidList || [],
-                    "deptidList":this.deptidList
+                    "deptidList":this.deptidList,
+                    "productId":"1" 
                 }
                 data.assignData(obj).then((data)=> {
                     if(data.returnCode==0 || data.returnCode==200) {
@@ -780,7 +781,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         // 获得组成员列表
         getDeptAndUser() {
             let obj = {
-                "userId": getCookie('userid')
+                "userId": getCookie('userid'),
+                "productId":"1" 
             }
             data.queryDeptAndUser(obj).then((data)=> {
                 if(data.returnCode==0 || data.returnCode==200){
@@ -847,7 +849,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             // let loadingInstance = Loading.service({target:document.querySelector(".mydata-content")});
             let obj = {
                 "userId":getCookie("userid"),
-                paientId:row.dchPatient.patientid
+                "paientId":row.dchPatient.patientid,
+                "productId":"1" 
             }
             // console.log(obj)
             this.dataloading=true;
@@ -913,13 +916,13 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             this.fileServerCategoryList=[];
             this.uploadDisabled=true;
         },
-        // 获得本地/storage/serverData/
+        // 获得本地/opt/serverData/
         _getLocalDataList() {
             let obj={
-                "path":"/storage/serverData/",
+                "path":"/opt/serverData/",
                 // "path":"/opt/NfsDir/PublicDir/demo/",
                         // /opt/NfsDir/PublicDir/demo/  电信云
-                        // /storage/serverData/   159
+                        // /opt/serverData/   159
                 "userId":getCookie("userid"),
                 "productId":"1",
                 "type":"2"
@@ -941,13 +944,13 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             })
         },
         // 获得服务列表 /opt/NfsDir/PublicDir/demo/
-        // /storage/serverData/
+        // /opt/serverData/
         _getServerDataList() {
             let obj={
-                "path":"/storage/serverData/",
+                "path":"/opt/serverData/",
                 // "path":"/opt/NfsDir/PublicDir/demo/",
                         // /opt/NfsDir/PublicDir/demo/  电信云
-                        // /storage/serverData/   159
+                        // /opt/serverData/   159
                 "userId":getCookie("userid"),
                 "productId":"1",
                 "type":"2"
