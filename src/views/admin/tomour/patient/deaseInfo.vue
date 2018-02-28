@@ -111,6 +111,9 @@
             <div class="basic_info_title">
                 <Icon type="android-person"></Icon>
                 <span>基本信息（ * 为必填项）</span>
+                <div style="float:right;">
+                    <Button type="primary" v-if="showDelete" size="small" @click="delet">删除</Button>
+                </div>
             </div>
             <div>
                 <Form class="basic_info_form" :label-width="80" :model="formData" ref="modalForm">
@@ -175,12 +178,12 @@
         <div class="disease_info">
             <div class="disease_about_title">
                 <Icon type="plus"></Icon>
-                <span>疾病信息</span>
+                <span>疾病信息（ * 为必填项）</span>
             </div>
             <div>
                 <Form class="disease_info_form" :label-width="100" :model="diseaseInfoData" v-if="diseaseInfoData.pageModel && diseaseInfoData.pageModel.blockModels && diseaseInfoData.pageModel.blockModels.length>0">
                     <Row type="flex" justify="start" class="disease_info_form_row" v-for="(item,index) of (diseaseInfoData.pageModel.blockModels)" :key="index">
-                        <Col class="row" span="8" v-for="(list,indexs) of item.itemNodes" :key="indexs">
+                        <Col class="row" :span="colLength(item.itemNodes.length)" v-for="(list,indexs) of item.itemNodes" :key="indexs">
                             <FormItem v-if="list.itemType!=itemType.checkbox"  style="width:30%;" class="disease_info_form_item" :required="list.bRequired" :label="list.itemName">
                                 <Select id="cancelSelect" style="max-width:200px" v-if="list.itemType==itemType.apiSelect" v-model="list.itemValue" @on-change="getTemplatebyid">
                                     <Option v-for="(cont,ids) of list.content" :key="ids" :value="cont.templeid">{{cont.name}}</Option>
@@ -212,11 +215,11 @@
                                         </Row>
                                     </div>
                                 </Poptip>
-                                <Input v-else-if="list.itemType==itemType.input"  v-model="list.itemValue"></Input>
+                                <Input style="max-width:200px;" v-else-if="list.itemType==itemType.input"  v-model="list.itemValue"></Input>
                                 <Input v-else-if="list.itemType==itemType.textarea" type="textarea" style="margin-bottom:10px;"  v-model="list.itemValue"></Input>
                                 <DatePicker v-else-if="list.itemType==itemType.dataTimePick" type="date" style="max-width: 200px" v-model="list.itemValue"></DatePicker>
                             </FormItem>
-                            <FormItem v-else  style="width:30%;" class="disease_info_form_item" :required="list.bRequired">
+                            <FormItem v-else  style="width:30%;" class="disease_info_form_item" :required="list.bRequired" label=" ">
                                 <Checkbox v-if="list.itemType==itemType.checkbox"  v-model="list.itemValue">{{list.itemName}}</Checkbox>
                             </FormItem>
                         </Col>
@@ -229,7 +232,7 @@
         <div class="disease_risk">
             <div class="disease_about_title">
                 <Icon type="flash"></Icon>
-                <span>疾病风险因素</span>
+                <span>疾病风险因素（ * 为必填项）</span>
             </div>
              <div>
                <Form class="disease_info_form" :label-width="100" :model="diseaseRiskInfoData" v-if="diseaseRiskInfoData.pageModel && diseaseRiskInfoData.pageModel.blockModels && diseaseRiskInfoData.pageModel.blockModels.length>0">
@@ -271,13 +274,13 @@
                                     </div>
                                 </Poptip>
                                 <!--文本框-->
-                                <Input v-else-if="list.itemType==itemType.input"  v-model="list.itemValue"></Input>
+                                <Input style="max-width:200px;" v-else-if="list.itemType==itemType.input"  v-model="list.itemValue"></Input>
                                 <!--文本域-->
                                 <Input v-else-if="list.itemType==itemType.textarea" type="textarea" style="margin-bottom:10px;"  v-model="list.itemValue"></Input>
                                 <!--日期选择器-->
-                                <DatePicker v-else-if="list.itemType==itemType.dataTimePick" type="date" style="max-width: 200px" v-model="list.itemValue"></DatePicker>
+                                <DatePicker  v-else-if="list.itemType==itemType.dataTimePick" type="date" style="max-width: 200px" v-model="list.itemValue"></DatePicker>
                             </FormItem>
-                            <FormItem v-else  style="width:30%;" class="disease_info_form_item" :required="list.bRequired">
+                            <FormItem v-else  style="width:30%;" class="disease_info_form_item" :required="list.bRequired" label=" ">
                                 <!--复选框-->
                                 <Checkbox v-if="list.itemType==itemType.checkbox"  v-model="list.itemValue">{{list.itemName}}</Checkbox>
                             </FormItem>
@@ -290,11 +293,18 @@
         <div class="patient_info_footer">
             <Row type="flex" justify="end" class="code-row-bg">
                 <Col col="8">
-                <Button type="ghost" @click="upStep">返回</Button>
-                <Button @click="nextStep" type="primary">下一步</Button>
+                    <Button type="ghost" @click="upStep">返回</Button>
+                    <Button @click="nextStep" type="primary">下一步</Button>
                 </Col>
             </Row>
         </div>
+        <!--删除提示-->
+        <Modal v-model="removeModel" title="删除提示" width="300" :mask-closable="false">
+            <p style="padding:20px;text-align:center;">您确定要删除这条信息吗？</p>
+            <div class="fastq-footer">
+                <Button size="small" type="primary" @click="saveInfoClick">确定</Button>
+            </div>
+        </Modal>
     </div>
 </template>
 
@@ -304,7 +314,10 @@ import { data, task } from 'api/index.js'
 export default {
     data() {
         return {
+            idList : [], //删除病例
+            showDelete:false,//是否显示删除按钮
             editType:0,  //0 创建 ， 1 修改
+            removeModel:false,
             itemType:{
                "apiSelect":9,  //调用接口的下拉菜单
                "smallSelect":2,      //长度较小的下拉菜单
@@ -358,6 +371,35 @@ export default {
             if (column.id !== "el-table_1_column_4") {
                 $(cell).addClass("cell_active");
             }
+        },
+        //点击删除按钮
+        delet(){ 
+            this.idList = [];
+            this.idList.push(this.$store.state.tumourPatientInfo.tumourPatientId);
+            this.removeModel=true;
+        },
+        //点击删除确定按钮
+        saveInfoClick(){
+            let obj = {
+                "userId": getCookie("userid"),
+                "idList": this.idList,
+                "productId": "2"
+            }
+            console.log(1)
+            data.deletePatientById(obj).then((data) => {
+                console.log(data)
+                if (data.returnCode == 0 || data.returnCode == 200) {
+                    if (data.msg == "成功") {
+                        this.$Message.success(data.msg);
+                        this.$router.push('/admin/tomour/index');
+                    }
+                } else if (data.returnCode == 422 || data.returnCode == 204) {
+                    this.$router.push('/login')
+                } else {
+                    this.$Message.error(data.msg)
+                }
+                this.removeModel = false;
+            })
         },
         //合并单元格
         spanMethod({ row, column, rowIndex, columnIndex }) {
@@ -664,10 +706,12 @@ export default {
         console.log(this.$store.state.tumourPatientInfo.tumourpatientCode);
         if(this.$store.state.tumourPatientInfo.tumourPatientId=="" && this.$store.state.tumourPatientInfo.tumourpatientCode==""){
             this.editType=0;
+            this.showDelete=false;
             this.getDiseaseName();
             this.pageContentId="";
         }else{
             this.editType=1;
+            this.showDelete=true;
             this.getPageDetail();
         }
         

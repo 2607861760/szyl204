@@ -387,86 +387,83 @@
             </div>
         </Modal>
         <!--新建样本/编辑样本-->
-        <Modal width="835px" v-model="sampleEdit" :mask-closable="false" >
-            <div class="sample-title">样本信息</div>
-                <div class="sample-main">
-                    <div class="stitle">
-                        <Icon type="clipboard" style="font-size:22px;"></Icon>
-                        <span style="padding-left:5px;">样本信息（*为必填项）</span>
-                    </div>
-                    <div class="sample-inner">
-                        <Form :model="sampleInfo" ref="sampleInfo" :rules="ruleCustom" label-position="left" :label-width="110" inline>
-                            <Row>
-                                <Col class="tables">
-                                    <FormItem label="样本编号" style="width:30%;" prop="samplecode">
-                                        <Input v-model="sampleInfo.samplecode"></Input>
-                                    </FormItem>
-                                    <FormItem label="取样日期" style="width:30%;">
-                                        <DatePicker type="date" v-model="takendate"></DatePicker>
-                                    </FormItem>
-                                </Col>
-                                <Col class="tables">
-                                    <FormItem label="收样日期" style="width:30%;">
-                                        <DatePicker type="date" v-model="receivedate"></DatePicker>
-                                    </FormItem>
-                                    <FormItem label="测序日期" style="width:30%;">
-                                        <DatePicker type="date" v-model="seqdate"></DatePicker>
-                                    </FormItem>
-                                </Col>
-                                <Col class="tables">
-                                    <FormItem label="样本来源" style="width:30%;" prop="sampletype">
-                                        <Select v-model="sampleInfo.sampletype">
-                                            <Option v-for="item in sampletype" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                                        </Select>
-                                    </FormItem>
-                                    <FormItem label="样本类型" style="width:30%;" prop="samplesource">
-                                        <Select v-model="sampleInfo.samplesource">
-                                            <Option v-for="item in samplesource" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                                        </Select>
-                                    </FormItem>
-                                </Col>
-                                <Col class="tables">
-                                    <FormItem label="测序平台" style="width:30%;">
-                                        <Select v-model="sampleInfo.platform">
-                                            <Option v-for="item in platform" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                                        </Select>
-                                    </FormItem>
-                                    <FormItem label="测序区域" style="width:30%;" prop="region">
-                                        <Select v-model="sampleInfo.region">
-                                            <Option v-for="item in region" :value="item.value" :key="item.value" :disabled="item.disabled">{{ item.label }}</Option>
-                                        </Select>
-                                    </FormItem>
-                                </Col>
-                                <Col class="tables">
-                                    <FormItem label="测序类型" style="width:30%;">
-                                        <Select v-model="sampleInfo.seqtype">
-                                            <Option v-for="item in seqtype" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                                        </Select>
-                                    </FormItem>
-                                    <FormItem label="变异类型检测" style="width:30%;" prop="seqtarget">
-                                        <Select v-model="sampleInfo.seqtarget">
-                                            <Option v-for="item in seqtarget" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                                        </Select>
-                                    </FormItem>
-                                </Col>
-                            </Row>
-                        </Form>
-                    </div>
-                </div>
-                <div class="sample-footer">
-                    <Row :gutter="16">
-                        <Col span="8" pull="7">
-                            <div class="add-save">
-                                <Button type="primary" @click="keep('sampleInfo')">保存</Button> 
-                            </div>
-                        </Col>
-                        <Col span="8" pull="1">
-                            <div class="add-upload">
-                                <Button type="primary" @click="uploadSample" >上传</Button> 
-                            </div>
-                        </Col>
-                    </Row> 
-                </div>
+        <Modal width="835px" v-model="sampleEdit" :mask-closable="false" @on-cancel="resetForm">
+            
+    <div class="sample-title">样本信息</div>
+    <div class="sample-main">
+        <div class="stitle">
+            <Icon type="clipboard" style="font-size:22px;"></Icon>
+            <span style="padding-left:5px;">样本信息（*为必填项）</span>
+        </div>
+        <div class="sample-inner">
+            <Form :model="sampleInfo" label-position="left" ref="modelForm" :label-width="110" inline :rules="ruleCustom">
+                <Row>
+                    <Col class="tables">
+                        <FormItem label="肿瘤分类" style="width:30%;" prop="region">
+                            <Select v-model="sampleInfo.region">
+                                <Option v-for="item in region" :value="item.name" :key="item.value">{{ item.name }}</Option>
+                            </Select>
+                        </FormItem>
+                        <FormItem label="样本编号" style="width:30%;" prop="samplecode">
+                            <Input v-model="sampleInfo.samplecode"></Input>
+                        </FormItem>
+                    </Col>
+                    <Col class="tables">
+                        <FormItem label="样本来源" style="width:30%;" prop="samplesource">
+                            <Select v-model="sampleInfo.samplesource">
+                                <Option v-for="item in samplesource" :value="item.name" :key="item.value">{{ item.name }}</Option>
+                            </Select>
+                        </FormItem>
+                        <FormItem label="样本类型" style="width:30%;" prop="sampletype">
+                            <Select v-model="sampleInfo.sampletype">
+                                <Option v-for="item in sampletype" :value="item.name" :key="item.value">{{ item.name }}</Option>
+                            </Select>
+                        </FormItem>
+                    </Col>
+                    <Col class="tables">
+                        <FormItem label="测序日期" style="width:30%;">
+                            <DatePicker type="date" v-model="seqdate"></DatePicker>
+                        </FormItem>
+                        <FormItem label="取样日期" style="width:30%;">
+                            <DatePicker type="date" v-model="takendate"></DatePicker>
+                        </FormItem>
+                    </Col>
+                    <Col class="tables">
+                        <FormItem label="测序平台" style="width:30%;">
+                            <Select v-model="sampleInfo.platform">
+                                <Option v-for="item in platform" :value="item.name" :key="item.value">{{ item.name }}</Option>
+                            </Select>
+                        </FormItem>
+                        <FormItem label="收样日期" style="width:30%;">
+                            <DatePicker type="date" v-model="receivedate"></DatePicker>
+                        </FormItem>
+                    </Col>
+                    <Col class="tables">
+                        <FormItem label="测序类型" style="width:30%;">
+                            <Select v-model="sampleInfo.seqtype">
+                                <Option v-for="item in seqtype" :value="item.name" :key="item.value">{{ item.name }}</Option>
+                            </Select>
+                        </FormItem>
+                    </Col>
+                </Row>
+            </Form>
+        </div>
+    </div>
+    <div class="sample-footer">
+        <Row :gutter="16">
+            <Col span="8" pull="7">
+            <div class="add-save">
+                <Button type="primary" @click="keep('modelForm')">保存</Button>
+            </div>
+            </Col>
+            <Col span="8" pull="1">
+            <div class="add-upload">
+                <Button type="primary" @click="uploadSample">上传</Button>
+            </div>
+            </Col>
+        </Row>
+    </div>
+
         </Modal>
 
         <!--样本文件信息-->
@@ -590,9 +587,6 @@ export default{
                 region:[
                     {required: true, message: '测序区域不能为空', trigger: 'blur' }
                 ],
-                seqtarget:[
-                    { required: true, message: '变异类型检测不能为空', trigger: 'blur' }
-                ]
             },
             takendate:'',  //日期
             receivedate:'',
@@ -602,78 +596,11 @@ export default{
                 "gastricCancer": "2",   //胃癌
                 "colorectalCancer": "3" //结直肠癌
             },
-            samplesource: [{  //样本类型下拉
-                value: '对照样本',
-                label: '对照样本'
-            }, {
-                value: '肿瘤样本',
-                label: '肿瘤样本'
-            }],
-            sampletype: [{   //样本来源下拉
-                value: '石蜡切片',
-                label: '石蜡切片'
-            }, {
-                value: '手术/穿刺组织',
-                label: '手术/穿刺组织'
-            }, {
-                value: '胸水',
-                label: '胸水'
-            }, {
-                value: '腹水',
-                label: '腹水'
-            }, {
-                value: '静脉血',
-                label: '静脉血'
-            }, {
-                value: '淋巴',
-                label: '淋巴'
-            }, {
-                value: '冰冻组织',
-                label: '冰冻组织'
-            }, {
-                value: '全血',
-                label: '全血'
-            }, {
-                value: '口腔拭子',
-                label: '口腔拭子'
-            }, {
-                value: '唾液',
-                label: '唾液'
-            }],
-            region: [{   //测序区域下拉
-                value: 'WES',
-                label: 'WES',
-                disabled:false
-                }, {
-                value: 'WGS',
-                label: 'WGS',
-                disabled:true
-                }, {
-                value: 'Panel',
-                label: 'Panel',
-                disabled:true
-            }],
-            platform: [{  //测序平台下拉菜单
-                value: 'Illumina',
-                label: 'Illumina'
-            }, {
-                value: 'Ion Torrent',
-                label: 'Ion Torrent'
-            }],
-            seqtarget: [{   //变异类型检测下拉菜单
-                value: '点突变+插入缺失',
-                label: '点突变+插入缺失'
-                }, {
-                value: '基因融合',
-                label: '基因融合'
-            }],
-            seqtype: [{  //测序类型下拉菜单
-                value: 'DNA',
-                label: 'DNA'
-            }, {
-                value: 'RNA',
-                label: 'RNA'
-            }],
+            samplesource: [],//样本来源下拉
+            sampletype: [],  //样本来源下拉
+            region: [],      //测序区域下拉
+            platform: [],    //测序平台下拉菜单
+            seqtype: [],     //测序类型下拉菜单
             sampleshow:false,   //点击样本编号 弹窗
             samplefile:[],  //样本文件信息弹窗信息
             upModal: false,   //点击上传 弹窗
@@ -706,6 +633,10 @@ export default{
         }
     },
     methods:{
+        //取消必填选项
+        resetForm() {
+            this.$refs.modelForm.resetFields();
+        },
         // 获得本地/opt/serverData/
         _getLocalDataList() {
             let obj={
@@ -897,15 +828,64 @@ export default{
             })
         },
         edit(index,row){ //点击编辑
+            this.sampleInfo={};
             this.sampleEdit = true;
             this.upModal = false;
             this.patid=row.dchPatient.patientid;
             this.samid=row.dchSampleList[index].sampleid;
-            this.sampleInfo=row.dchSampleList[index];
+            this.sampleInfo=M.extend(this.sampleInfo,row.dchSampleList[index]);
             this.seqdate=row.dchSampleList[index].seqdate;
             this.takendate=row.dchSampleList[index].takendate;
             this.receivedate=row.dchSampleList[index].receivedate;
             console.log(JSON.stringify(this.sampleInfo))
+        },
+        keep(name) {  //点击保存
+            let obj = {
+                userId: getCookie("userid"),
+                patientid: this.patid,
+                productId: "2",
+                takendate: String(this.takendate),
+                receivedate: String(this.receivedate),
+                seqdate: String(this.seqdate)
+            }
+            M.extend(this.sampleInfo, obj)
+            this.$refs[name].validate((valid) => {
+                if (valid) {
+                    if (M.has(this.sampleInfo, 'sampleid') == true) {
+                        data.updateSample(this.sampleInfo).then((data) => {
+                            if (data.returnCode == 0 || data.returnCode == 200) {
+                                this.$Message.success(data.msg);
+                                this.uploadDisabled = false;
+                                this.load();
+                                this.sampleEdit = false;
+                            } else if (data.returnCode == 422 || data.returnCode == 204) {
+                                this.$router.push('/login')
+                            } else {
+                                this.$Message.error(data.msg)
+                            }
+
+                        })
+                    } else {
+                        data.addSample(this.sampleInfo).then((data) => {
+                            if (data.returnCode == 0 || data.returnCode == 200) {
+                                if (data.data == "null" || data.data == null) {
+                                    this.$Message.error(data.msg);
+                                } else {
+                                    this.$Message.success(data.msg);
+                                    this.uploadDisabled = false;
+                                    this.load();
+                                    this.samid = data.data.sampleid;
+                                    this.sampleEdit = false;
+                                }
+                            } else if (data.returnCode == 422 || data.returnCode == 204) {
+                                this.$router.push('/login')
+                            } else {
+                                this.$Message.error(data.msg)
+                            }
+                        })
+                    }
+                }
+            })
         },
         delet(index,row){  //删除样本
             this.removeModel=true;
@@ -956,6 +936,10 @@ export default{
             this.sampleEdit=true;
             this.samid='';
             this.sampleInfo={};
+            this.uploadDisabled = true;
+            this.takendate = "";
+            this.receivedate = "";
+            this.seqdate = "";
         },
         //点击病人编号
         clickPatientcode(row){
@@ -1307,13 +1291,79 @@ export default{
             });
             return ret;
         },
+        //获取样本下拉菜单
+        getSampleOption() {
+            let obj = {
+                "userId": getCookie("userid"),
+                "productId": "2"
+            };
+            data.getSampleOption(obj).then((data) => {
+                if (data.returnCode == "200" || data.returnCode == "0") {
+                    if (data.data) {
+                        this.buildSampleData(data.data);
+                    }
+                } else if (data.returnCode == 422 || data.returnCode == 204) {
+                    this.$router.push('/login')
+                } else {
+                    this.$Message.error(data.msg)
+                }
+            }).catch((error) => {
+                this.$Message.error(error.statusText);
+            })
+        },
+        //创建下拉菜单数据结构
+        buildSampleData(data) {
+            this.samplesource = data.sampleSourceLists;
+            this.sampletype = data.sampleTypeLists;
+            this.platform = data.seqPlatformLists;
+            this.seqtype = data.seqTypeLists;
+            this.region = data.tumorTypeLists;
+        },
+        //获取页面数据
+        getProjects(){
+            let obj = {
+                "userId": getCookie("userid"),
+                "productId": "2",
+                "type": "mm"
+            };
+            data.getProjects(obj).then((data) => {
+                if (data.returnCode == 200 || data.returnCode == 0) {
+                    if(data.data){
+                        this.initPage(data.data);
+                    }
+                } else if (data.returnCode == 422 || data.returnCode == 204) {
+                    this.$router.push('/login')
+                } else {
+                    this.$Message.error(data.msg)
+                }
+            }).catch((error) => {
+                this.$Message.error(error.statusText);
+            })
+        },
+        //初始化页面数据
+        initPage(data) {
+            //头部 待上传 已完成 报告下载数据
+            this.dataSize = data.projectCountModel;
+            // 不同癌种 的数量
+            this.difTumNumList = data.profileModelList;
+            //不同癌种饼状图
+            this.drawDiseaseStatisticsPie();
+            //当月癌种数量
+            this.buildCurMouthList(data.statisticsModelList);
+            //当月癌种数量 柱状图
+            this.drawCurStatisticsBar();
+        },
     },
     mounted(){
         this.load();
-        this.getCounts();
+        // this.getCounts();
         //获取不同癌肿样本量
-        this.getDiftumNum();
-        this.getCurMouthNum();
+        // this.getDiftumNum();
+        // this.getCurMouthNum();
+        //获取样本下拉菜单
+        this.getSampleOption();
+        //获取页面数据
+        this.getProjects();
     },
     components: {treeGrid},
     filters: {

@@ -285,6 +285,8 @@ export const data = {
             return Promise.resolve(res.data)
         })
     },
+
+    /**肿瘤二期数据接口**/
     /**
      * [data  获取疾病名称列表]
      * @param  {[type]} param [userId,productId,patientid,病人信息]
@@ -348,6 +350,33 @@ export const data = {
     //获取当前月不同癌种的样本数量
     statisticalchart(obj) {
         return $ajax.post(apiUrl.apiUrl + 'project/statisticalchart', obj).then(function(res) {
+            return Promise.resolve(res.data);
+        })
+    },
+    /**
+     * [data  获取样本信息]
+     * @param  {[type]} param [sampleid,病人id]
+     */
+    getSample(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'sample/getSample', obj).then(function(res) {
+            return Promise.resolve(res.data);
+        })
+    },
+    /**
+     * [data  获取新建样本时下拉菜单]
+     * @param  {[type]} param [productId 2,病人id]
+     */
+    getSampleOption(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'sample/getSampleOption', obj).then(function(res) {
+            return Promise.resolve(res.data);
+        })
+    },
+    /**
+     * [data  获取肿瘤二期首页数据]
+     * @param  {[type]} param [productId 2,type mm]
+     */
+    getProjects(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'project/getProjects', obj).then(function(res) {
             return Promise.resolve(res.data);
         })
     },

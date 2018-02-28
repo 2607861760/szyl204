@@ -1,23 +1,26 @@
 <style lang="scss">
-.upload {
-    padding: 10px 10px 30px;
-    background: #fff;
-    border-radius: 3px;
-    .ivu-btn {
-        background: #767cc3;
-        padding: 6px 20px;
-        color: #fff;
+    .build{
+        margin-top:10px;
     }
-  }
+    .upload {
+        padding: 10px 10px 30px;
+        background: #fff;
+        border-radius: 3px;
+        .ivu-btn {
+            background: #767cc3;
+            padding: 6px 20px;
+            color: #fff;
+        }
+    }
 
-.fun {
-    span {
-        color: #3c8dbc;
-        padding-right: 10px;
-        font-size: 12px;
-        cursor: pointer;
+    .fun {
+        span {
+            color: #3c8dbc;
+            padding-right: 10px;
+            font-size: 12px;
+            cursor: pointer;
+        }
     }
-}
 </style>
 <template>
 <div class="sample-info">
@@ -141,12 +144,12 @@
                             </FormItem>
                         </Col>
                         <Col class="tables">
-                            <FormItem label="样本来源" style="width:30%;" prop="sampletype">
+                            <FormItem label="样本来源" style="width:30%;" prop="samplesource">
                                 <Select v-model="sampleInfo.sampletype">
                                     <Option v-for="item in sampletype" :value="item.value" :key="item.value">{{ item.label }}</Option>
                                 </Select>
                               </FormItem>
-                            <FormItem label="样本类型" style="width:30%;" prop="samplesource">
+                            <FormItem label="样本类型" style="width:30%;" prop="sampletype">
                                 <Select v-model="sampleInfo.samplesource">
                                     <Option v-for="item in samplesource" :value="item.value" :key="item.value">{{ item.label }}</Option>
                                 </Select>
