@@ -194,16 +194,16 @@
                                 <Select style="max-width:200px" v-else-if="list.itemType==itemType.select" v-model="list.itemValue">
                                     <Option v-for="(cont,ids) of list.content" :key="ids" :value="cont">{{cont}}</Option>
                                 </Select>
-                                <Poptip placement="bottom-start" width="400" v-if="list.itemType==itemType.tnm">
+                                <Poptip placement="bottom" width="400" v-if="list.itemType==itemType.tnm">
                                     <Button class="tnm_btn" size="small" type="primary">点击选择</Button>
                                     <div class="api" slot="content">
                                         <el-table @cell-click="cellClick" :span-method="spanMethod" border="border" align="center" :data="tnmList">
-                                            <el-table-column prop="T" label="T"></el-table-column>
-                                            <el-table-column prop="N" label="N"></el-table-column>
-                                            <el-table-column prop="M" label="M"></el-table-column>
+                                            <el-table-column class-name="T" prop="T" label="T"></el-table-column>
+                                            <el-table-column class-name="N" prop="N" label="N"></el-table-column>
+                                            <el-table-column class-name="M" prop="M" label="M"></el-table-column>
                                             <el-table-column label="肿瘤分期">
                                                 <template slot-scope="scope">
-                                                    <span v-if="scope.$index==0">对应值</span>
+                                                    <span class="gtnm" v-if="scope.$index==0" v-model="list.itemValue.G"></span>
                                                 </template>
                                             </el-table-column>
                                         </el-table>
@@ -252,16 +252,16 @@
                                     <Option v-for="(cont,ids) of list.content" :key="ids" :value="cont">{{cont}}</Option>
                                 </Select>
                                 <!--tnm-->
-                                <Poptip placement="bottom-start" width="400" v-if="list.itemType==itemType.tnm">
+                                <Poptip placement="bottom" width="400" v-if="list.itemType==itemType.tnm">
                                     <Button class="tnm_btn" size="small" type="primary">点击选择</Button>
                                     <div class="api" slot="content">
                                         <el-table @cell-click="cellClick" :span-method="spanMethod" border="border" align="center" :data="tnmList">
-                                            <el-table-column prop="T" label="T"></el-table-column>
-                                            <el-table-column prop="N" label="N"></el-table-column>
-                                            <el-table-column prop="M" label="M"></el-table-column>
+                                            <el-table-column class-name="T" prop="T" label="T"></el-table-column>
+                                            <el-table-column class-name="N" prop="N" label="N"></el-table-column>
+                                            <el-table-column class-name="M" prop="M" label="M"></el-table-column>
                                             <el-table-column label="肿瘤分期">
                                                 <template slot-scope="scope">
-                                                    <span v-if="scope.$index==0">对应值</span>
+                                                    <span v-if="scope.$index==0">{{list.itemValue.group}}</span>
                                                 </template>
                                             </el-table-column>
                                         </el-table>
@@ -309,8 +309,9 @@
 </template>
 
 <script>
-import { getCookie } from '@/common/js/cookie.js';
+import { getCookie } from '@/common/js/cookie.js'
 import { data, task } from 'api/index.js'
+var  tnmData = require('./tnm.json');
 export default {
     data() {
         return {
@@ -361,6 +362,7 @@ export default {
                 "N": "Any N",
                 "M": ""
             }],
+            gtnm:{},
         }
     },
     methods: {
@@ -368,9 +370,56 @@ export default {
             //移除当前列所有的选中效果
             $("." + column.id).removeClass("cell_active");
             //如果当前列不是第四行 给当前选中的添加选中效果
-            if (column.id !== "el-table_1_column_4") {
+            if (column.id !== "el-table_1_column_4" && $(cell).text()!="") {
                 $(cell).addClass("cell_active");
             }
+            let obj={};
+            $(".cell_active").each(function(i,item){
+                if($(this).hasClass("T")){
+                    obj.T=$(this).text();
+                }else if($(this).hasClass("N")){
+                    obj.N=$(this).text();
+                }else if($(this).hasClass("M")){
+                    obj.M=$(this).text();
+                }
+            });
+            let gtnm=this.gtnm;
+            console.log(gtnm);
+            for(var key in gtnm){
+                var arr = this.gtnm[key];
+                for (var j = 0; j < arr.length; j++) {
+                    if (this.diff(arr[j], obj)) {
+                        obj.G=key;
+                        break;
+                    }
+                }
+            }
+            if(obj.G){
+               $(".gtnm").text(obj.G); 
+            }else{
+               $(".gtnm").text("无对应值");
+            }            
+        },
+        //判断两个对象是否相同
+        diff(obj1, obj2){
+            var o1 = obj1 instanceof Object;
+            var o2 = obj2 instanceof Object;
+            if (!o1 || !o2) {/*  判断不是对象  */
+                return obj1 === obj2;
+            }
+            if (Object.keys(obj1).length !== Object.keys(obj2).length) {
+                return false;
+            }
+            for (var attr in obj1) {
+                var t1 = obj1[attr] instanceof Object;
+                var t2 = obj2[attr] instanceof Object;
+                if (t1 && t2) {
+                    return diff(obj1[attr], obj2[attr]);
+                } else if (obj1[attr] !== obj2[attr]) {
+                    return false;
+                }
+            }
+            return true;
         },
         //点击删除按钮
         delet(){ 
@@ -383,10 +432,11 @@ export default {
             let obj = {
                 "userId": getCookie("userid"),
                 "idList": this.idList,
+                "projectId":this.$store.state.tumourPatientInfo.tumourProjectId,
                 "productId": "2"
             }
             console.log(1)
-            data.deletePatientById(obj).then((data) => {
+            data.deletePatientAndProjectById(obj).then((data) => {
                 console.log(data)
                 if (data.returnCode == 0 || data.returnCode == 200) {
                     if (data.msg == "成功") {
@@ -435,6 +485,7 @@ export default {
                 if(data.returnCode=="200" || data.returnCode =="0"){
                     this.buildDiesaeData(data.data);
                     this.buildDieseaRiskInfoData(data.data);
+                    this.doBuildTnm();
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
                 }else{
@@ -690,13 +741,44 @@ export default {
             }
             return ret;
         },
+        //创建tnm数据
+        buildTnmList(obj){
+            let tl = obj.T.length;
+            let nl = obj.N.length;
+            let ml = obj.M.length;
+            let len=this.getMax(tl,nl,ml);
+            this.tnmList = [];
+            for(var i=0; i<len; i++){
+                var tnmObj={
+                    "T" : obj.T[i] ? obj.T[i] : "",
+                    "N" : obj.N[i] ? obj.N[i] : "",
+                    "M" : obj.M[i] ? obj.M[i] : ""
+                };
+                this.tnmList.push(tnmObj);
+            }
+        },
+        //寻找三个数中最大值
+        getMax(a,b,c){
+            return a > b ? (a > c ? a : c) : (b > c ? b : c);
+        },
         //重置按钮
         resetActive() {
-        
-        }
+            $(".el-table__row td").removeClass("cell_active");
+        },
+        //下拉菜单变化时创建tnm
+        doBuildTnm(){
+            this.gtnm={};
+            let type=this.getCancelType();
+            for(var i=0;i<tnmData.length;i++){
+                if(type == tnmData[i].type){
+                    this.buildTnmList(tnmData[i].tnmData.tnm);
+                    this.gtnm=tnmData[i].tnmData.gtnm;
+                }
+            }
+        },
     },
     mounted() {
-       
+
     },
     watch:{
         

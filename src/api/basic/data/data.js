@@ -380,4 +380,14 @@ export const data = {
             return Promise.resolve(res.data);
         })
     },
+    /**
+     * [data  删除病人]
+     * @param  {[type]} param [productId,userId,idList]
+     * @return {[type]}   obj
+     */
+    deletePatientAndProjectById(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'patient/deletePatientAndProjectById', obj).then(function(res) {
+            return Promise.resolve(res.data)
+        })
+    },
 }
