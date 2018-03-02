@@ -40,59 +40,58 @@
 				<el-table-column prop="sampletype" label="样本类型" min-width="10%"></el-table-column>
 				<el-table-column prop="samplesource" label="样本来源" min-width="10%"></el-table-column>
 				<el-table-column prop="region" label="肿瘤分类" min-width="10%"></el-table-column>
-				<el-table-column label="传输状态"  min-width="10%">
+				<el-table-column label="传输状态" min-width="10%">
 					<template slot-scope="scope">
-						<div v-for="(list,index) in scope.row.dchSampleList" class="handle" >
-							<span class="status" v-if="list.fastq_R1!=null && list.fastq_R2!=null" style="color:#3B79BA;font-size:25px;">
-								<Tooltip content="上传完成" placement="top">
+							<span class="status" v-if="scope.row.fastq_R1!=null && scope.row.fastq_R2!=null" style="color:#3B79BA;font-size:25px;cursor:pointer;" title="上传完成">
+								<!-- <Tooltip content="上传完成" placement="top"> -->
 									<Icon type="checkmark-round"></Icon>
-								</Tooltip>
+								<!-- </Tooltip> -->
 							</span>
 							
-							<span class="status" style="color:#84BF66;font-size:25px;" v-else-if="list.fastq_R1==null && list.fastq_R2==null">
-								<Tooltip content="等待上传" placement="top"  >
+							<span class="status" style="color:#84BF66;font-size:25px;cursor:pointer;" v-else-if="scope.row.fastq_R1==null && scope.row.fastq_R2==null" title="等待上传">
+								<!-- <Tooltip content="等待上传" placement="top"  > -->
 										<Icon type="upload"></Icon>
-								</Tooltip>
+								<!-- </Tooltip> -->
 							</span> 
 							
-							<span class="status" v-else style="color:#3B79BA;font-size:25px;opacity:.5;">
-								<Tooltip content="正在上传" placement="top">
+							<span class="status" v-else style="color:#3B79BA;font-size:25px;opacity:.5;cursor:pointer;" title="正在上传">
+									<!-- <Tooltip content="正在上传" placement="top">  -->
 									<Icon type="upload"></Icon>
-								</Tooltip>
+									<!-- </Tooltip>  -->
 							</span>
-						</div>
+						<!-- </div> -->
 					</template>
 				</el-table-column>
-				<el-table-column label="分析状态"  min-width="10%">
+				<el-table-column label="分析状态" min-width="10%">
 					<template slot-scope="scope">
-						<div v-for="(list,index) in scope.row.dchSampleList" class="handle" >
-							<span class="status" v-if="list.samplestatus==1" style="color:#A5ACB3;font-size:25px;">
-								<Tooltip content="等待分析" placement="top">
+						<!-- <div v-for="(list,index) in scope.row" class="handle" > -->
+							<span class="status" v-if="scope.row.samplestatus==1" style="color:#A5ACB3;font-size:25px;" title="等待分析">
+								<!-- <Tooltip content="等待分析" placement="top"> -->
 									<Icon type="stats-bars"></Icon>
-								</Tooltip>
+								<!-- </Tooltip> -->
 							</span>
-							<span class="status" v-else-if="list.samplestatus==2" style="color:#3B79BA;font-size:25px;">
-								<Tooltip content="正在分析" placement="top">
+							<span class="status" v-else-if="scope.row.samplestatus==2" style="color:#3B79BA;font-size:25px;" title="正在分析">
+								<!-- <Tooltip content="正在分析" placement="top"> -->
 									<Icon type="stats-bars"></Icon>
-								</Tooltip>
+								<!-- </Tooltip> -->
 							</span>
-							<span class="status" v-else-if="list.samplestatus==3" style="color:#3B79BA;font-size:20px;">
-								<Tooltip content="分析完成" placement="top">
+							<span class="status" v-else-if="scope.row.samplestatus==3" style="color:#3B79BA;font-size:20px;" title="分析完成">
+								<!-- <Tooltip content="分析完成" placement="top"> -->
 									<Icon type="close-round"></Icon>
-								</Tooltip>
+								<!-- </Tooltip> -->
 							</span>
-							<span class="status" v-else-if="list.samplestatus==4" style="color:##d97b24;font-size:25px;">
-								<Tooltip content="分析失敗" placement="top">
+							<span class="status" v-else-if="scope.row.samplestatus==4" style="color:##d97b24;font-size:25px;" title="分析失敗">
+								<!-- <Tooltip content="分析失敗" placement="top"> -->
 									<Icon type="checkmark-round"></Icon>
-								</Tooltip>
+								<!-- </Tooltip> -->
 							</span>
-						</div>
+						<!-- </div> -->
 					</template>
 				</el-table-column>
 				<el-table-column label="操作" min-width="20%">
 					<template slot-scope="scope">
 						<div class="handle">
-							<span class="bian" @click="run(scope.$index,scope.row)" v-if="scope.row.isexecute==0">运行</span>
+							<span class="bian" @click="run(scope.$index,scope.row)" v-if="scope.row.fastq_R1!=null && scope.row.fastq_R2!=null">运行</span>
 							<span class="bian" @click="delet(scope.$index,scope.row)">删除</span>
 							<span class="bian" @click="edit(scope.$index,scope.row)">编辑</span>
 						</div>
@@ -610,6 +609,7 @@ export default {
 						this.samplelist = data.data;
 						this.total = data.data.length;
 					}
+					console.log(this.samplelist)
 				} else if (data.returnCode == 422 || data.returnCode == 204) {
 					this.$router.push('/login')
 				} else {

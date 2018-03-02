@@ -280,28 +280,28 @@
                             <el-table-column label="样本编号">
                                 <template slot-scope="scope">
                                     <div @click="addsample(scope.row)"style="font-size:12px;text-decoration:underline;color:#3c8dbc;cursor:pointer;" v-if="scope.row.dchSampleList.length==0">添加</div>
-                                    <div class="bian"v-for="(list,index) in scope.row.dchSampleList" style="cursor:pointer;"  :key="list.id" @click="samcode(index,scope.row)">{{ list.samplecode }}</div>
+                                    <div class="bian"v-for="(list,index) in scope.row.dchSampleList" style="cursor:pointer;color:#3c8dbc;"  :key="list.id" @click="samcode(index,scope.row)">{{ list.samplecode }}</div>
                                 </template>
                             </el-table-column>
                             <el-table-column label="传输状态">
                                 <template slot-scope="scope">
                                     <div v-for="(list,index) in scope.row.dchSampleList" class="handle" >
-                                        <span class="status" v-if="list.fastq_R1!=null && list.fastq_R2!=null" style="color:#3B79BA;font-size:25px;">
-                                            <Tooltip content="上传完成" placement="top">
+                                        <span class="status" v-if="list.fastq_R1!=null && list.fastq_R2!=null" style="color:#3B79BA;font-size:25px;cursor:pointer;" title="上传完成">
+                                            <!-- <Tooltip content="上传完成" placement="top"> -->
                                                 <Icon type="checkmark-round"></Icon>
-                                            </Tooltip>
+                                            <!-- </Tooltip> -->
                                         </span>
                                         
-                                        <span class="status" style="color:#84BF66;font-size:25px;" v-else-if="list.fastq_R1==null && list.fastq_R2==null">
-                                            <Tooltip content="等待上传" placement="top"  >
+                                        <span class="status" style="color:#84BF66;font-size:25px;cursor:pointer;" v-else-if="list.fastq_R1==null && list.fastq_R2==null" title="等待上传">
+                                            <!-- <Tooltip content="等待上传" placement="top"  > -->
                                                  <Icon type="upload"></Icon>
-                                            </Tooltip>
+                                            <!-- </Tooltip> -->
                                         </span> 
                                         
-                                        <span class="status" v-else style="color:#3B79BA;font-size:25px;opacity:.5;">
-                                            <Tooltip content="正在上传" placement="top">
+                                        <span class="status" v-else style="color:#3B79BA;font-size:25px;opacity:.5;cursor:pointer;" title="正在上传">
+                                             <!-- <Tooltip content="正在上传" placement="top">  -->
                                                 <Icon type="upload"></Icon>
-                                            </Tooltip>
+                                             <!-- </Tooltip>  -->
                                         </span>
                                     </div>
                                 </template>
@@ -309,25 +309,25 @@
                             <el-table-column label="分析状态">
                                 <template slot-scope="scope">
                                     <div v-for="(list,index) in scope.row.dchSampleList" class="handle" >
-                                        <span class="status" v-if="list.samplestatus==1" style="color:#A5ACB3;font-size:25px;">
-                                            <Tooltip content="等待分析" placement="top">
+                                        <span class="status" v-if="list.samplestatus==1" style="color:#A5ACB3;font-size:25px;" title="等待分析">
+                                            <!-- <Tooltip content="等待分析" placement="top"> -->
                                                 <Icon type="stats-bars"></Icon>
-                                            </Tooltip>
+                                            <!-- </Tooltip> -->
                                         </span>
-                                        <span class="status" v-else-if="list.samplestatus==2" style="color:#3B79BA;font-size:25px;">
-                                            <Tooltip content="正在分析" placement="top">
+                                        <span class="status" v-else-if="list.samplestatus==2" style="color:#3B79BA;font-size:25px;" title="正在分析">
+                                            <!-- <Tooltip content="正在分析" placement="top"> -->
                                                 <Icon type="stats-bars"></Icon>
-                                            </Tooltip>
+                                            <!-- </Tooltip> -->
                                         </span>
-                                        <span class="status" v-else-if="list.samplestatus==3" style="color:#3B79BA;font-size:20px;">
-                                            <Tooltip content="分析完成" placement="top">
+                                        <span class="status" v-else-if="list.samplestatus==3" style="color:#3B79BA;font-size:20px;" title="分析完成">
+                                            <!-- <Tooltip content="分析完成" placement="top"> -->
                                                 <Icon type="close-round"></Icon>
-                                            </Tooltip>
+                                            <!-- </Tooltip> -->
                                         </span>
-                                        <span class="status" v-else-if="list.samplestatus==4" style="color:##d97b24;font-size:25px;">
-                                            <Tooltip content="分析失敗" placement="top">
+                                        <span class="status" v-else-if="list.samplestatus==4" style="color:##d97b24;font-size:25px;" title="分析失敗">
+                                            <!-- <Tooltip content="分析失敗" placement="top"> -->
                                                 <Icon type="checkmark-round"></Icon>
-                                            </Tooltip>
+                                            <!-- </Tooltip> -->
                                         </span>
                                     </div>
                                 </template>
@@ -679,6 +679,31 @@ export default{
         //取消必填选项
         resetForm() {
             this.$refs.modelForm.resetFields();
+        },
+        samcode(index,row){ //点击样本编号
+            this.sampleshow=true;
+            this.samplefile=[];
+            let obj={
+                "userId":getCookie("userid"),
+                "sampleid":row.dchSampleList[index].sampleid,
+                "productId":"2"
+            }
+            console.log(obj)
+            data.getFileList(obj).then((data)=>{
+                if(data.returnCode || data.returnCode==200){
+                    if(data.data==null||data.data=="null"){
+                        this.$Message.error(data.msg);
+                    }else{
+                        this.samplefile=data.data;
+                    }
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
+                }else{
+                    this.$Message.error(data.msg)
+                }
+            })
+            // }
+            
         },
         // 获得本地/opt/serverData/
         _getLocalDataList() {

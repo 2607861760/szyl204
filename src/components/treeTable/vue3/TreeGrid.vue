@@ -4,13 +4,13 @@
             <el-table-column v-for="(column, index) in columns" :min-width="column.width" :key="column.dataIndex" :label="column.text">
                 <template slot-scope="scope">
                     <span v-if="spaceIconShow(index)" v-for="(space, levelIndex) in scope.row._level" class="ms-tree-space"></span>
-                    <Button type="text" class="boult" v-if="toggleIconShow(index,scope.row)" @click="toggle(scope.$index)" style="padding:6px 20px;">
-                        <span style="color:#F2B217;font-size:17px;">
+                     <Button type="text" class="boult" v-if="toggleIconShow(index,scope.row)" @click="toggle(scope.$index)" style="padding:6px 20px;"> 
+                        <span style="color:#F2B217;font-size:17px;" v-if="scope.$index==0">
                             <Icon type="folder"></Icon>
                         </span>
                     </Button>
                     <span style="color:#999999;margin-left:20px;font-size:17px;" v-if="scope.row.type!=0">
-                        <Icon type="document"></Icon>
+                         <Icon type="document" v-if="column.dataIndex!='size'"></Icon> 
                         <span class="ms-tree-space"></span>
                     </span>
                     <span>

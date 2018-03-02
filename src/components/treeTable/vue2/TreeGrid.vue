@@ -10,7 +10,7 @@
                         </span>
                     </Button>
                     <span style="color:#999999;margin-left:20px;font-size:17px;" v-if="scope.row.type!=0">
-                        <Icon type="document"></Icon>
+                        <Icon type="document" v-if="column.dataIndex!='size'"></Icon>
                         <span  class="ms-tree-space"></span>
                     </span>   
                     <span>
