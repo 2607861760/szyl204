@@ -500,7 +500,7 @@
             </Col>
             <Col span="8" pull="1">
             <div class="add-upload">
-                <Button type="primary" @click="uploadSample">上传</Button>
+                <Button v-if="!uploadDisabled" type="primary" @click="uploadSample">上传</Button>
             </div>
             </Col>
         </Row>
@@ -576,7 +576,7 @@ require('echarts/lib/component/legend')
 
 import {data} from 'api/index.js'
 import {getCookie} from '@/common/js/cookie.js'
-import treeGrid from '@/components/treeTable/vue2/TreeGrid'
+import treeGrid from '@/components/treeTable/vue3/TreeGrid'
 export default{
     name:'test',
     data(){
@@ -671,7 +671,8 @@ export default{
             fileCategoryList: [],                // 本地
             fileServerCategoryList: [],          // 服务
             pageIndex:1,
-            dataSize:{}
+            dataSize:{},
+            uploadDisabled:false,
         }
     },
     methods:{
@@ -899,7 +900,6 @@ export default{
                                 this.$Message.success(data.msg);
                                 this.uploadDisabled = false;
                                 this.load();
-                                this.sampleEdit = false;
                             } else if (data.returnCode == 422 || data.returnCode == 204) {
                                 this.$router.push('/login')
                             } else {
@@ -917,7 +917,6 @@ export default{
                                     this.uploadDisabled = false;
                                     this.load();
                                     this.samid = data.data.sampleid;
-                                    this.sampleEdit = false;
                                 }
                             } else if (data.returnCode == 422 || data.returnCode == 204) {
                                 this.$router.push('/login')

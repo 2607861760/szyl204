@@ -1,22 +1,24 @@
 <template>
     <div style='width:100%;border:1px solid #dfe6ec' class="tree">
-        <el-table   :data="data" border style="width: 1000px;margin:auto;" :row-style="showTr" :cell-style="cellcenter" @row-click="rowClick" ref="treeTable" highlight-current-row>
+        <el-table :data="data" border style="width: 100%" :row-style="showTr" :cell-style="cellcenter" @row-click="rowClick" ref="treeTable" highlight-current-row>
             <el-table-column v-for="(column, index) in columns" :min-width="column.width" :key="column.dataIndex" :label="column.text">
                 <template slot-scope="scope">
                     <span v-if="spaceIconShow(index)" v-for="(space, levelIndex) in scope.row._level" class="ms-tree-space"></span>
-                     <Button type="text" class="boult" v-if="toggleIconShow(index,scope.row)" @click="toggle(scope.$index)">
-                        <span v-if="!scope.row._expanded" @click="getChild(scope.$index)" style="padding: 6px 50px;">
-                    <Icon type="chevron-right"></Icon>
-                    </span>
-                        <span v-if="scope.row._expanded" style="padding: 6px 50px;">
-                            <Icon type="chevron-down"></Icon>
+                    <Button type="text" class="boult" v-if="toggleIconShow(index,scope.row)" @click="toggle(scope.$index)" style="padding:6px 20px;">
+                        <span style="color:#F2B217;font-size:17px;">
+                            <Icon type="folder"></Icon>
                         </span>
-                    </Button> 
-                       <span v-else-if="index===0" class="ms-tree-space"></span>   
-                     {{scope.row[column.dataIndex]}} 
-                </template> 
+                    </Button>
+                    <span style="color:#999999;margin-left:20px;font-size:17px;" v-if="scope.row.type!=0">
+                        <Icon type="document"></Icon>
+                        <span class="ms-tree-space"></span>
+                    </span>
+                    <span>
+                        {{scope.row[column.dataIndex]}}
+                    </span>
+                </template>
             </el-table-column>
-            <el-table-column label="操作" v-if="treeType === 'normal'" min-width="10%" >
+            <el-table-column label="操作" v-if="treeType === 'normal'" min-width="10%">
                 <template slot-scope="scope">
                     <div style="width:100%;text-align:center;">
                         <Button style="padding:2px 18px;font-size:12px;background:#4578ad;" type="primary" v-if="scope.row.type=='fastq'||scope.row.type=='vcf'||scope.row.type=='fq'" size="small" @click="copy(scope.row)">
@@ -30,8 +32,8 @@
 </template>
 <script>
 import Utils from '../utils/index.js'
-import { data} from 'api/index.js'
-import {getCookie} from '@/common/js/cookie.js'
+import { data } from 'api/index.js'
+import { getCookie } from '@/common/js/cookie.js'
 //  import Vue from 'vue'
 export default {
     name: 'tree-grid',
@@ -81,8 +83,8 @@ export default {
     },
     data() {
         return {
-            sids:"",
-            copyname:[],  //已添加文件
+            sids: "",
+            copyname: [],  //已添加文件
         }
     },
     computed: {
@@ -97,35 +99,35 @@ export default {
         }
     },
     methods: {
-        copy(row){
-            this.sids=this.$refs.treeTable.$parent.requestUrl;
-            let obj={
-                "path":row.path,
-                "fileName":row.filename,
-                "userId":getCookie("userid"),
-                "sampleid":this.sids,
-                "productId":"1"
+        copy(row) {
+            this.sids = this.$refs.treeTable.$parent.requestUrl;
+            let obj = {
+                "path": row.path,
+                "fileName": row.filename,
+                "userId": getCookie("userid"),
+                "sampleid": this.sids,
+                "productId": "2",
             }
-            let flag=true;
-            if(this.copyname.length==1 && this.copyname[0]==row.filename){
+            let flag = true;
+            if (this.copyname.length == 1 && this.copyname[0] == row.filename) {
                 this.$Message.error({
-                    content:'<div class="prompt">该文件已添加</div>',
+                    content: '<div class="prompt">该文件已添加</div>',
                     duration: 2
                 })
-            }else{
-                if(flag){
-                    flag=false;
-                    data.addFastq(obj).then((data)=>{
-                        if(data.returnCode=="0" || data.returnCode==0){
+            } else {
+                if (flag) {
+                    flag = false;
+                    data.addFastq(obj).then((data) => {
+                        if (data.returnCode == "0" || data.returnCode == 0) {
                             this.$Message.success({
-                                content:'<div class="prompt">'+data.msg+'</div>',
+                                content: '<div class="prompt">' + data.msg + '</div>',
                                 duration: 2
                             })
                             this.copyname.push(row.filename)
-                        }else {
+                        } else {
                             this.$Message.error(data.msg);
                         }
-                        flag=true;
+                        flag = true;
                     })
                 }
             }
@@ -140,14 +142,14 @@ export default {
         //     this.$emit("operate", name, row)
         // },
         //文件大小行，居中显示
-        cellcenter({row, column, rowIndex, columnIndex}){
+        cellcenter({ row, column, rowIndex, columnIndex }) {
             // console.log(columnIndex)
-            if(columnIndex==1){
+            if (columnIndex == 1) {
                 return 'text-align:center;'
             }
         },
         // 显示行
-        showTr: function({row, index}) {
+        showTr: function({ row, index }) {
             let show = (row._parent ? (row._parent._expanded && row._parent._show) : true)
             row._show = show
             return show ? '' : 'display:none;'
@@ -157,17 +159,18 @@ export default {
             let me = this
             let record = me.data[trIndex]
             record._expanded = !record._expanded
+            this.getChild(trIndex)
         },
         //获取下一级数据
-        getChild:function(trIndex){
+        getChild: function(trIndex) {
             let me = this
             let record = me.data[trIndex]
-            if(this.$store.state.treeGrid==1){
-                this._getForldList(record);
-            }else if(this.$store.state.treeGrid==2){
-                this._getForldList(record);
+            if (this.$store.state.treeGrid == 1) {
+                this._getLocalDataList(record);
+            } else if (this.$store.state.treeGrid == 2) {
+                this._getServerDataList(record);
             }
-            
+
         },
         // 显示层级关系的空格和图标
         spaceIconShow(index) {
@@ -180,76 +183,53 @@ export default {
         // 点击展开和关闭的时候，图标的切换
         toggleIconShow(index, record) {
             let me = this
-            if (me.treeStructure && record.status==0 && index===0) {
+            if (me.treeStructure && record.status == 0 && index === 0) {
                 return true
             }
             return false
         },
-        handleDelete() {
-            this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'error'
-            }).then(() => {
-                this.$message({
-                    type: 'success',
-                    message: '删除成功!'
-                })
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: '已取消删除'
-                })
-            })
-        },
         // 获得本地/opt/serverData/
-        _getLocalDataList() {
-            let obj={
-                "path":"/opt/serverData/",
-                // "path":"/opt/NfsDir/PublicDir/demo/",
-                        // /opt/NfsDir/PublicDir/demo/  电信云
-                        // /opt/serverData/   159
-                "userId":getCookie("userid"),
-                "productId":"1"
+        _getLocalDataList(record) {
+            let obj = {
+                "path": record.path,
+                "userId": getCookie("userid"),
+                "productId": this.$store.state.projectid,
+                "type": "2"
             }
-            data.getSingleForldList(obj).then((data)=>{
-                if(data.returnCode==0 || data.returnCode==200){
-                    if(M.isArray(data.data)) {
-                        this.fileCategoryList=data.data;
+            data.getSingleForldList(obj).then((data) => {
+                if (data.returnCode == 0 || data.returnCode == 200) {
+                    if (M.isArray(data.data)) {
+                        record.children = data.data;
                     }
-                }else if(data.returnCode==422 || data.returnCode==204){
+                } else if (data.returnCode == 422 || data.returnCode == 204) {
                     this.$router.push('/login')
-                }else{
+                } else {
                     this.$Message.error(data.msg)
                 }
-                
-            }).catch((error)=>{
+
+            }).catch((error) => {
 
             })
         },
-        // 获得服务列表 /opt/NfsDir/PublicDir/demo/
-        // /opt/serverData/
-        _getServerDataList() {
-            let obj={
-                "path":"/opt/serverData/",
-                // "path":"/opt/NfsDir/PublicDir/demo/",
-                        // /opt/NfsDir/PublicDir/demo/  电信云
-                        // /opt/serverData/   159
-                "userId":getCookie("userid"),
-                "productId":"1"
+        _getServerDataList(record) {
+            let obj = {
+                "path": record.path,
+                "userId": getCookie("userid"),
+                "productId": this.$store.state.projectid,
+                "type": "2"
             }
-            data.getSingleForldList(obj).then((data)=>{
-                    // console.log(data)
-                if(data.returnCode==0 || data.returnCode==200){
-                    if(M.isArray(data.data)) {
-                        this.fileServerCategoryList=data.data;
+            data.getSingleForldList(obj).then((data) => {
+                // console.log(data)
+                if (data.returnCode == 0 || data.returnCode == 200) {
+                    if (M.isArray(data.data)) {
+                        record.children = data.data;
                     }
-                }else if(data.returnCode==422 || data.returnCode==204){
+                } else if (data.returnCode == 422 || data.returnCode == 204) {
                     this.$router.push('/login')
-                }else{
+                } else {
                     this.$Message.error(data.msg)
                 }
-            }).catch((error)=>{
+            }).catch((error) => {
 
             })
         }

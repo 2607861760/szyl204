@@ -243,7 +243,7 @@
 </template>
 <script>
 import { data } from 'api/index.js'
-import treeGrid from '@/components/treeTable/vue2/TreeGrid'
+import treeGrid from '@/components/treeTable/vue3/TreeGrid'
 import { getCookie } from '@/common/js/cookie.js'
 export default {
 	name: "samplelist",
@@ -523,6 +523,7 @@ export default {
 		},
 		edit(index, row) {  //点击编辑
 			console.log(row);
+			this.samid= row.sampleid;
 			this.sampleid = row.sampleid;
 			this.uploadDisabled = false;
 			// this.$refs.tree.sid(row.sampleid);
