@@ -2,6 +2,10 @@
 // 引入公共变量及方法
 @import '~common/scss/public/base-url.scss';
 .disease_about {
+    .tnmSpan{
+        color:#1996cd;
+        margin:0 5px;
+    }
     .patientInfo_title{
         padding-left:22px;
         height:40px;
@@ -194,8 +198,12 @@
                                 <Select style="max-width:200px" v-else-if="list.itemType==itemType.select" v-model="list.itemValue">
                                     <Option v-for="(cont,ids) of list.content" :key="ids" :value="cont">{{cont}}</Option>
                                 </Select>
-                                <Poptip placement="bottom" width="400" v-if="list.itemType==itemType.tnm">
-                                    <Button class="tnm_btn" size="small" type="primary">点击选择</Button>
+                                <Poptip v-model="visible" placement="bottom" width="400" v-if="list.itemType==itemType.tnm">
+                                    <Button class="tnm_btn" @click="addTnmActive" size="small" type="primary">点击选择</Button>
+                                    <span class="tnmSpan">{{gtnmSelect.T}}</span>
+                                    <span class="tnmSpan">{{gtnmSelect.N}}</span>
+                                    <span class="tnmSpan">{{gtnmSelect.M}}</span>
+                                    <span class="tnmSpan">{{gtnmSelect.G}}</span>
                                     <div class="api" slot="content">
                                         <el-table @cell-click="cellClick" :span-method="spanMethod" border="border" align="center" :data="tnmList">
                                             <el-table-column class-name="T" prop="T" label="T"></el-table-column>
@@ -203,14 +211,14 @@
                                             <el-table-column class-name="M" prop="M" label="M"></el-table-column>
                                             <el-table-column label="肿瘤分期">
                                                 <template slot-scope="scope">
-                                                    <span class="gtnm" v-if="scope.$index==0" v-model="list.itemValue.G"></span>
+                                                    <span class="gtnm" v-if="scope.$index==0">{{gtnmSelect.G}}</span>
                                                 </template>
                                             </el-table-column>
                                         </el-table>
                                         <Row type="flex" justify="end" class="code-row-bg">
                                             <Col col="8">
                                             <Button @click="resetActive" type="ghost">重置</Button>
-                                            <Button type="primary">确定</Button>
+                                            <Button @click="closePop" type="primary">确定</Button>
                                             </Col>
                                         </Row>
                                     </div>
@@ -252,8 +260,12 @@
                                     <Option v-for="(cont,ids) of list.content" :key="ids" :value="cont">{{cont}}</Option>
                                 </Select>
                                 <!--tnm-->
-                                <Poptip placement="bottom" width="400" v-if="list.itemType==itemType.tnm">
+                                <Poptip v-model="visible" placement="bottom" width="400" v-if="list.itemType==itemType.tnm">
                                     <Button class="tnm_btn" size="small" type="primary">点击选择</Button>
+                                    <span class="tnmSpan">{{gtnmSelect.T}}</span>
+                                    <span class="tnmSpan">{{gtnmSelect.N}}</span>
+                                    <span class="tnmSpan">{{gtnmSelect.M}}</span>
+                                    <span class="tnmSpan">{{gtnmSelect.G}}</span>
                                     <div class="api" slot="content">
                                         <el-table @cell-click="cellClick" :span-method="spanMethod" border="border" align="center" :data="tnmList">
                                             <el-table-column class-name="T" prop="T" label="T"></el-table-column>
@@ -261,14 +273,14 @@
                                             <el-table-column class-name="M" prop="M" label="M"></el-table-column>
                                             <el-table-column label="肿瘤分期">
                                                 <template slot-scope="scope">
-                                                    <span v-if="scope.$index==0">{{list.itemValue.group}}</span>
+                                                    <span v-if="scope.$index==0">{{gtnmSelect.G}}</span>
                                                 </template>
                                             </el-table-column>
                                         </el-table>
                                         <Row type="flex" justify="end" class="code-row-bg">
                                             <Col col="8">
                                             <Button @click="resetActive" type="ghost">重置</Button>
-                                            <Button type="primary">确定</Button>
+                                            <Button @click="closePop" type="primary">确定</Button>
                                             </Col>
                                         </Row>
                                     </div>
@@ -316,6 +328,7 @@ export default {
     data() {
         return {
             idList : [], //删除病例
+            visible:false, //tnm是否显示
             showDelete:false,//是否显示删除按钮
             editType:0,  //0 创建 ， 1 修改
             removeModel:false,
@@ -341,31 +354,16 @@ export default {
             diseaseRiskInfoData:{},//疾病风险因素数据
             pageTempList:{},//当前页病人数据
             border: true,   //表格纵列 边框
-            tnmList: [{
-                "T": "TX",
-                "N": "N0",
-                "M": "M"
-            }, {
-                "T": "Tis",
-                "N": "N1",
-                "M": "M0"
-            }, {
-                "T": "T1a",
-                "N": "N2",
-                "M": "M1a"
-            }, {
-                "T": "T1b",
-                "N": "N3",
-                "M": "M1b"
-            }, {
-                "T": "T2a",
-                "N": "Any N",
-                "M": ""
-            }],
+            tnmList: [],
             gtnm:{},
+            gtnmSelect:{},
         }
     },
     methods: {
+        //关闭
+        closePop(){
+            this.visible=false;
+        },
         cellClick(row, column, cell, event) {
             //移除当前列所有的选中效果
             $("." + column.id).removeClass("cell_active");
@@ -384,7 +382,6 @@ export default {
                 }
             });
             let gtnm=this.gtnm;
-            console.log(gtnm);
             for(var key in gtnm){
                 var arr = this.gtnm[key];
                 for (var j = 0; j < arr.length; j++) {
@@ -398,7 +395,8 @@ export default {
                $(".gtnm").text(obj.G); 
             }else{
                $(".gtnm").text("无对应值");
-            }            
+            }
+            this.gtnmSelect=obj;            
         },
         //判断两个对象是否相同
         diff(obj1, obj2){
@@ -435,7 +433,6 @@ export default {
                 "projectId":this.$store.state.tumourPatientInfo.tumourProjectId,
                 "productId": "2"
             }
-            console.log(1)
             data.deletePatientAndProjectById(obj).then((data) => {
                 console.log(data)
                 if (data.returnCode == 0 || data.returnCode == 200) {
@@ -481,10 +478,10 @@ export default {
                 "templateId":id
             }
             data.getPageTemplateById(obj).then((data)=> {
-                console.log(data);
                 if(data.returnCode=="200" || data.returnCode =="0"){
                     this.buildDiesaeData(data.data);
                     this.buildDieseaRiskInfoData(data.data);
+                    this.gtnmSelect={};
                     this.doBuildTnm();
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
@@ -637,6 +634,7 @@ export default {
             let postData={};
             let templateId=this.diseaseInfoData.templateId;
             let diseaseProfile=this.getCancelType();
+            this.buildGtnmItemValue();
             pageContents.push(this.diseaseInfoData);
             pageContents.push(this.diseaseRiskInfoData);
             let patient=this.getBasicInfo();
@@ -650,7 +648,6 @@ export default {
                 "pageContents":pageContents,
                 "diseaseProfile": diseaseProfile
             };
-            console.log(obj);
             if(this.editType == 0){
                 postData=data.newAddProject(obj);
             }else if(this.editType == 1){
@@ -658,7 +655,6 @@ export default {
             }
             postData.then((data) => {
                 if (data.returnCode == "200" || data.returnCode == "0") {
-                   console.log(data);
                    this.$Message.success(data.msg);
                    this.$store.state.tumourPatientInfo.tumourPatientId=data.data.patient.patientid;
                    this.$store.state.tumourPatientInfo.tumourpatientCode = data.data.patient.patientcode;
@@ -674,29 +670,87 @@ export default {
             })
 
         },
+        //创建提交使用的tnm数据
+        buildGtnmItemValue(){
+            for(var i=0; i<this.diseaseInfoData.pageModel.blockModels.length;i++){
+                var bm=this.diseaseInfoData.pageModel.blockModels[i];
+                for(var k=0; k<bm.itemNodes.length;k++){
+                    var im=bm.itemNodes[k];
+                    if(im.itemType==this.itemType.tnm){
+                        im.itemValue=this.gtnmSelect;
+                        break;
+                    }
+                }
+            }
+        },
+        //创建tnm数据
+         buildGtnmSelect(data){
+             console.log(data);
+            for(var i=0; i<data.pageModel.blockModels.length;i++){
+                var bm=data.pageModel.blockModels[i];
+                console.log(bm);
+                for(var k=0; k<bm.itemNodes.length;k++){
+                    var im=bm.itemNodes[k];
+                    if(im.itemType==this.itemType.tnm){
+                       this.gtnmSelect= im.itemValue;
+                       break;
+                    }
+                }
+            }
+        },
+        //编辑状态下设置tnm选中状态
+        addTnmActive(){
+            let _this=this;
+            if(this.gtnmSelect != {}){
+                if(this.gtnmSelect.T){
+                     $(".T").each(function(){
+                        if($(this).text() == _this.gtnmSelect.T){
+                            $(this).addClass("cell_active");
+                        }
+                    })
+                }
+                if(this.gtnmSelect.N){
+                    $(".N").each(function(){
+                         console.log($(this).text())
+                        if($(this).text() == _this.gtnmSelect.N){
+                            $(this).addClass("cell_active");
+                        }
+                    })
+                }
+                if(this.gtnmSelect.M){
+                    $(".M").each(function(){
+                         console.log($(this).text())
+                        if($(this).text() == _this.gtnmSelect.M){
+                            $(this).addClass("cell_active");
+                        }
+                    })
+                }
+            }
+        },
         //整理病人基本信息数据
         getBasicInfo(){
             if(this.formData.birthday){
                 this.formData.birthday=String(this.formData.birthday);
             }
             this.formData.patientid= this.$store.state.tumourPatientInfo.tumourPatientId;
-            console.log("基本信息")  
-            console.log(this.formData);
             return this.formData;
         },
         //编辑状态下 获取页面数据
         getPageDetail(){
+            let _this=this;
             let obj={
                 "userId": getCookie('userid'),
                 "productId": "2",
                 "patientcode":this.$store.state.tumourPatientInfo.tumourpatientCode,
                 "patientid": this.$store.state.tumourPatientInfo.tumourPatientId
             };
-            console.log(obj);
             data.getProjectDetail(obj).then((data) => {
                 if (data.returnCode == "200" || data.returnCode == "0") {
-                   console.log(data);
-                   this.buildPageData(data.data);
+                    this.buildPageData(data.data);
+                   setTimeout(function(){
+                       _this.doBuildTnm();
+                       _this.buildGtnmSelect(data.data.pageContents[0]);
+                   },0);
                 } else if (data.returnCode == 422 || data.returnCode == 204) {
                     this.$router.push('/login')
                 } else {
@@ -763,11 +817,14 @@ export default {
         },
         //重置按钮
         resetActive() {
+            this.gtnmSelect={};
             $(".el-table__row td").removeClass("cell_active");
+            $(".gtnm").text("");
         },
         //下拉菜单变化时创建tnm
         doBuildTnm(){
             this.gtnm={};
+            this.resetActive();
             let type=this.getCancelType();
             for(var i=0;i<tnmData.length;i++){
                 if(type == tnmData[i].type){
@@ -778,10 +835,10 @@ export default {
         },
     },
     mounted() {
-
+        
     },
     watch:{
-        
+         
     },
     created() {
         console.log(this.$store.state.tumourPatientInfo.tumourPatientId);

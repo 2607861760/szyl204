@@ -383,7 +383,7 @@
              <div class="domain_echats"> 
                  <div class="domain_echats_graph">
                     <div class="domain_echats_header">
-                        <p class="domain_echats_title">不同癌种样本量</p>
+                        <p class="domain_echats_title">不同癌种数量</p>
                         <p class="domain_echats_exchange">
                             <span @click="drawDiseaseStatisticsPie"><Icon type="pie-graph"></Icon></span>
                             <span @click="drawDiseaseStatisticsBar"><Icon type="stats-bars"></Icon></span>
