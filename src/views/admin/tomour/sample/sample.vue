@@ -40,7 +40,7 @@
 				<el-table-column prop="sampletype" label="样本类型" min-width="10%"></el-table-column>
 				<el-table-column prop="samplesource" label="样本来源" min-width="10%"></el-table-column>
 				<el-table-column prop="region" label="肿瘤分类" min-width="10%"></el-table-column>
-				<el-table-column label="传输状态">
+				<el-table-column label="传输状态"  min-width="10%">
 					<template slot-scope="scope">
 						<div v-for="(list,index) in scope.row.dchSampleList" class="handle" >
 							<span class="status" v-if="list.fastq_R1!=null && list.fastq_R2!=null" style="color:#3B79BA;font-size:25px;">
@@ -63,7 +63,7 @@
 						</div>
 					</template>
 				</el-table-column>
-				<el-table-column label="分析状态">
+				<el-table-column label="分析状态"  min-width="10%">
 					<template slot-scope="scope">
 						<div v-for="(list,index) in scope.row.dchSampleList" class="handle" >
 							<span class="status" v-if="list.samplestatus==1" style="color:#A5ACB3;font-size:25px;">
@@ -277,11 +277,11 @@ export default {
 					dataIndex: 'size',
 					width: '10'
 				},
-				{
-					text: '传输时间',
-					dataIndex: 'transition',
-					width: '10'
-				}
+				// {
+				// 	text: '传输时间',
+				// 	dataIndex: 'transition',
+				// 	width: '10'
+				// }
 			],
 
 			sampleInfo: {},
