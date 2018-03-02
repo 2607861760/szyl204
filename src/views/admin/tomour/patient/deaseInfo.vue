@@ -198,12 +198,12 @@
                                 <Select style="max-width:200px" v-else-if="list.itemType==itemType.select" v-model="list.itemValue">
                                     <Option v-for="(cont,ids) of list.content" :key="ids" :value="cont">{{cont}}</Option>
                                 </Select>
-                                <Poptip placement="bottom" width="400" v-if="list.itemType==itemType.tnm">
-                                    <Button class="tnm_btn" size="small" type="primary">点击选择</Button>
-                                    <span class="tnmSpan"  v-model="gtnmSelect.T">{{gtnmSelect.T}}</span>
-                                    <span class="tnmSpan"  v-model="gtnmSelect.N">{{gtnmSelect.N}}</span>
-                                    <span class="tnmSpan"  v-model="gtnmSelect.M">{{gtnmSelect.M}}</span>
-                                    <span class="tnmSpan"  v-model="gtnmSelect.G">{{gtnmSelect.G}}</span>
+                                <Poptip v-model="visible" placement="bottom" width="400" v-if="list.itemType==itemType.tnm">
+                                    <Button class="tnm_btn" @click="addTnmActive" size="small" type="primary">点击选择</Button>
+                                    <span class="tnmSpan">{{gtnmSelect.T}}</span>
+                                    <span class="tnmSpan">{{gtnmSelect.N}}</span>
+                                    <span class="tnmSpan">{{gtnmSelect.M}}</span>
+                                    <span class="tnmSpan">{{gtnmSelect.G}}</span>
                                     <div class="api" slot="content">
                                         <el-table @cell-click="cellClick" :span-method="spanMethod" border="border" align="center" :data="tnmList">
                                             <el-table-column class-name="T" prop="T" label="T"></el-table-column>
@@ -211,14 +211,14 @@
                                             <el-table-column class-name="M" prop="M" label="M"></el-table-column>
                                             <el-table-column label="肿瘤分期">
                                                 <template slot-scope="scope">
-                                                    <span class="gtnm" v-if="scope.$index==0" v-model="gtnmSelect.G"></span>
+                                                    <span class="gtnm" v-if="scope.$index==0">{{gtnmSelect.G}}</span>
                                                 </template>
                                             </el-table-column>
                                         </el-table>
                                         <Row type="flex" justify="end" class="code-row-bg">
                                             <Col col="8">
                                             <Button @click="resetActive" type="ghost">重置</Button>
-                                            <Button type="primary">确定</Button>
+                                            <Button @click="closePop" type="primary">确定</Button>
                                             </Col>
                                         </Row>
                                     </div>
@@ -260,8 +260,12 @@
                                     <Option v-for="(cont,ids) of list.content" :key="ids" :value="cont">{{cont}}</Option>
                                 </Select>
                                 <!--tnm-->
-                                <Poptip placement="bottom" width="400" v-if="list.itemType==itemType.tnm">
+                                <Poptip v-model="visible" placement="bottom" width="400" v-if="list.itemType==itemType.tnm">
                                     <Button class="tnm_btn" size="small" type="primary">点击选择</Button>
+                                    <span class="tnmSpan">{{gtnmSelect.T}}</span>
+                                    <span class="tnmSpan">{{gtnmSelect.N}}</span>
+                                    <span class="tnmSpan">{{gtnmSelect.M}}</span>
+                                    <span class="tnmSpan">{{gtnmSelect.G}}</span>
                                     <div class="api" slot="content">
                                         <el-table @cell-click="cellClick" :span-method="spanMethod" border="border" align="center" :data="tnmList">
                                             <el-table-column class-name="T" prop="T" label="T"></el-table-column>
@@ -269,14 +273,14 @@
                                             <el-table-column class-name="M" prop="M" label="M"></el-table-column>
                                             <el-table-column label="肿瘤分期">
                                                 <template slot-scope="scope">
-                                                    <span v-if="scope.$index==0">{{list.itemValue.group}}</span>
+                                                    <span v-if="scope.$index==0">{{gtnmSelect.G}}</span>
                                                 </template>
                                             </el-table-column>
                                         </el-table>
                                         <Row type="flex" justify="end" class="code-row-bg">
                                             <Col col="8">
                                             <Button @click="resetActive" type="ghost">重置</Button>
-                                            <Button type="primary">确定</Button>
+                                            <Button @click="closePop" type="primary">确定</Button>
                                             </Col>
                                         </Row>
                                     </div>
@@ -324,6 +328,7 @@ export default {
     data() {
         return {
             idList : [], //删除病例
+            visible:false, //tnm是否显示
             showDelete:false,//是否显示删除按钮
             editType:0,  //0 创建 ， 1 修改
             removeModel:false,
@@ -355,6 +360,10 @@ export default {
         }
     },
     methods: {
+        //关闭
+        closePop(){
+            this.visible=false;
+        },
         cellClick(row, column, cell, event) {
             //移除当前列所有的选中效果
             $("." + column.id).removeClass("cell_active");
@@ -661,6 +670,7 @@ export default {
             })
 
         },
+        //创建提交使用的tnm数据
         buildGtnmItemValue(){
             for(var i=0; i<this.diseaseInfoData.pageModel.blockModels.length;i++){
                 var bm=this.diseaseInfoData.pageModel.blockModels[i];
@@ -673,6 +683,7 @@ export default {
                 }
             }
         },
+        //创建tnm数据
          buildGtnmSelect(data){
              console.log(data);
             for(var i=0; i<data.pageModel.blockModels.length;i++){
@@ -686,7 +697,35 @@ export default {
                     }
                 }
             }
-            console.log(this.gtnmSelect);
+        },
+        //编辑状态下设置tnm选中状态
+        addTnmActive(){
+            let _this=this;
+            if(this.gtnmSelect != {}){
+                if(this.gtnmSelect.T){
+                     $(".T").each(function(){
+                        if($(this).text() == _this.gtnmSelect.T){
+                            $(this).addClass("cell_active");
+                        }
+                    })
+                }
+                if(this.gtnmSelect.N){
+                    $(".N").each(function(){
+                         console.log($(this).text())
+                        if($(this).text() == _this.gtnmSelect.N){
+                            $(this).addClass("cell_active");
+                        }
+                    })
+                }
+                if(this.gtnmSelect.M){
+                    $(".M").each(function(){
+                         console.log($(this).text())
+                        if($(this).text() == _this.gtnmSelect.M){
+                            $(this).addClass("cell_active");
+                        }
+                    })
+                }
+            }
         },
         //整理病人基本信息数据
         getBasicInfo(){
