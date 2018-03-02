@@ -1314,8 +1314,8 @@ export default{
         //创建当前月 癌种数量数据结构
         buildCurMouthList(data){
             let _this=this;
-            let now={}
             for(var i=0;i<data.length;i++){
+                 let now={}
                 if(data[i].cancertype==_this.cancelStyle.lungCancel){
                     data[i].cancertype="肺癌";
                 }else if(data[i].cancertype==_this.cancelStyle.gastricCancer){
@@ -1330,6 +1330,7 @@ export default{
                 now.count=data[i].count;
                 now.name=data[i].cancertype;
                 this.curMouthList.push(now || {});
+                console.log(this.curMouthList);
             }
         },
         //获取不同癌种的名称
