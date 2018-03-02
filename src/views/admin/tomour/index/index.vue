@@ -283,17 +283,59 @@
                                     <div class="bian"v-for="(list,index) in scope.row.dchSampleList" style="cursor:pointer;"  :key="list.id" @click="samcode(index,scope.row)">{{ list.samplecode }}</div>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="状态">
+                            <el-table-column label="传输状态">
                                 <template slot-scope="scope">
                                     <div v-for="(list,index) in scope.row.dchSampleList" class="handle" >
-                                        <span class="status">{{list.samplestatus | dataFormat}}</span>
+                                        <span class="status" v-if="list.fastq_R1!=null && list.fastq_R2!=null" style="color:#3B79BA;font-size:25px;">
+                                            <Tooltip content="上传完成" placement="top">
+                                                <Icon type="checkmark-round"></Icon>
+                                            </Tooltip>
+                                        </span>
+                                        
+                                        <span class="status" style="color:#84BF66;font-size:25px;" v-else-if="list.fastq_R1==null && list.fastq_R2==null">
+                                            <Tooltip content="等待上传" placement="top"  >
+                                                 <Icon type="upload"></Icon>
+                                            </Tooltip>
+                                        </span> 
+                                        
+                                        <span class="status" v-else style="color:#3B79BA;font-size:25px;opacity:.5;">
+                                            <Tooltip content="正在上传" placement="top">
+                                                <Icon type="upload"></Icon>
+                                            </Tooltip>
+                                        </span>
                                     </div>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="操作" min-width="100%">
+                            <el-table-column label="分析状态">
+                                <template slot-scope="scope">
+                                    <div v-for="(list,index) in scope.row.dchSampleList" class="handle" >
+                                        <span class="status" v-if="list.samplestatus==1" style="color:#A5ACB3;font-size:25px;">
+                                            <Tooltip content="等待分析" placement="top">
+                                                <Icon type="stats-bars"></Icon>
+                                            </Tooltip>
+                                        </span>
+                                        <span class="status" v-else-if="list.samplestatus==2" style="color:#3B79BA;font-size:25px;">
+                                            <Tooltip content="正在分析" placement="top">
+                                                <Icon type="stats-bars"></Icon>
+                                            </Tooltip>
+                                        </span>
+                                        <span class="status" v-else-if="list.samplestatus==3" style="color:#3B79BA;font-size:20px;">
+                                            <Tooltip content="分析完成" placement="top">
+                                                <Icon type="close-round"></Icon>
+                                            </Tooltip>
+                                        </span>
+                                        <span class="status" v-else-if="list.samplestatus==4" style="color:##d97b24;font-size:25px;">
+                                            <Tooltip content="分析失敗" placement="top">
+                                                <Icon type="checkmark-round"></Icon>
+                                            </Tooltip>
+                                        </span>
+                                    </div>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="操作" min-width="120%">
                                 <template slot-scope="scope">
                                     <div v-for="(list,index) in scope.row.dchSampleList" class="handle">
-                                        <span class="bian" @click="run(index,scope.row)" v-if="list.isexecute==='0'">运行</span>
+                                        <span class="bian" @click="run(index,scope.row)" v-if="list.fastq_R1!=null && list.fastq_R2!=null">运行</span>
                                         <span class="bian" @click="delet(index,scope.row)">删除</span>
                                         <span class="bian" @click="edit(index,scope.row)">编辑</span>
                                         </div>
@@ -302,7 +344,7 @@
                             <el-table-column label="解读">
                                 <template slot-scope="scope">
                                     <div v-for="(list,index) in scope.row.dchSampleList" class="handle" style="height:40px;">
-                                        <a v-if="list.isexecute==='3'" @click="jumpVishuourl(list.sampleid)">C GDAP</a>
+                                        <a v-if="list.samplestatus==3" @click="jumpVishuourl(list.sampleid)">C GDAP</a>
                                         <a href="javascript:;"  disabled v-else>C GDAP</a>
                                     </div>
                                 </template>
@@ -1077,6 +1119,8 @@ export default{
             let echart = echarts.init(document.getElementById('curMouthNum'));
             let diseaseName = this.getDiseaseName(this.curMouthList);
             let diseaseCount = this.getDiseaseCount(this.curMouthList);
+            console.log(diseaseName)
+            console.log(diseaseCount)
             let option = {
                 xAxis: {
                     data: diseaseName
@@ -1246,6 +1290,7 @@ export default{
         //创建当前月 癌种数量数据结构
         buildCurMouthList(data){
             let _this=this;
+            let now={}
             for(var i=0;i<data.length;i++){
                 if(data[i].cancertype==_this.cancelStyle.lungCancel){
                     data[i].cancertype="肺癌";
@@ -1254,11 +1299,13 @@ export default{
                 }else if(data[i].cancertype==_this.cancelStyle.colorectalCancer){
                     data[i].cancertype="结直肠癌";
                 };
-                var obj={
-                    "count":data[i].count,
-                   "name":data[i].cancertype
-                }
-                this.curMouthList.push(obj || {});
+                //  obj={
+                //     "count":data[i].count,
+                //     "name":data[i].cancertype
+                // }
+                now.count=data[i].count;
+                now.name=data[i].cancertype;
+                this.curMouthList.push(now || {});
             }
         },
         //获取不同癌种的名称
@@ -1268,6 +1315,7 @@ export default{
                 let name = item.name;
                 ret.push(name || "");
             });
+            console.log(ret)
             return ret;
         },
         //获取不同癌种的数量
@@ -1277,6 +1325,7 @@ export default{
                 let count = item.count;
                 ret.push(count || "");
             });
+            console.log(ret)
             return ret;
         },
         //获取不同癌种的样本数量 饼状图数据结构
@@ -1366,24 +1415,24 @@ export default{
         this.getProjects();
     },
     components: {treeGrid},
-    filters: {
-            // 格式化数据
-            dataFormat(cellValue) {
-                if(cellValue=='0' || cellValue=='5'){
-                    return cellValue = "----"
-                }else if(cellValue=='1' ) {
-                    return cellValue = "等待"
-                }else if(cellValue=='2') {
-                    return cellValue = "正在运行"
-                }else if(cellValue=='3') {
-                    return cellValue = "已完成"
-                }else if(cellValue=='4') {
-                    return cellValue = "错误"
-                }else if(cellValue=='6') {
-                    return cellValue = "未执行"
-                }
-            },
-        },
+    // filters: {
+    //         // 格式化数据
+    //         dataFormat(cellValue) {
+    //             if(cellValue=='0' || cellValue=='5'){
+    //                 return cellValue = "----"
+    //             }else if(cellValue=='1' ) {
+    //                 return cellValue = "等待"
+    //             }else if(cellValue=='2') {
+    //                 return cellValue = "正在运行"
+    //             }else if(cellValue=='3') {
+    //                 return cellValue = "已完成"
+    //             }else if(cellValue=='4') {
+    //                 return cellValue = "错误"
+    //             }else if(cellValue=='6') {
+    //                 return cellValue = "未执行"
+    //             }
+    //         },
+    //     },
 }   
 </script>
 

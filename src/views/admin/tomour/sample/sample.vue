@@ -40,66 +40,52 @@
 				<el-table-column prop="sampletype" label="样本类型" min-width="10%"></el-table-column>
 				<el-table-column prop="samplesource" label="样本来源" min-width="10%"></el-table-column>
 				<el-table-column prop="region" label="肿瘤分类" min-width="10%"></el-table-column>
-				<el-table-column label="文件状态" width="200">
+				<el-table-column label="传输状态">
 					<template slot-scope="scope">
-						<div v-for="(list,index) in scope.row.dchSampleList" style="height:40px;" :key="index">
-							<Poptip placement="bottom-end" v-if="list.fastq_R1!=null" width="300">
-								<div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
-									{{list.fastq_R1}}
-								</div>
-								<div class="imgbox">
-									<div class="fastq_R1_on"></div>
-								</div>
-							</Poptip>
-							<div class="imgbox" v-else>
-								<div class="fastq_R1_off"></div>
-							</div>
-							<Poptip placement="bottom-end" v-if="list.fastq_R2!=null " width="300">
-								<div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
-									{{list.fastq_R2}}
-								</div>
-								<div class="imgbox">
-									<div class="fastq_R2_on"></div>
-								</div>
-							</Poptip>
-							<div class="imgbox" v-else>
-								<div class="fastq_R2_off"></div>
-							</div>
-							<Poptip placement="bottom-end" v-if="list.vcf!=null" width="300">
-								<div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
-									{{list.vcf}}
-								</div>
-								<div class="imgbox">
-									<div class="vcf_on"></div>
-								</div>
-							</Poptip>
-							<div class="imgbox" v-else>
-								<div class="vcf_off"></div>
-							</div>
-							<Poptip placement="bottom-end" v-if="list.etcFiles!=null " width="300">
-								<div class="imgbox">
-									<div class="etc_on"></div>
-								</div>
-								<div slot="content">
-									<table>
-										<tbody>
-											<tr v-for="(item,index) in list.etcFiles" :key="index" style="height:60px;word-wrap: break-word;text-align: left;">
-												{{item}}
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</Poptip>
-							<div class="imgbox" v-else>
-								<div class="etc_off"></div>
-							</div>
+						<div v-for="(list,index) in scope.row.dchSampleList" class="handle" >
+							<span class="status" v-if="list.fastq_R1!=null && list.fastq_R2!=null" style="color:#3B79BA;font-size:25px;">
+								<Tooltip content="上传完成" placement="top">
+									<Icon type="checkmark-round"></Icon>
+								</Tooltip>
+							</span>
+							
+							<span class="status" style="color:#84BF66;font-size:25px;" v-else-if="list.fastq_R1==null && list.fastq_R2==null">
+								<Tooltip content="等待上传" placement="top"  >
+										<Icon type="upload"></Icon>
+								</Tooltip>
+							</span> 
+							
+							<span class="status" v-else style="color:#3B79BA;font-size:25px;opacity:.5;">
+								<Tooltip content="正在上传" placement="top">
+									<Icon type="upload"></Icon>
+								</Tooltip>
+							</span>
 						</div>
 					</template>
 				</el-table-column>
-				<el-table-column label="状态" min-width="10%">
+				<el-table-column label="分析状态">
 					<template slot-scope="scope">
-						<div class="handle">
-							<span class="status">{{scope.row.samplestatus | dataFormat}}</span>
+						<div v-for="(list,index) in scope.row.dchSampleList" class="handle" >
+							<span class="status" v-if="list.samplestatus==1" style="color:#A5ACB3;font-size:25px;">
+								<Tooltip content="等待分析" placement="top">
+									<Icon type="stats-bars"></Icon>
+								</Tooltip>
+							</span>
+							<span class="status" v-else-if="list.samplestatus==2" style="color:#3B79BA;font-size:25px;">
+								<Tooltip content="正在分析" placement="top">
+									<Icon type="stats-bars"></Icon>
+								</Tooltip>
+							</span>
+							<span class="status" v-else-if="list.samplestatus==3" style="color:#3B79BA;font-size:20px;">
+								<Tooltip content="分析完成" placement="top">
+									<Icon type="close-round"></Icon>
+								</Tooltip>
+							</span>
+							<span class="status" v-else-if="list.samplestatus==4" style="color:##d97b24;font-size:25px;">
+								<Tooltip content="分析失敗" placement="top">
+									<Icon type="checkmark-round"></Icon>
+								</Tooltip>
+							</span>
 						</div>
 					</template>
 				</el-table-column>
@@ -335,24 +321,24 @@ export default {
 			tabsVal: 'upload'
 		}
 	},
-	filters: {
-		// 格式化数据
-		dataFormat(cellValue) {
-			if (cellValue == '0' || cellValue == '5') {
-				return cellValue = "----"
-			} else if (cellValue == '1') {
-				return cellValue = "等待"
-			} else if (cellValue == '2') {
-				return cellValue = "正在运行"
-			} else if (cellValue == '3') {
-				return cellValue = "已完成"
-			} else if (cellValue == '4') {
-				return cellValue = "错误"
-			} else if (cellValue == '6') {
-				return cellValue = "未执行"
-			}
-		},
-	},
+	// filters: {
+	// 	// 格式化数据
+	// 	dataFormat(cellValue) {
+	// 		if (cellValue == '0' || cellValue == '5') {
+	// 			return cellValue = "----"
+	// 		} else if (cellValue == '1') {
+	// 			return cellValue = "等待"
+	// 		} else if (cellValue == '2') {
+	// 			return cellValue = "正在运行"
+	// 		} else if (cellValue == '3') {
+	// 			return cellValue = "已完成"
+	// 		} else if (cellValue == '4') {
+	// 			return cellValue = "错误"
+	// 		} else if (cellValue == '6') {
+	// 			return cellValue = "未执行"
+	// 		}
+	// 	},
+	// },
 	methods: {
 		//取消必填选项
 		resetForm(){
