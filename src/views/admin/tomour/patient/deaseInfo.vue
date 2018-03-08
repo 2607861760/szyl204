@@ -228,7 +228,7 @@
                                 <DatePicker v-else-if="list.itemType==itemType.dataTimePick" type="date" style="max-width: 200px" v-model="list.itemValue"></DatePicker>
                             </FormItem>
                             <FormItem v-else  style="width:30%;" class="disease_info_form_item" :required="list.bRequired" label=" ">
-                                <Checkbox v-if="list.itemType==itemType.checkbox"  v-model="list.itemValue">{{list.itemName}}</Checkbox>
+                                <Checkbox size="large" v-if="list.itemType==itemType.checkbox"  v-model="list.itemValue">{{list.itemName}}</Checkbox>
                             </FormItem>
                         </Col>
                     </Row>
@@ -294,7 +294,7 @@
                             </FormItem>
                             <FormItem v-else  style="width:30%;" class="disease_info_form_item" :required="list.bRequired" label=" ">
                                 <!--复选框-->
-                                <Checkbox v-if="list.itemType==itemType.checkbox"  v-model="list.itemValue">{{list.itemName}}</Checkbox>
+                                <Checkbox size="large" v-if="list.itemType==itemType.checkbox"  v-model="list.itemValue">{{list.itemName}}</Checkbox>
                             </FormItem>
                         </Col>
                     </Row>
@@ -434,7 +434,6 @@ export default {
                 "productId": "2"
             }
             data.deletePatientAndProjectById(obj).then((data) => {
-                console.log(data)
                 if (data.returnCode == 0 || data.returnCode == 200) {
                     if (data.msg == "成功") {
                         this.$Message.success(data.msg);
@@ -685,10 +684,8 @@ export default {
         },
         //创建tnm数据
          buildGtnmSelect(data){
-             console.log(data);
             for(var i=0; i<data.pageModel.blockModels.length;i++){
                 var bm=data.pageModel.blockModels[i];
-                console.log(bm);
                 for(var k=0; k<bm.itemNodes.length;k++){
                     var im=bm.itemNodes[k];
                     if(im.itemType==this.itemType.tnm){
@@ -711,7 +708,6 @@ export default {
                 }
                 if(this.gtnmSelect.N){
                     $(".N").each(function(){
-                         console.log($(this).text())
                         if($(this).text() == _this.gtnmSelect.N){
                             $(this).addClass("cell_active");
                         }
@@ -719,7 +715,6 @@ export default {
                 }
                 if(this.gtnmSelect.M){
                     $(".M").each(function(){
-                         console.log($(this).text())
                         if($(this).text() == _this.gtnmSelect.M){
                             $(this).addClass("cell_active");
                         }
@@ -778,7 +773,6 @@ export default {
         //提交表单时 获取所选择的癌种
         getCancelType(){
             var  ret=null;
-            console.log($("#cancelSelect .ivu-select-selection").find("span[class=ivu-select-selected-value]").html());
             var  text=   $("#cancelSelect .ivu-select-selection").find("span[class=ivu-select-selected-value]").html();
             switch(text){
                 case "肺癌":
@@ -841,8 +835,6 @@ export default {
          
     },
     created() {
-        console.log(this.$store.state.tumourPatientInfo.tumourPatientId);
-        console.log(this.$store.state.tumourPatientInfo.tumourpatientCode);
         if(this.$store.state.tumourPatientInfo.tumourPatientId=="" && this.$store.state.tumourPatientInfo.tumourpatientCode==""){
             this.editType=0;
             this.showDelete=false;

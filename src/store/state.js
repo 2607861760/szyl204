@@ -1,9 +1,13 @@
 // 根目录下的状态
 const state = {
+
+    // 记录后台一级菜单展开状态
+    adminOpenMenus: [],
     // 当前登登录的用户的基本信息
     currentUser: {},
     allfile: [], //存储文件
     load: true, //loading状态
+    jumpId: "", //左侧菜单跳转是携带的id
     loadstate: false, //
     uid: '',
     code: '',

@@ -10,12 +10,6 @@
 <template>
 	<div class="fileMange">
 		<div class="tabs">
-			<Tabs type="card" @on-click="choice">
-                <TabPane label="罕见病" ></TabPane>
-                <TabPane label="癌症" class="tabcard"></TabPane>
-            </Tabs>
-		</div>
-		<div class="tabs">
 			<Tabs type="line" v-model="cInner">
                 <TabPane label="批量上传文件" name="all"></TabPane>
             </Tabs>
@@ -32,8 +26,13 @@
 		</Row>
 		<div class="table-box">
 			<el-table :data="uploadSampleFileInfos" border style="width: 100%;" :highlight-current-row="true" :height="600" v-loading="loading">
+				<el-table-column align="center" v-if="this.$store.state.projectid==1" label="上传状态">
+					<template slot-scope="scope">
+						{{scope.row.uploadstatus | uploadstatus}}
+					</template> 
+				</el-table-column>
     			<el-table-column align="center" label="样本批次">
-					 <template slot-scope="scope">
+					<template slot-scope="scope">
 						{{scope.row.batchID | foreignFlag}}
 					</template> 
 				</el-table-column>
@@ -236,8 +235,18 @@ import {getCookie} from '@/common/js/cookie.js'
 			// 	_this.batchId=_this.batchIds[4];
 			// 	_this.getFileList();
 			// });
-			this.$store.state.projectid=1;
+			// this.$store.state.projectid=1;
+			// this.getBatchList();
+			this.$store.state.projectid = M.url().product ? M.url().product : "1";
 			this.getBatchList();
+		},
+		watch: {
+			'$route'(to, from) {
+				//刷新参数放到这里里面去触发就可以刷新相同界面了
+				console.log(this.$route.path);
+				this.$store.state.projectid = M.url().product ? M.url().product : "1";
+				this.getBatchList();
+			}
 		},
 		filters:{
         // 格式化数据
@@ -249,6 +258,15 @@ import {getCookie} from '@/common/js/cookie.js'
 					return cellValue
 				}
 			},
+			uploadstatus(cellValue){
+				if (cellValue == 1) {
+					return cellValue = "正在上传"
+				} else if (cellValue == 2) {
+					return cellValue = "上传完成"
+				} else {
+					return cellValue = "上传完成"
+				}
+			}
     	},
 	}
 </script>

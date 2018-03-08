@@ -106,7 +106,7 @@ export default {
                 "fileName":row.filename,
                 "userId":getCookie("userid"),
                 "sampleid":this.sids,
-                "productId":this.$store.state.projectid
+                "productId":"1"
             }
             let flag=true;
             if(this.copyname.length==1 && this.copyname[0]==row.filename){
@@ -188,12 +188,12 @@ export default {
             }
             return false
         },
-        // 获得本地/opt/serverData/
+        // 获得本地/opt/NfsDir/PublicDir/demo/
         _getLocalDataList(record) {
             let obj={
                 "path":record.path,
                 "userId":getCookie("userid"),
-                "productId":this.$store.state.projectid,
+                "productId":"1",
                 "type":"2"
             }
             data.getSingleForldList(obj).then((data)=>{
@@ -215,7 +215,7 @@ export default {
             let obj={
                 "path":record.path,
                 "userId":getCookie("userid"),
-                "productId":this.$store.state.projectid,
+                "productId":"1",
                 "type":"2"
             }
             data.getSingleForldList(obj).then((data)=>{

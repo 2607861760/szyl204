@@ -79,7 +79,7 @@
         
         <!-- 内容区域 -->
         <div class="mydata-content"> 
-            <el-table :data="tableData3" :highlight-current-row="true" border style="width: 100%;" :height="height"  @selection-change="handleSelectionChange" :empty-text="emptytext" v-loading="dataloading">
+            <el-table v-loading="dataloading" :data="tableData3" :highlight-current-row="true" border style="width: 100%;" :height="height"  @selection-change="handleSelectionChange" :empty-text="emptytext">
                 <el-table-column type="index" min-width="5%"></el-table-column>
                 <el-table-column type="selection"width="55" v-if="showSelection" :disabled="disTableSelect">
                 </el-table-column>
@@ -295,6 +295,9 @@
 
                             </Col>
                             <Col class="tables">
+                                <FormItem label="样本批次" style="width:30%;">
+                                    <Input v-model="sampleInfo.samplebatch"></Input>
+                                </FormItem>
                                 <FormItem label="备注" style="width:30%;">
                                     <Input v-model="sampleInfo.notes"></Input>
                                 </FormItem>
@@ -396,7 +399,7 @@
 </template>
 <script>
 // 数据操作方法
-import {menuListToTree} from 'common/js/Base';
+import {menuListToTree, filePath, httpUrl} from 'common/js/Base';
 import {data,task} from 'api/index.js'
 import {getCookie} from '@/common/js/cookie.js'
 import { Loading } from 'element-ui';
@@ -860,7 +863,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     let a = document.createElement('a');
                     // http://10.131.101.173:88/#/analyses/
                     // http://tgex-dev.dchgenecloud.com:88/#/analyses/
-						a.setAttribute('href',"http://10.131.101.173:88/#/analyses/"+data.data);
+                        // a.setAttribute('href',"http://tgex-dev.dchgenecloud.com:88/#/analyses/"+data.data);
+                        a.setAttribute('href', httpUrl.tgax + data.data);
 						a.setAttribute('target', '_blank');
 						document.body.appendChild(a)
 						a.click(); 
@@ -916,13 +920,10 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             this.fileServerCategoryList=[];
             this.uploadDisabled=true;
         },
-        // 获得本地/opt/serverData/
+        // 获得本地/opt/NfsDir/PublicDir/demo/
         _getLocalDataList() {
             let obj={
-                "path":"/opt/serverData/",
-                // "path":"/opt/NfsDir/PublicDir/demo/",
-                        // /opt/NfsDir/PublicDir/demo/  电信云
-                        // /opt/serverData/   159
+                "path":filePath.path.local, //复旦
                 "userId":getCookie("userid"),
                 "productId":"1",
                 "type":"2"
@@ -944,13 +945,10 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             })
         },
         // 获得服务列表 /opt/NfsDir/PublicDir/demo/
-        // /opt/serverData/
+        // /opt/NfsDir/PublicDir/demo/
         _getServerDataList() {
             let obj={
-                "path":"/opt/serverData/",
-                // "path":"/opt/NfsDir/PublicDir/demo/",
-                        // /opt/NfsDir/PublicDir/demo/  电信云
-                        // /opt/serverData/   159
+                "path": filePath.path.server,
                 "userId":getCookie("userid"),
                 "productId":"1",
                 "type":"2"
@@ -1068,6 +1066,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                             if(data.returnCode==0 || data.returnCode==200){
                                 this.$Message.success(data.msg);
                                 this.load();
+                                this.dataloading = false;
                                 this.uploadDisabled = false;
                             }else if(data.returnCode==422 || data.returnCode==204){
                                 this.$router.push('/login')
@@ -1256,6 +1255,11 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             this.sampleEdit = true;
             this.upModal = false;
             this.pull();
+            if(row.dchSampleList[index].samplebatch){
+                if(row.dchSampleList[index].samplebatch == 0){
+                    row.dchSampleList[index].samplebatch="";
+                }
+            }
             this.patid=row.dchPatient.patientid;
             this.enrichmentkitId=row.dchSampleList[index].enrichmentkit;
             this.platformId=row.dchSampleList[index].platform;

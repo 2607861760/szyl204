@@ -65,16 +65,38 @@ a {
         .el-menu {
             background: #3C3F60;
             border-right: 0;
+            .el-submenu__title {
+                color: #b8c7ce;
+                font-size: 14px;
+            }
             .el-menu-item {
                 color: #b8c7ce;
                 font-size: 14px;
+                &.is-active {
+                    background: #2B3245;
+                    color: #fff;
+                }
                 &:hover {
                     background: #d1dbe5;
                 }
             }
-            .el-menu-item.is-active {
-                background: #2B3245;
-                color: #fff;
+        }
+        .el-submenu {
+            .el-menu-item {
+                background: #414B69;
+            }
+        }
+        .el-menu--collapse {
+            .el-submenu {
+                &.is-active,
+                &.is-opened {
+                    .el-submenu__title {
+                        background: #2B3245;
+                    }
+                }
+                .el-icon-arrow-right {
+                    display: none;
+                }
             }
         }
         .ivu-tooltip,

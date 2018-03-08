@@ -52,4 +52,11 @@ export const login = {
             return Promise.resolve(res.data)
         })
     },
+
+    /*获取左侧菜单*/
+    getSystemMenu(obj) {
+        return $ajax.get(apiUrl.apiUrl + 'auth/getSystemMenu', { params: obj }).then(function(res) {
+            return Promise.resolve(res.data);
+        })
+    },
 };

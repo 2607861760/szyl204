@@ -260,6 +260,7 @@
 </template>
 <script>
     import {data} from 'api/index.js'
+    import { filePath, httpUrl } from 'common/js/Base';
     import treeGrid from '@/components/treeTable/vue2/TreeGrid'
     import {getCookie} from '@/common/js/cookie.js'
     export default{
@@ -611,10 +612,7 @@
       // 获得服务
     _getServerDataList() {
         let obj={
-            "path":"/opt/serverData/",
-            // "path":"/opt/NfsDir/PublicDir/demo/",
-                        // /opt/NfsDir/PublicDir/demo/  电信云
-                        // /opt/serverData/   159
+            "path": filePath.path.server,
             "userId":getCookie("userid"),
             "productId":"2",
             "type":"2"
@@ -637,10 +635,7 @@
     // 获得本地
     _getLocalDataList(){
         let obj={
-            "path":"/opt/serverData/",
-            // "path":"/opt/NfsDir/PublicDir/demo/",
-                        // /opt/NfsDir/PublicDir/demo/  电信云
-                        // /opt/serverData/   159
+            "path":filePath.path.local,
             "userId":getCookie("userid"),
             "productId":"2",
             "type":"2"

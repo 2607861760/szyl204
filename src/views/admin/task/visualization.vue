@@ -33,6 +33,7 @@
 </template>
 <script>
 // 引入任务管理方法
+import { menuListToTree, filePath, httpUrl } from 'common/js/Base';
 import { task } from 'api/index.js'
 import { getCookie } from '@/common/js/cookie.js'
 export default {
@@ -41,6 +42,7 @@ export default {
         return {
             cookies: getCookie('userid'),
             urlSrc: "",
+            httpUrl:httpUrl.downHttp,
             dataShow: false,
             loading: true
         }
@@ -65,7 +67,7 @@ export default {
                 if (data.returnCode == 0 || data.returnCode == 200) {
                     if (data.msg == "成功") {
                         // this.urlSrc = "http://42.123.124.204:8081/jbrowse/JBrowse-1.11.5/index.html?data=file"
-                        this.urlSrc = "http://10.131.101.159:8080/jbrowse/JBrowse-1.11.5/index.html?data=file"
+                        this.urlSrc = this.httpUrl+"/jbrowse/JBrowse-1.11.5/index.html?data=file"
                         this.loading = false;
                     } else {
                         this.dataShow = true;

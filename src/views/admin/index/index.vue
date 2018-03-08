@@ -57,10 +57,6 @@ $right-main-bg: #ECF0F5;
                     letter-spacing:10px;
                 }
             }
-            &:hover {
-                color: #fff;
-                background: #2B3245;
-            }
             &:nth-of-type(1) {
                 color: #b8c7ce;
                 background: #3C3F60;
@@ -111,42 +107,69 @@ $right-main-bg: #ECF0F5;
     <adminHead :cusername="cusername"></adminHead>
     <!-- 主体 -->
     <Layout class="admin-main" type="flex">
-        <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed" class="admin-layout-left">
-            <el-menu theme="dark" :default-active="$route.path" :class="menuitemClasses" :router="true">
-                <div class="admin-layout-nav" style="height:56px;">
-                    <!-- <span class="menu">目录</span> -->
-                    <Icon @click.native="collapsedSider" :class="rotateIcon"   type="navicon-round" size="24"></Icon>
+        <Sider ref="side1" hide-trigger collapsible :collapsed-width="64" v-model="isCollapsed" class="admin-layout-left">
+            <div class="admin-layout-nav" style="height:56px;margin:0;text-align:center;">
+                <!-- <span class="menu">目录</span> -->
+                <Icon @click.native="collapsedSider" :class="rotateIcon"  style="cursor:pointer;margin:17px 21px;"  type="navicon-round" size="22"></Icon>
+            </div>
+            <el-menu theme="dark"
+                :class="menuitemClasses" 
+                :router="true" 
+                :unique-opened="true"
+                :collapse="isCollapsed"
+                :default-openeds="adminOpenMenus"
+                :default-active="$route.path+'?product='+product"
+                @open="subMenuOpen"
+                @close="subMenuClose">
+                <div v-for="(item, index) in menuList" :key="index">
+                    <!-- 判断是否存在子级菜单 -->
+                    <el-menu-item @click="selecActive(item.productId)"  v-if="!item.subMenus.length" :index="item.url+'?product='+item.productId+''">
+                        <Icon :type="item.icon"  size="22"></Icon>
+                        <span slot="title">{{item.menuName}}</span>
+                    </el-menu-item>
+                    <!-- 如果包含二级菜单 -->
+                    <el-submenu v-else :index="item.menuName">
+                        <!-- 一级菜单 -->
+                        <template slot="title">
+                            <Icon :type="item.icon"  size="22"></Icon>
+                            <span>{{item.menuName}}</span>
+                        </template>
+                        <!-- 子菜单菜单 -->
+                        <el-menu-item @click="selecActive(subMenu.productId)"  v-for="(subMenu, idx) in item.subMenus" :index="subMenu.url+'?product='+subMenu.productId+''" :key="idx">
+                            <span>{{subMenu.menuName}}</span>
+                        </el-menu-item>
+                    </el-submenu>
                 </div>
-                <Tooltip placement="right" content="罕见病" :disabled="!isCollapsed"> 
+                <!-- <Tooltip placement="right" content="罕见病" :disabled="!isCollapsed"> 
                     <el-menu-item index="/admin">
-                        <Icon type="android-list" style="margin-right:8%;"></Icon>
+                        <Icon type="android-list" style="margin-right:8%;" size="22"></Icon>
                         <span>罕见病</span>
                     </el-menu-item>
                 </Tooltip> 
                 <Tooltip placement="right" content="癌症" :disabled="!isCollapsed">
                     <el-menu-item index="/admin/tomour/index">
-                        <Icon type="ios-pie" style="margin-right:8%;"></Icon>
+                        <Icon type="ios-pie" style="margin-right:8%;" size="22"></Icon>
                         <span>癌症</span>
                     </el-menu-item> 
                 </Tooltip>   
                 <Tooltip placement="right" content="任务管理" :disabled="!isCollapsed">         
                     <el-menu-item index="/admin/task-management">
-                        <Icon type="social-buffer" style="margin-right:8%;"></Icon>
+                        <Icon type="social-buffer" style="margin-right:8%;" size="22"></Icon>
                         <span>任务管理</span>
                     </el-menu-item>
                 </Tooltip> 
                 <Tooltip placement="right" content="文件管理" :disabled="!isCollapsed">
                     <el-menu-item index="/admin/fileManage">
-                        <Icon type="folder" style="margin-right:8%;"></Icon>
+                        <Icon type="folder" style="margin-right:8%;" size="22"></Icon>
                         <span>文件管理</span>
                     </el-menu-item>
                 </Tooltip> 
                  <Tooltip placement="right" content="流程管理" :disabled="!isCollapsed">
                     <el-menu-item index="/admin/process_index">
-                        <Icon type="network" style="margin-right:8%;"></Icon>
+                        <Icon type="network" style="margin-right:8%;" size="22"></Icon>
                         <span>流程管理</span>
                     </el-menu-item> 
-                </Tooltip>    
+                </Tooltip>     -->
             </el-menu>
         </Sider>
         <Layout>
@@ -166,12 +189,19 @@ $right-main-bg: #ECF0F5;
   // 引入头部
 import adminHead from './head.vue';
 import {login} from 'api/index.js'
-import {setCookie,getCookie} from '@/common/js/cookie.js'
+import {setCookie,getCookie} from '@/common/js/cookie.js';
+// 状态
+import {
+    mapState,
+    mapMutations
+} from 'vuex';
   // 实例
 export default {
     data() {
         return {
             isCollapse: false,  //菜单展开还是收缩
+            menuList:[],
+            product:"",
             isCollapsed: false,
             cusername:"",   //用户名
             // load:Boolean,   //加载loading
@@ -194,12 +224,56 @@ export default {
                 'el-menu-vertical-demo',
                 this.isCollapsed ? 'collapsed-menu' : ''
             ]
-        }
+        },
+        // 获取状态
+        ...mapState({
+            // 当前展开的一级菜单集
+            adminOpenMenus: (state) => state.adminOpenMenus
+        })
     },
     methods:{
-        collapsedSider () {
+        collapsedSider () {       
             this.$refs.side1.toggleCollapse();
-        }
+            this.product = M.url().product;
+        },
+        selecActive(productId){
+            this.product = productId;
+        },
+        getMenu(){
+            let obj={};
+            login.getSystemMenu(obj).then((data)=>{
+                console.log(data)
+                if(data.returnCode==0 || data.returnCode==200) {
+                    if(data.data && data.data.length>0){
+                        this.menuList = data.data;
+                    }
+                }else if(data.returnCode==422 || data.returnCode==204){
+                    this.$router.push('/login')
+                }else{
+                    this.$Message.error(data.msg)
+                }
+            }).catch((err)=>{
+
+            })
+        },
+        changeColor(e){
+            console.log(e);
+        },
+        // 一级菜单被打开事件
+        subMenuOpen(index) {
+            // 设置新的菜单集到状态仓库
+            this.setAdminOpenMenus([index]);
+        },
+        // 一级菜单被关闭事件
+        subMenuClose(index) {
+            // 设置新的菜单集到状态仓库
+            this.setAdminOpenMenus([]);
+        },
+        // 获得状态管理方法
+        ...mapMutations({
+            // 设置后台一级菜单展开项 传入一级菜单中文名称数组
+            setAdminOpenMenus: "setAdminOpenMenus"
+        })
     },
     beforeRouteEnter(to, from, next){
         // console.log(vm)
@@ -277,11 +351,15 @@ export default {
     //         this.cusername=getCookie('username');
     //     }
     // },
-    // 实例创建完成
-    // mounted() {
+    //实例创建完成
+    mounted() {
+       this.getMenu();
+       this.product = M.url().product;
+    },
+    // 组件
+    // created(){
         
     // },
-    // 组件
     components: {
       // 头部
       adminHead,

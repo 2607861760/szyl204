@@ -144,9 +144,8 @@
                             <el-table-column label="报告下载">
                                 <template slot-scope="scope">
                                     <div v-for="(list,index) in scope.row.dchSampleList" class="handle" style="height:40px;">
-                                         <!-- <a class="download" :href="'http://42.123.124.204:8081/dchealth-platform/1.0/data/ftpupdate?jobid='+list.jobid" download v-if="list.jobtype=='Y'">下载</a>  -->
-                                         <a class="download" :href="'http://10.131.101.159:8080/dchealth-platform/1.0/data/ftpupdate?jobid='+list.jobid" download  v-if="list.jobtype=='Y'">下载</a> 
-                                        <a class="dis-download" href="javascript:;" download  disabled v-else>下载</a>
+                                         <a class="download" :href="downHttp+'/dchealth-platform/1.0/data/ftpupdate?jobid='+list.jobid" download  v-if="list.jobtype=='Y'">下载</a> 
+                                         <a class="dis-download" href="javascript:;" download  disabled v-else>下载</a>
                                         
                                     </div>
                                 </template>
@@ -313,6 +312,7 @@
     </div>
 </template>
 <script>
+import {filePath,httpUrl} from 'common/js/Base';
 import {data} from 'api/index.js'
 import {getCookie} from '@/common/js/cookie.js'
 import treeGrid from '@/components/treeTable/vue2/TreeGrid'
@@ -321,6 +321,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
     data(){
       return {
         height:'500',  //表格默认高
+        downHttp:httpUrl.downHttp, //下载地址
         takendate:'',  //日期
         receivedate:'',
         seqdate:'',
@@ -632,13 +633,10 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                 this.$store.state.treeGrid=2;
             }
         },
-        // 获得本地/opt/serverData/
+        // 获得本地/opt/NfsDir/PublicDir/demo/
         _getLocalDataList() {
             let obj={
-                "path":"/opt/serverData/",
-                // "path":"/opt/NfsDir/PublicDir/demo/",
-                        // /opt/NfsDir/PublicDir/demo/  电信云
-                        // /opt/serverData/   159
+                "path":filePath.path.local,
                 "userId":getCookie("userid"),
                 "productId":"2",
                 "type":"2"
@@ -658,13 +656,10 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
             })
         },
         // 获得服务列表 /opt/NfsDir/PublicDir/demo/
-        // /opt/serverData/
+        // /opt/NfsDir/PublicDir/demo/
         _getServerDataList() {
             let obj={
-                "path":"/opt/serverData/",
-                // "path":"/opt/NfsDir/PublicDir/demo/",
-                        // /opt/NfsDir/PublicDir/demo/  电信云
-                        // /opt/serverData/   159
+                "path":filePath.path.local.server,
                 "userId":getCookie("userid"),
                 "productId":"2",
                 "type":"2"

@@ -36,7 +36,7 @@
     th,
     td {
         height: $table-tr-height;
-        .cell{
+        .cell {
             text-align: center;
         }
     }
@@ -135,14 +135,16 @@
     }
     // text-align: center;
 }
+
 //自定义 弹出框底部样式
 .foot-btn {
     padding: 10px 0;
-    text-align:center;
+    text-align: center;
     .ivu-btn.ivu-btn-primary.ivu-btn-circle {
         width: 250px;
     }
 }
+
 // 弹出框头部
 .ivu-modal-header {
     background: $modal-color;
@@ -195,15 +197,18 @@
 
 
 /* 表单 */
-.ivu-form{
-    margin-top:30px;
+
+.ivu-form {
+    margin-top: 30px;
 }
-.ivu-btn{
-    padding:6px 50px;
+
+.ivu-btn {
+    padding: 6px 50px;
 }
+
 .ivu-form-item {
     margin-bottom: 0;
-    + .ivu-form-item {
+    +.ivu-form-item {
         margin-top: 25px;
     }
     // 文字
@@ -218,7 +223,7 @@
         min-height: $form-item-height;
         line-height: $form-item-height;
     }
-    .ivu-form-item-content{
+    .ivu-form-item-content {
         width: $form-item-width;
     }
     .ivu-input-icon {
@@ -226,15 +231,14 @@
         height: $form-item-height;
         line-height: $form-item-height;
     }
-    .ivu-input-group-prepend{
+    .ivu-input-group-prepend {
         background: $form-item-bg-color;
         padding: 0;
-        width:$form-item-width/9.33;
+        width: $form-item-width/9.33;
         color: #666;
-        border-radius:4px;
+        border-radius: 4px;
         font-size: $form-font-size/0.875;
     }
-    
     // 下拉菜单
     .ivu-select-single {
         .ivu-select-selection {
@@ -261,13 +265,16 @@
 
 
 /* 分页 */
+
 .base-page-menu {
     padding-top: 20px;
     padding-bottom: 20px;
     text-align: center;
 }
 
+
 /* 面包屑导航 */
+
 .base-crumbs {
     padding: 10px 0;
     background: #f7f7f7;
@@ -280,7 +287,7 @@
             }
         }
         // 最后一个栏目
-        > span:last-child {
+        >span:last-child {
             font-size: 12px;
             color: #666;
             font-weight: normal;
@@ -288,90 +295,97 @@
     }
 }
 
+
 /* 公共表格 */
+
 .base-table {
     width: 100%;
     max-width: 100%;
     // 表格单元
-    > thead,
-    > tbody,
-    > tfoot {
-      > tr {
-        > th,
-        > td {
-          padding: 8px;
-          line-height: 1.5em;
-          vertical-align: top;
-          text-align:left;
+    >thead,
+    >tbody,
+    >tfoot {
+        >tr {
+            >th,
+            >td {
+                padding: 8px;
+                line-height: 1.5em;
+                vertical-align: top;
+                text-align: left;
+            }
         }
-      }
     }
-
     .table-tit {
         font-weight: bold;
     }
 }
+
 //提示
-.prompt{
-    padding:5px 10px;
+.prompt {
+    padding: 5px 10px;
 }
 
 //流程管理 drawer
-.mu-list{
-    padding:0;
+.mu-list {
+    padding: 0;
 }
-.mu-item{
-    height:40px;
+
+.mu-item {
+    height: 40px;
     border-bottom: 1px solid #ccc;
 }
-.mu-drawer.right{
-    top:61px;
-    border-radius:3px;
-    .mu-item-title{
+
+.mu-drawer.right {
+    top: 61px;
+    border-radius: 3px;
+    .mu-item-title {
         text-align: center;
-        font-size:13px;
-        color:#333;
+        font-size: 13px;
+        color: #333;
     }
 }
-.close-drawer{
+
+.close-drawer {
     cursor: pointer;
-    position:absolute;
-    display:block;
-    width:40px;
-    height:100px;
-    background:#fff;
+    position: absolute;
+    display: block;
+    width: 40px;
+    height: 100px;
+    background: #fff;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
-    -moz-box-shadow: -5px 0px 5px rgba(204, 204, 204, 0.349019607843137); /* 老的 Firefox */
-    box-shadow:-5px 0px 5px rgba(204, 204, 204, 0.349019607843137);
-    top:0;
-    bottom:0;
-    margin:auto;
-    right:256px;
-    .el-icon-d-arrow-left{
-        text-align:center;
+    -moz-box-shadow: -5px 0px 5px rgba(204, 204, 204, 0.349019607843137);
+    /* 老的 Firefox */
+    box-shadow: -5px 0px 5px rgba(204, 204, 204, 0.349019607843137);
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    right: 256px;
+    .el-icon-d-arrow-left {
+        text-align: center;
         line-height: 40px;
-        width:40px;
-        height:40px;
-        position:absolute;
-        color:#6B70A3;
-        top:0;
-        left:0;
-        right:0;
-        bottom:0;
-        margin:auto;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        color: #6B70A3;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
     }
-    .el-icon-d-arrow-right{
-        text-align:center;
-        line-height: 40px;;
-        width:40px;
-        height:40px;
-        color:#6B70A3;
-        position:absolute;
-        top:0;
-        left:0;
-        right:0;
-        bottom:0;
-        margin:auto;
+    .el-icon-d-arrow-right {
+        text-align: center;
+        line-height: 40px;
+        ;
+        width: 40px;
+        height: 40px;
+        color: #6B70A3;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
     }
 }

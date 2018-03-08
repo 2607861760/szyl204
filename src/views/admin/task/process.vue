@@ -24,7 +24,7 @@
         margin-left:150px;
         padding-top:15px;
         .process-ver {
-            margin-left:80px;
+           // margin-left:80px;
         }
     }
     .process-mid {
@@ -82,21 +82,30 @@
                     <div style="padding-bottom:10px;">
                         <div class="process_title">错误日志:</div>
                         <div style="width:100%;">
-                             <a :href="'http://10.131.101.159:8080/dchealth-platform/1.0/job/errorLogFileDownload?jobid='+this.$store.state.jobid" download class="download" style="padding:5px 15px;">下载错误日志</a> 
+                             <a :href="downUrl+'/dchealth-platform/1.0/job/errorLogFileDownload?jobid='+this.$store.state.jobid" download class="download" style="padding:5px 15px;">下载错误日志</a> 
                              <!-- <a :href="'http://42.123.124.204:8081/dchealth-platform/1.0/job/errorLogFileDownload?jobid='+this.$store.state.jobid" download class="download" style="padding:5px 15px;">下载错误日志</a>  -->
                         </div>
                     </div>
                 </Row>
                 <Row>
-                    <div class="process_title">运行状态:</div>
-                    <div style="width:100%;">
+                    <Col span="2" class="process_title">运行状态:</Col>
+                    <Col span="12">
                         <div class="process-ver"> 
                             <Steps :current="currentStatus" direction="vertical" :status="runStatus">
-                                <Step v-for="(item,index) in processData" :key="index" :title="item.execTool" :content="item.errorInfo ">
+                                <Step v-for="(item,index) in processData" :key="index" :title="item.execTool" :content="item.errorInfo">
+    
                                 </Step>
                             </Steps>
                         </div>
-                    </div>
+                    </Col>
+                    <Col span="5">
+                        <span>开始时间</span>
+                        <p style="height:60px;color:#999;" v-for="(item,index) in processData" :key="index">{{item.beginTime}}</p>
+                    </col>
+                    <Col span="5">
+                        <span>结束时间</span>
+                        <p style="height:60px;color:#999;" v-for="(item,index) in processData" :key="index">{{item.overTime}}</p>
+                    </col>
                 </Row>
             </div>
             
@@ -106,6 +115,7 @@
 </template>
 <script>
 // 引入任务管理方法
+import {httpUrl } from 'common/js/Base';
 import {task} from 'api/index.js'
 import {getCookie} from '@/common/js/cookie.js'
 export default {
@@ -114,6 +124,7 @@ export default {
         return {
             // 流程数据 
             processData: [],
+            downUrl: httpUrl.downHttp,//下载地址
             // 当期状态
             currentStatus: -1, 
             // 文件名称

@@ -5,7 +5,7 @@
                 <template slot-scope="scope">
                     <span v-if="spaceIconShow(index)" v-for="(space, levelIndex) in scope.row._level" class="ms-tree-space"></span>
                      <Button type="text" class="boult" v-if="toggleIconShow(index,scope.row)" @click="toggle(scope.$index)" style="padding:6px 20px;"> 
-                        <span style="color:#F2B217;font-size:17px;" v-if="scope.$index==0">
+                        <span style="color:#F2B217;font-size:17px;">
                             <Icon type="folder"></Icon>
                         </span>
                     </Button>
@@ -188,7 +188,7 @@ export default {
             }
             return false
         },
-        // 获得本地/opt/serverData/
+        // 获得本地/opt/NfsDir/PublicDir/demo/
         _getLocalDataList(record) {
             let obj = {
                 "path": record.path,

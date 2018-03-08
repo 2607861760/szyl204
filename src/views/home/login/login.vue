@@ -220,7 +220,7 @@ export default{
                                         }else {
                                             setCookie('rememberPassword',this.rememberPassword,null); 
                                         }
-                                        this.$router.push('/admin');
+                                        this.$router.push('/admin?product=1');
                                         this.load=false;
                                     }else if(data.returnCode==422 || data.returnCode==204){
                                         this.$router.push('/login')

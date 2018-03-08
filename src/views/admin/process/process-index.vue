@@ -94,12 +94,6 @@
 </style>
 <template>
 	<div class="process_index">
-		<div class="tabs">
-			<Tabs type="card" @on-click="changeProject">
-                <TabPane label="罕见病模板" ></TabPane>
-                <TabPane label="肿瘤模板" class="tabcard"></TabPane>
-            </Tabs>
-		</div>
 		<div class="mainBox">
 			<div class="main_temp">
 				<div class="process_title"><span>历史模板</span><p class="toggleIcon" @click="changeDel"><Icon size=25 type="ios-trash-outline"></Icon></p></div>
@@ -206,7 +200,8 @@
                     "productId":this.$store.state.projectid,
                     "pageSize":10,
                     "pageIndex":1
-                }
+				}
+				this.tempList = [];
 				process.getPipelineTemplateList(obj).then((data)=> {
 					if(data.returnCode==0 || data.returnCode==200) {
 						if(data.data&& data.data.length>0){
@@ -237,9 +232,18 @@
 			}
 		},
 		created(){
-			this.$store.state.projectid=1;
+			//this.$store.state.projectid=1;
 			//获取流程列表
+			//this.getPipelineTemplateList();
+			this.$store.state.projectid = M.url().product ? M.url().product : "1";
 			this.getPipelineTemplateList();
-		}
+		},
+		watch: {
+			'$route'(to, from) {
+				//刷新参数放到这里里面去触发就可以刷新相同界面了
+				this.$store.state.projectid = M.url().product ? M.url().product : "1";
+				this.getPipelineTemplateList();
+			}
+		},
 	}
 </script>
