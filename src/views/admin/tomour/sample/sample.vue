@@ -1,6 +1,6 @@
 <style lang="scss">
 	.build{
-		margin-top:10px;
+		margin-top:15px;
 	}
 	.upload {
 		padding: 10px 10px 30px;
@@ -20,6 +20,9 @@
 			font-size: 12px;
 			cursor: pointer;
 		}
+	}
+	.patient_info_footer{
+		margin-top:10px;
 	}
 </style>
 <template>
