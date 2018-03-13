@@ -45,15 +45,8 @@ module.exports = {
             '/dchealth-platform': {
                 target: 'http://42.123.124.204:8081',
                 // target: 'http://gene.dchealth.com',
-                // target: 'http://localhost:8080',
                 // target: 'http://10.131.101.159:8080',
-                // target: 'http://10.131.101.55:8080',
-                // target: 'http://10.131.101.201:8080', //陈潇杨
-                // target: 'http://10.131.101.197:8080', //李芳旭
-                // target: 'http://10.131.101.219:8080', //海宁
-                // target: 'http://10.131.101.33:8080',
                 // target: 'http://192.168.163.214:8080', //复旦
-                // target: 'http://10.131.101.207:8080',
                 changeOrigin: true,
             }
         },

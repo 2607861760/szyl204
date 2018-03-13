@@ -118,27 +118,31 @@ $right-main-bg: #ECF0F5;
                 :unique-opened="true"
                 :collapse="isCollapsed"
                 :default-openeds="adminOpenMenus"
-                :default-active="$route.path+'?product='+product"
+                :default-active="$route.path"
                 @open="subMenuOpen"
                 @close="subMenuClose">
                 <div v-for="(item, index) in menuList" :key="index">
                     <!-- 判断是否存在子级菜单 -->
-                    <el-menu-item @click="selecActive(item.productId)"  v-if="!item.subMenus.length" :index="item.url+'?product='+item.productId+''">
+                    <el-menu-item  v-if="!item.subMenus.length" :index="item.url">
+                        <Icon :type="item.icon"  size="22"></Icon>
+                        <span slot="title">{{item.menuName}}</span>
+                    </el-menu-item>
+                    <el-menu-item v-else @click="showChildBar(item)"  :index="item.url">
                         <Icon :type="item.icon"  size="22"></Icon>
                         <span slot="title">{{item.menuName}}</span>
                     </el-menu-item>
                     <!-- 如果包含二级菜单 -->
-                    <el-submenu v-else :index="item.menuName">
+                    <!-- <el-submenu v-else :index="item.menuName"> -->
                         <!-- 一级菜单 -->
-                        <template slot="title">
+                        <!-- <template slot="title">
                             <Icon :type="item.icon"  size="22"></Icon>
                             <span>{{item.menuName}}</span>
-                        </template>
+                        </template> -->
                         <!-- 子菜单菜单 -->
-                        <el-menu-item @click="selecActive(subMenu.productId)"  v-for="(subMenu, idx) in item.subMenus" :index="subMenu.url+'?product='+subMenu.productId+''" :key="idx">
+                        <!-- <el-menu-item @click="selecActive(subMenu.productId)"  v-for="(subMenu, idx) in item.subMenus" :index="subMenu.url+'?product='+subMenu.productId+''" :key="idx">
                             <span>{{subMenu.menuName}}</span>
-                        </el-menu-item>
-                    </el-submenu>
+                        </el-menu-item> -->
+                    <!-- </el-submenu> -->
                 </div>
                 <!-- <Tooltip placement="right" content="罕见病" :disabled="!isCollapsed"> 
                     <el-menu-item index="/admin">
@@ -236,8 +240,17 @@ export default {
             this.$refs.side1.toggleCollapse();
             this.product = M.url().product;
         },
-        selecActive(productId){
-            this.product = productId;
+        showChildBar(item){
+            if(item.menuName == "任务管理"){
+                // this.$store.state.taskManageMenuList = [];
+                this.$store.state.taskManageMenuList = M.clone( item.subMenus );
+            }else if(item.menuName == "文件管理"){
+                // this.$store.state.fileManageMenuList = [];
+                this.$store.state.fileManageMenuList =  M.clone( item.subMenus );
+            }else if(item.menuName == "流程管理"){
+                // this.$store.state.processManageMenuList = [];
+                this.$store.state.processManageMenuList = M.clone( item.subMenus );
+            }
         },
         getMenu(){
             let obj={};
@@ -255,9 +268,6 @@ export default {
             }).catch((err)=>{
 
             })
-        },
-        changeColor(e){
-            console.log(e);
         },
         // 一级菜单被打开事件
         subMenuOpen(index) {

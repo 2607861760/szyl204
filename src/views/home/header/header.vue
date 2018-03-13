@@ -157,7 +157,7 @@
                             <div class="top-own">
                                 <div v-if="currentUserName">
                                     <Avatar icon="person" style="margin-right:-20px;"/>
-                                    <router-link to="/admin?product=1"  class="avatar-admin" style="margin-left:30px;">{{currentUserName}}</router-link>
+                                    <router-link to="/admin"  class="avatar-admin" style="margin-left:30px;">{{currentUserName}}</router-link>
                                 </div>
                                 <div v-else>
                                      <a href="javascript:;" @click="loginModal" class="active" v-show="showBtn">登录</a> 

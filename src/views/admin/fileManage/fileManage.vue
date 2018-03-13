@@ -9,6 +9,10 @@
 </style>
 <template>
 	<div class="fileMange">
+		<Tabs type="card" @on-click="choice" >
+            <TabPane v-for="(item,index) in tabsdata" :name="item.productId" :key="item.productId" :label="item.menuName"></TabPane>
+            <!-- <TabPane label="癌症" class="tabcard"></TabPane> -->
+        </Tabs>
 		<div class="tabs">
 			<Tabs type="line" v-model="cInner">
                 <TabPane label="批量上传文件" name="all"></TabPane>
@@ -126,13 +130,14 @@ import {getCookie} from '@/common/js/cookie.js'
 				piciList:'',    //批次号集合
 				uploadSampleFileInfos: [],
 				loading:false,  //加载loading
-				cInner:"all"
+				cInner:"all",
+				tabsdata:[],    //选项卡内容
 			}
 		},
 		methods:{
 			// tabs切换
 			choice(name){
-				this.$store.state.projectid=name+1;
+				this.$store.state.projectid=name;
 				this.cInner='all';
 				this.getBatchList(); 
 			},
@@ -237,17 +242,28 @@ import {getCookie} from '@/common/js/cookie.js'
 			// });
 			// this.$store.state.projectid=1;
 			// this.getBatchList();
-			this.$store.state.projectid = M.url().product ? M.url().product : "1";
-			this.getBatchList();
-		},
-		watch: {
-			'$route'(to, from) {
-				//刷新参数放到这里里面去触发就可以刷新相同界面了
-				console.log(this.$route.path);
-				this.$store.state.projectid = M.url().product ? M.url().product : "1";
+			if (this.$store.state.fileManageMenuList.length > 0) {
+				this.tabsdata = M.clone(this.$store.state.fileManageMenuList);
+				this.$store.state.projectid = this.tabsdata[0].productId;
+				this.getBatchList();
+			} else {
+				let obj = {
+					"menuName": "罕见病",
+					"productId": "1"
+				}
+				this.tabsdata.push(obj);
+				this.$store.state.projectid = this.tabsdata[0].productId;
 				this.getBatchList();
 			}
 		},
+		// watch: {
+		// 	'$route'(to, from) {
+		// 		//刷新参数放到这里里面去触发就可以刷新相同界面了
+		// 		console.log(this.$route.path);
+		// 		this.$store.state.projectid = M.url().product ? M.url().product : "1";
+		// 		this.getBatchList();
+		// 	}
+		// },
 		filters:{
         // 格式化数据
 			foreignFlag(cellValue) {

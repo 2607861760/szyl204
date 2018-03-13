@@ -5,6 +5,12 @@
 
 /* 基础公共 */
 
+ol,
+ul,
+li {
+    list-style: none;
+}
+
 .clear {
     @include clear;
 }

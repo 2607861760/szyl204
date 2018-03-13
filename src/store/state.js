@@ -33,6 +33,9 @@ const state = {
         tumourpatientCode: '', //肿瘤二期 病人编号
         tumourProjectId: '', //肿瘤二期 项目id
     },
+    taskManageMenuList: [], //任务管理选项卡菜单
+    fileManageMenuList: [], //文件管理选项卡菜单
+    processManageMenuList: [], //流程管理选项卡菜单
 };
 
 export default state;

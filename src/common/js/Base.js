@@ -223,8 +223,6 @@ export const imgUrl = {
     // imgurl: 'http://192.168.163.214:82', //复旦
     // imgurl: 'http://10.131.101.159:8080' //159  本地测试服务,
     imgurl: 'http://42.123.124.204:8081', //204   外网测试服务
-
-
 }
 
 export const httpUrl = {
