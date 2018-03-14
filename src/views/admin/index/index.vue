@@ -205,7 +205,6 @@ export default {
         return {
             isCollapse: false,  //菜单展开还是收缩
             menuList:[],
-            product:"",
             isCollapsed: false,
             cusername:"",   //用户名
             // load:Boolean,   //加载loading
@@ -238,7 +237,6 @@ export default {
     methods:{
         collapsedSider () {       
             this.$refs.side1.toggleCollapse();
-            this.product = M.url().product;
         },
         showChildBar(item){
             if(item.menuName == "任务管理"){
@@ -364,7 +362,6 @@ export default {
     //实例创建完成
     mounted() {
        this.getMenu();
-       this.product = M.url().product;
     },
     // 组件
     // created(){

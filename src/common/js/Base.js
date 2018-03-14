@@ -221,8 +221,8 @@ export const consts = {
 // 全局图片路径
 export const imgUrl = {
     // imgurl: 'http://192.168.163.214:82', //复旦
-    // imgurl: 'http://10.131.101.159:8080' //159  本地测试服务,
-    imgurl: 'http://42.123.124.204:8081', //204   外网测试服务
+    // imgurl: 'http://10.131.101.159:82' //159  本地测试服务,
+    imgurl: 'http://42.123.124.204:82', //204   外网测试服务
 }
 
 export const httpUrl = {
@@ -232,7 +232,7 @@ export const httpUrl = {
 
         // "downHttp": '10.131.101.159:8080', //159 下载文件地址
         // "tgax": "http://10.131.101.173:88/#/analyses/", //159 内网测试
-        // "loginOut": "https://auth-dch-qa.genecards.cn/account/LogOff/?returnUrl=10.131.101.159:8080/&app=DCHDM", //159内网测试
+        // "loginOut": "https://auth-dch-qa.genecards.cn/account/LogOff/?returnUrl=http://10.131.101.159:8080/&app=DCHDM", //159内网测试
 
         "downHttp": 'http://42.123.124.204:8081', //204 下载文件地址
         "tgax": 'http://tgex-dev.dchgenecloud.com:88/#/analyses/', //204

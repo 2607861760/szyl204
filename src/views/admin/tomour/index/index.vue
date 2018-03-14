@@ -161,6 +161,7 @@
     .slot-footer{
         height:53px;
         background: rgba(242, 242, 242, 1);
+        padding:0;
         .ivu-btn{
             padding:6px 30px;
         }
@@ -340,7 +341,8 @@
                             <el-table-column label="操作" min-width="120%">
                                 <template slot-scope="scope">
                                     <div v-for="(list,index) in scope.row.dchSampleList" class="handle">
-                                        <span class="bian" @click="run(index,scope.row)" v-if="list.fastq_R1!=null && list.fastq_R2!=null && list.samplestatus!=3">运行</span>
+                                        <span class="bian" style="border:none;background:none;color:#ccc;padding: 0px 10px;" disabled v-if="list.samplestatus=='0'||list.samplestatus=='5'">运行</span>
+                                        <span class="bian" @click="run(index,scope.row)" v-else-if="list.samplestatus=='6'">运行</span>
                                         <span class="bian" @click="delet(index,scope.row)">删除</span>
                                         <span class="bian" @click="edit(index,scope.row)">编辑</span>
                                         </div>
