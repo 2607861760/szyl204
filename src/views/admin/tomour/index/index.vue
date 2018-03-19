@@ -390,22 +390,26 @@
                  <div class="domain_echats_graph">
                     <div class="domain_echats_header">
                         <p class="domain_echats_title">不同癌种数量</p>
-                        <p class="domain_echats_exchange">
+                        <p v-if="!showNullEchart1" class="domain_echats_exchange">
                             <span @click="drawDiseaseStatisticsBar"><Icon type="stats-bars"></Icon></span>
                             <span @click="drawDiseaseStatisticsPie"><Icon type="pie-graph"></Icon></span>
                         </p>
                     </div>
-                    <div id="difTumNum" style="height:300px;background:#ECF5FF;"></div>
+                    <div id="difTumNum" style="height:300px;background:#FFF;line-height:400px;text-align:center;">
+                        <img style="display:inline-block;" v-if="showNullEchart1" src="../img/null.png" />
+                    </div>
                  </div>
                 <div class="domain_echats_graph">
                     <div class="domain_echats_header">
                         <p class="domain_echats_title">本月收集病例数统计</p>
-                        <p class="domain_echats_exchange">
+                        <p v-if="!showNullEchart2" class="domain_echats_exchange">
                             <span @click="drawCurStatisticsLine"><Icon type="ios-pulse"></Icon></span>
                             <span @click="drawCurStatisticsBar"><Icon type="stats-bars"></Icon></span>
                         </p>
                     </div>
-                    <div id="curMouthNum" style="height:300px;background:#ECF5FF;"></div>
+                    <div id="curMouthNum" style="height:300px;background:#FFF;line-height:400px;text-align:center;">
+                        <img style="display:inline-block;" v-if="showNullEchart2" src="../img/null.png" />
+                    </div>
                  </div>
              </div> 
             <!-- 图表 结束 -->
@@ -644,7 +648,8 @@ export default{
             cancelStyle: {
                 "lungCancel": "1",      //肺癌
                 "gastricCancer": "2",   //胃癌
-                "colorectalCancer": "3" //结直肠癌
+                "colorectalCancer": "3", //结直肠癌
+                "breastCancel": "4"    //乳腺癌
             },
             samplesource: [],//样本来源下拉
             sampletype: [],  //样本来源下拉
@@ -681,6 +686,8 @@ export default{
             pageIndex:1,
             dataSize:{},
             uploadDisabled:false,
+            showNullEchart1:false,
+            showNullEchart2:false
         }
     },
     methods:{
@@ -1335,7 +1342,7 @@ export default{
                     formatter: "{a} <br/>{b}: {c} ({d}%)"
                 },
                 legend: {
-                    bottom: 0,
+                    bottom: 10,
                     left: 'center',
                     data: diseaseName
                 },
@@ -1366,13 +1373,15 @@ export default{
         buildCurMouthList(data){
             let _this=this;
             for(var i=0;i<data.length;i++){
-                 let now={}
+                let now={}
                 if(data[i].cancertype==_this.cancelStyle.lungCancel){
                     data[i].cancertype="肺癌";
                 }else if(data[i].cancertype==_this.cancelStyle.gastricCancer){
                     data[i].cancertype="胃癌";
                 }else if(data[i].cancertype==_this.cancelStyle.colorectalCancer){
                     data[i].cancertype="结直肠癌";
+                } else if (data[i].cancertype == _this.cancelStyle.breastCancel) {
+                    data[i].cancertype = "乳腺癌";
                 };
                 //  obj={
                 //     "count":data[i].count,
@@ -1468,12 +1477,21 @@ export default{
             this.dataSize = data.projectCountModel;
             // 不同癌种 的数量
             this.difTumNumList = data.profileModelList;
-            //不同癌种饼状图
-            this.drawDiseaseStatisticsPie();
-            //当月癌种数量
-            this.buildCurMouthList(data.statisticsModelList);
-            //当月癌种数量 柱状图
-            this.drawCurStatisticsBar();
+            if(this.difTumNumList.length<=0){
+                this.showNullEchart1=true;
+            }else{
+                //不同癌种饼状图
+                this.drawDiseaseStatisticsPie();
+            }
+           if(data.statisticsModelList.length<=0){
+                this.showNullEchart2=true;
+           }else{
+                //当月癌种数量
+                this.buildCurMouthList(data.statisticsModelList);
+                //当月癌种数量 柱状图
+                this.drawCurStatisticsBar();
+           }
+           
         },
     },
     mounted(){

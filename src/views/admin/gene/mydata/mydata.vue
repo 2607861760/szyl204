@@ -241,7 +241,8 @@
                         <Row>
                             <Col class="tables">
                                 <FormItem label="样本编号" style="width:30%;" prop="samplecode">
-                                    <Input v-model="sampleInfo.samplecode"></Input>
+                                    <Input v-if="sampleEditType==0" v-model.trim="sampleInfo.samplecode"></Input>
+                                    <Input v-else-if="sampleEditType==1" disabled v-model="sampleInfo.samplecode"></Input>
                                 </FormItem>
                                 <FormItem label="样本类型" style="width:30%;">
                                     <Select v-model="sampleInfo.sampletype">
@@ -444,6 +445,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         fileServerCategoryList: [],          // 服务
         pipeline:'',                         //存放pipeline 
         allocation:false,                    //代表是否在分配状态
+        sampleEditType:0,                  //0 代表添加状态，1代表编辑状态
         ruleCustom: {                        //表单验证规则
           samplecode: [
               { required: true, message: '样本编号不能为空', trigger: 'blur' }
@@ -576,6 +578,11 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         dataloading:false,     //数据加载状态 
         emptytext:''         //空数据
       }
+    },
+    watch:{
+        "sampleInfo.samplecode":function(val,oldval){
+            this.sampleInfo.samplecode=val.replace(/\s|\xA0/g,"");
+        }
     },
     methods: {
         //点击病人编号
@@ -900,6 +907,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         // 弹层关闭
         clickCancel() {
             this.uploadDisabled = true;
+            this.$refs.sampleInfo.resetFields();
         },
         // tabs切换事件
         serverlocal(name){  //serverlocal
@@ -999,6 +1007,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         addsample(row){//点击添加
             console.log(row)
             this.uploadDisabled = true;
+            this.sampleEditType=0,
             this.patid=row.dchPatient.patientid;
             this.sampleEdit=true;
             this.sampleInfo={};
@@ -1083,6 +1092,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                             if(data.data!="null"||data.data!=null){
                                 this.$Message.success(data.msg);
                                 this.load();
+                                this.dataloading = false;
                                 this.uploadDisabled = false;
                                 this.samid=data.data.sampleid;
                             }
@@ -1253,6 +1263,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         //点击编辑
         edit(index,row){ 
             this.sampleEdit = true;
+            this.sampleEditType=1;
             this.upModal = false;
             this.pull();
             if(row.dchSampleList[index].samplebatch){

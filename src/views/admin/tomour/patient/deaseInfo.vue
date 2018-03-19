@@ -358,7 +358,8 @@ export default {
             cancelStyle: {
                 "lungCancel" : "1",      //肺癌
                 "gastricCancer" : "2",   //胃癌
-                "colorectalCancer" : "3" //结直肠癌
+                "colorectalCancer" : "3", //结直肠癌
+                "breastCancel" : "4"    //乳腺癌
             },
             formData: {},  //基本信息表单数据
             diseaseInfoData:{},//疾病信息数据 
@@ -796,6 +797,9 @@ export default {
                     break;
                 case "结直肠癌":
                     ret = this.cancelStyle.colorectalCancer;
+                    break;
+                case "乳腺癌":
+                    ret = this.cancelStyle.breastCancel;
                     break;
                 default:
                     ret=null;

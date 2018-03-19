@@ -133,7 +133,8 @@
                     <Row>
                         <Col class="tables">
                             <FormItem label="样本编号" style="width:30%;" prop="samplecode">
-                                <Input v-model="sampleInfo.samplecode"></Input>
+                                <Input v-if="sampleEditType==0" v-model.trim="sampleInfo.samplecode"></Input>
+                                <Input v-else-if="sampleEditType==1" disabled v-model="sampleInfo.samplecode"></Input>
                             </FormItem>
                             <FormItem label="样本类型" style="width:30%;">
                                 <Select v-model="sampleInfo.sampletype">
@@ -286,6 +287,7 @@ export default{
             takendate:'',    //取样日期
             receivedate: '',  //收样日期
             seqdate: '',   //测序日期
+            sampleEditType:0, //样本编辑状态 0，添加状态 1：修改状态
             listload:true,
             ptid:'',
             total:0,
@@ -416,6 +418,11 @@ export default{
             tabsVal:'upload'
         }
     },
+    watch:{
+        "sampleInfo.samplecode":function(val,oldval){
+            this.sampleInfo.samplecode=val.replace(/\s|\xA0/g,"");
+        }
+    },
     methods: {
         //格式化文件状态
         statusFormatter(row, column,cellValue){
@@ -446,6 +453,7 @@ export default{
             this.platformId="";
             this.enrichmentkitId="";
             this.uploadDisabled=true;
+            this.$refs.sampleInfo.resetFields();
         },
         // 上传成功
         upsuccess(response, file, fileList) {
@@ -555,6 +563,7 @@ export default{
         },
         found(){ //点击新建样本
             this.upshow = false;
+            this.sampleEditType=0;
             this.sampleModal=true;
             this.sampleInfo={};
             this.pull();
@@ -643,6 +652,7 @@ export default{
             this.pull();
             // this.sampleid=row.sampleid;
             this.samid=row.sampleid;
+            this.sampleEditType=1;
             if(row.samplebatch){
                 if(row.samplebatch == 0){
                     row.samplebatch="";
