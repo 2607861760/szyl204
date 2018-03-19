@@ -1199,7 +1199,12 @@ export default{
             let diseaseCount = this.getDiseaseCount(this.curMouthList);
             let option = {
                 xAxis: {
-                    data: diseaseName
+                    type: 'category',
+                    data: diseaseName,
+                     axisLabel: {
+                        interval: 0,
+                        rotate: -30
+                    }
                 },
                 yAxis: {
                     splitLine: { show: false }  //改设置不显示坐标区域内的y轴分割线
@@ -1256,7 +1261,11 @@ export default{
             let option = {
                 xAxis: {
                     type: 'category',
-                    data: diseaseName
+                    data: diseaseName,
+                    axisLabel:{
+                        interval:0,
+                        rotate:-30
+                    }
                 },
                 yAxis: {
                     type: 'value'
@@ -1269,7 +1278,7 @@ export default{
                 grid: {
                     left: '10%',
                     right: '10%',
-                    containLabel: true,
+                    containLabel: true
                 },
             };
             echart.clear();
@@ -1282,7 +1291,11 @@ export default{
             let diseaseCount= this.getDiseaseCount(this.difTumNumList);
             let option = {
                 xAxis: {
-                    data: diseaseName
+                    data: diseaseName,
+                     axisLabel: {
+                        interval: 0,
+                        rotate: -30
+                    }
                 },
                 yAxis: {
                     splitLine: { show: false }  //改设置不显示坐标区域内的y轴分割线
@@ -1325,7 +1338,7 @@ export default{
                 grid: {
                     left: '10%',
                     right: '10%',
-                    containLabel: true,
+                    containLabel: true
                 },
             };
             echart.clear();
