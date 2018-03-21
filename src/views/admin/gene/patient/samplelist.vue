@@ -133,7 +133,8 @@
                     <Row>
                         <Col class="tables">
                             <FormItem label="样本编号" style="width:30%;" prop="samplecode">
-                                <Input v-model="sampleInfo.samplecode"></Input>
+                                <Input v-if="sampleEditType==0" v-model.trim="sampleInfo.samplecode"></Input>
+                                <Input v-else-if="sampleEditType==1" disabled v-model="sampleInfo.samplecode"></Input>
                             </FormItem>
                             <FormItem label="样本类型" style="width:30%;">
                                 <Select v-model="sampleInfo.sampletype">
@@ -184,6 +185,9 @@
                             </FormItem>
                         </Col>
                         <Col class="tables">
+                            <FormItem label="样本批次" style="width:30%;">
+                                <Input v-model="sampleInfo.samplebatch"></Input>
+                            </FormItem>
                             <FormItem label="备注" style="width:30%;">
                                 <Input v-model="sampleInfo.notes"></Input>
                             </FormItem>
@@ -265,6 +269,7 @@
 </div>
 </template>
 <script>
+import {filePath} from 'common/js/Base';
 import {data} from 'api/index.js'
 import treeGrid from '@/components/treeTable/vue2/TreeGrid'
 import {getCookie} from '@/common/js/cookie.js'
@@ -282,6 +287,7 @@ export default{
             takendate:'',    //取样日期
             receivedate: '',  //收样日期
             seqdate: '',   //测序日期
+            sampleEditType:0, //样本编辑状态 0，添加状态 1：修改状态
             listload:true,
             ptid:'',
             total:0,
@@ -310,11 +316,6 @@ export default{
                   {
                       text: '文件大小',
                       dataIndex: 'size',
-                      width:'10'
-                  },
-                  {
-                      text: '传输时间',
-                      dataIndex: 'transition',
                       width:'10'
                   }
               ],
@@ -417,6 +418,11 @@ export default{
             tabsVal:'upload'
         }
     },
+    watch:{
+        "sampleInfo.samplecode":function(val,oldval){
+            this.sampleInfo.samplecode=val.replace(/\s|\xA0/g,"");
+        }
+    },
     methods: {
         //格式化文件状态
         statusFormatter(row, column,cellValue){
@@ -447,6 +453,7 @@ export default{
             this.platformId="";
             this.enrichmentkitId="";
             this.uploadDisabled=true;
+            this.$refs.sampleInfo.resetFields();
         },
         // 上传成功
         upsuccess(response, file, fileList) {
@@ -556,6 +563,7 @@ export default{
         },
         found(){ //点击新建样本
             this.upshow = false;
+            this.sampleEditType=0;
             this.sampleModal=true;
             this.sampleInfo={};
             this.pull();
@@ -610,6 +618,7 @@ export default{
                                 this.$Message.success(data.msg);
                                 this.uploadDisabled = false;
                                 this.getList();
+                                this.listload = false;
                             }else if(data.returnCode==422 || data.returnCode==204){
                                 this.$router.push('/login')
                             }else{
@@ -624,6 +633,7 @@ export default{
                                     this.$Message.success(data.msg);
                                     this.uploadDisabled = false;
                                     this.getList();
+                                    this.listload = false;
                                     this.samid=data.data.sampleid;
                                 }
                             }else if(data.returnCode==422 || data.returnCode==204){
@@ -642,7 +652,13 @@ export default{
             this.pull();
             // this.sampleid=row.sampleid;
             this.samid=row.sampleid;
-            this.enrichmentkitId= row.enrichmentkit,       
+            this.sampleEditType=1;
+            if(row.samplebatch){
+                if(row.samplebatch == 0){
+                    row.samplebatch="";
+                }
+            }
+            this.enrichmentkitId= row.enrichmentkit;      
             this.platformId= row.platform;
             this.sampleModal = true;
             this.upshow = true;
@@ -669,10 +685,7 @@ export default{
         // 获得服务
         _getServerDataList() {
             let obj={
-                "path":"/opt/serverData/",
-                // "path":"/opt/NfsDir/PublicDir/demo/",
-                            // /opt/NfsDir/PublicDir/demo/  电信云
-                            // /opt/serverData/   159
+                "path": filePath.path.server,
                 "userId":getCookie("userid"),
                 "productId":"1",
                 "type":"2"
@@ -692,10 +705,7 @@ export default{
         // 获得本地
         _getLocalDataList(){
             let obj={
-                "path":"/opt/serverData/",
-                // "path":"/opt/NfsDir/PublicDir/demo/",
-                            // /opt/NfsDir/PublicDir/demo/  电信云
-                            // /opt/serverData/   159
+                "path": filePath.path.local, 
                 "userId":getCookie("userid"),
                 "productId":"1",
                 "type":"2"
@@ -731,7 +741,7 @@ export default{
                 this.listload=false;
                 if(data.returnCode==0 || data.returnCode==200){
                     
-                    if(data.data!="null"||data.data!=null){
+                    if(data.data && data.data.length>0){
                         this.samplelist=data.data;
                         this.total=this.samplelist.length;
                         console.log(this.samplelist);

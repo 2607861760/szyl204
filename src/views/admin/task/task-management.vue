@@ -45,12 +45,10 @@
 </style>
 <template>
     <div calss="task">
-
         <Tabs type="card" @on-click="choice" >
-            <TabPane label="罕见病"></TabPane>
-            <TabPane label="癌症" class="tabcard"></TabPane>
+            <TabPane v-for="(item,index) in tabsdata" :name="item.productId" :key="item.productId" :label="item.menuName"></TabPane>
+            <!-- <TabPane label="癌症" class="tabcard"></TabPane> -->
         </Tabs>
-
         <div class="cont-research">
             <div style="float:left;">
                 <Button type="primary" size="small" class="build" @click="build">
@@ -92,8 +90,8 @@
                 <el-table-column prop="path" label="vcf文件下载" min-width="10%" v-if="this.$store.state.projectid==1">
                     <template slot-scope="scope">
                        
-                         <a :href="'http://42.123.124.204:8081/dchealth-platform/1.0/data/vcfdownload?jobid='+scope.row.jobid" download class="download" v-if="scope.row.status==99">下载</a> 
-                        <!-- <a :href="'http://10.131.101.159:8080/dchealth-platform/1.0/data/vcfdownload?jobid='+scope.row.jobid" download class="download" v-if="scope.row.status==99">下载</a> -->
+                         <a :href="downHttp+'/dchealth-platform/1.0/data/vcfdownload?jobid='+scope.row.jobid" download class="download" v-if="scope.row.status==99">下载</a> 
+                        <!-- <a :href="'http://42.123.124.204:8081/dchealth-platform/1.0/data/vcfdownload?jobid='+scope.row.jobid" download class="download" v-if="scope.row.status==99">下载</a> -->
                        
                         <a class="dis-download" href="javascript:;" download  disabled v-else>下载</a>
                     </template>
@@ -197,7 +195,7 @@ import {
 } from 'api/index.js'
 import {getCookie} from '@/common/js/cookie.js'
 // 引入公共操作函数
-import { editArrayRow, removeArrayRow } from 'common/js/Base.js';
+import { editArrayRow, removeArrayRow , httpUrl} from 'common/js/Base.js';
 // 组件实例
 export default {
     name:"task",
@@ -208,6 +206,7 @@ export default {
             more:'',
             routes:'',
             path:'',
+            downHttp:httpUrl.downHttp, //下载地址
             disSubmit:true, //提交按钮禁用
             loading:true,
             tableList: [],            // 表格数组
@@ -233,6 +232,7 @@ export default {
             sampleList: [],     // 样本列表
             selectList: [],     // 样本选中项
             tabledata: [],
+            tabsdata:[],        //选项卡内容
         }
     },
     // directives: {  //监听滚动
@@ -248,8 +248,6 @@ export default {
     //         }
     //     }
     // },
-    watch: {
-    },
     filters: {
         // 格式化数据
         foreignFlag(cellValue) {
@@ -265,11 +263,34 @@ export default {
             }
         },
     },
+    //
+    mounted(){
+       
+    },
     // 实例创建时
     created() {
-        this.$store.state.projectid=1;
-        this._getTaskList();      
+        if(this.$store.state.taskManageMenuList.length>0){
+            this.tabsdata = M.clone( this.$store.state.taskManageMenuList );
+            this.$store.state.projectid = this.tabsdata[0].productId;
+            this._getTaskList(); 
+        }else{
+            let obj={
+                "menuName":"罕见病",
+                "productId":"1"
+            }
+            this.tabsdata.push(obj);
+            this.$store.state.projectid = this.tabsdata[0].productId;
+            this._getTaskList(); 
+        }
     },
+    // watch: {
+    //     '$route'(to, from) {
+    //         //刷新参数放到这里里面去触发就可以刷新相同界面了
+    //         console.log(this.$route.path);
+    //         this.$store.state.projectid =M.url().product ? M.url().product : "1";
+    //         this._getTaskList();      
+    //     }
+    // },
     methods: {
         //每页显示改变
         handleSizeChanges(val) {
@@ -293,8 +314,7 @@ export default {
         },
         // tabs切换
         choice(name){
-            console.log(name)
-            this.$store.state.projectid=name+1;
+            this.$store.state.projectid=name
             this._getTaskList(); 
             this.batchlist = [];
             this.sampleList = [];
@@ -552,8 +572,8 @@ export default {
                 "productId":this.$store.state.projectid
             }
             console.log(obj)
+            this.tableList = [];
             task.getTaskList(obj).then((data) => {
-                console.log(data);
                 if (data.returnCode == 0 || data.returnCode == 200) {
                     if (data.data == "null" || data.data == null) {
                         this.loading = false;
@@ -573,7 +593,6 @@ export default {
         },
         //格式化表格数据（结束时间）
         foreignFlag(row,column,cellValue) {
-            console.log(typeof(cellValue));
             if(cellValue=='0'){
                 return cellValue = "— —"
             }else if(cellValue !='0') {

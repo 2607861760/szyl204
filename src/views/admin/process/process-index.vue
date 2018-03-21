@@ -94,12 +94,10 @@
 </style>
 <template>
 	<div class="process_index">
-		<div class="tabs">
-			<Tabs type="card" @on-click="changeProject">
-                <TabPane label="罕见病模板" ></TabPane>
-                <TabPane label="肿瘤模板" class="tabcard"></TabPane>
-            </Tabs>
-		</div>
+		<Tabs type="card" @on-click="choice" >
+            <TabPane v-for="(item,index) in tabsdata" :name="item.productId" :key="item.productId" :label="item.menuName"></TabPane>
+            <!-- <TabPane label="癌症" class="tabcard"></TabPane> -->
+        </Tabs>
 		<div class="mainBox">
 			<div class="main_temp">
 				<div class="process_title"><span>历史模板</span><p class="toggleIcon" @click="changeDel"><Icon size=25 type="ios-trash-outline"></Icon></p></div>
@@ -151,10 +149,16 @@
 		    	tempName : ""   ,   //模版名称
 		    	tempModel : false, //模版名称弹窗
 		    	deleteFlag:false, //是否显示删除啊按钮
-		    	tempList:[]       //模板列表
+				tempList:[],       //模板列表
+				tabsdata: [],    //选项卡内容
 		    }
 		},
 		methods:{
+			// tabs切换
+			choice(name) {
+				this.$store.state.projectid = name;
+				this.getBatchList();
+			},
 			//点击删除Icon
 			changeDel(){
 				this.deleteFlag = !this.deleteFlag;
@@ -206,7 +210,8 @@
                     "productId":this.$store.state.projectid,
                     "pageSize":10,
                     "pageIndex":1
-                }
+				}
+				this.tempList = [];
 				process.getPipelineTemplateList(obj).then((data)=> {
 					if(data.returnCode==0 || data.returnCode==200) {
 						if(data.data&& data.data.length>0){
@@ -237,9 +242,29 @@
 			}
 		},
 		created(){
-			this.$store.state.projectid=1;
+			//this.$store.state.projectid=1;
 			//获取流程列表
-			this.getPipelineTemplateList();
-		}
+			//this.getPipelineTemplateList();
+			if (this.$store.state.processManageMenuList.length > 0) {
+				this.tabsdata = M.clone(this.$store.state.processManageMenuList);
+				this.$store.state.projectid = this.tabsdata[0].productId;
+				this.getPipelineTemplateList();
+			} else {
+				let obj = {
+					"menuName": "罕见病",
+					"productId": "1"
+				}
+				this.tabsdata.push(obj);
+				this.$store.state.projectid = this.tabsdata[0].productId;
+				this.getPipelineTemplateList();
+			}
+		},
+		// watch: {
+		// 	'$route'(to, from) {
+		// 		//刷新参数放到这里里面去触发就可以刷新相同界面了
+		// 		this.$store.state.projectid = M.url().product ? M.url().product : "1";
+		// 		this.getPipelineTemplateList();
+		// 	}
+		// },
 	}
 </script>

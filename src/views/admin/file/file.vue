@@ -54,6 +54,7 @@
 </div>
 </template>
 <script>
+import { menuListToTree, filePath, httpUrl } from 'common/js/Base';
 import treeGrid from '@/components/treeTable/vue/TreeGrid';
 import {getCookie} from '@/common/js/cookie.js'
 import {data} from 'api/index.js'
@@ -92,10 +93,7 @@ import {data} from 'api/index.js'
             // 获得服务上传列表
             _getForldList() {
                 let obj={
-                    "path":"/opt/serverData/",
-                    // "path":"/opt/NfsDir/PublicDir/demo/",
-                    // /opt/NfsDir/PublicDir/demo/  电信云
-                    // /opt/serverData/   159
+                    "path": filePath.path.server,
                     "userId":getCookie("userid"),
                     "productId":this.$store.state.projectid,
                     "type":"1"
@@ -122,10 +120,7 @@ import {data} from 'api/index.js'
             // 获得硬盘列表
             _getServerList() {
                 let obj={
-                    "path":"/opt/serverData/",
-                    // "path":"/opt/NfsDir/PublicDir/demo/",
-                    // /opt/NfsDir/PublicDir/demo/  电信云
-                    // /opt/serverData/   159
+                    "path": filePath.path.local, 
                     "userId":getCookie("userid"),
                     "productId":this.$store.state.projectid,
                     "type":"1"

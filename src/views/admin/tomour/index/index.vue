@@ -10,9 +10,12 @@
             text-align: center;
             p{
                 font-size:48px;
+                text-align:left;
             }
             span{
                 font-size:20px;
+                display: block;
+                text-align:left;
             }
             i{
                 font-size:74px;
@@ -158,6 +161,7 @@
     .slot-footer{
         height:53px;
         background: rgba(242, 242, 242, 1);
+        padding:0;
         .ivu-btn{
             padding:6px 30px;
         }
@@ -166,7 +170,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-
+        .slot-foote{
+            padding:0;
+        }
         .ivu-modal{
             top: 0;
         }
@@ -178,13 +184,13 @@
         <div class="tomour_nav">
             <Row type="flex" justify="space-between">
                 <Col span="5">
-                    <div class="tomour_nav_card tomour_nav_card4" @click="newCase">
+                    <div style="padding:0;" class="tomour_nav_card tomour_nav_card4" @click="newCase">
                         <Row type="flex" justify="space-between">
-                            <Col span="12">
-                                <Icon type="ios-plus-outline"></Icon>
+                            <Col span="10">
+                                <Icon style="margin-top:27px;" type="ios-plus-outline"></Icon>
                             </Col>
-                            <Col span="12">
-                                <p>新建病例</p>
+                            <Col span="14">
+                                <p style="height:115px;line-height:115px;">新建病例</p>
                             </Col>
                         </Row>
                     </div>
@@ -237,10 +243,10 @@
             <div class="domain_table">
                 <Row>
                     <Col span="12">
-                        <el-radio-group v-model="radio5" size="small">
-                            <el-radio-button label="早期筛查"></el-radio-button>
+                        <el-radio-group  v-model="radio5" size="medium">
+                            <!-- <el-radio-button label="早期筛查"></el-radio-button> -->
                             <el-radio-button label="诊断治疗"></el-radio-button>
-                            <el-radio-button label="术后跟踪"></el-radio-button>
+                            <!-- <el-radio-button label="术后跟踪"></el-radio-button> -->
                         </el-radio-group>
                     </Col>
                     <Col span="12">
@@ -286,19 +292,19 @@
                             <el-table-column label="传输状态">
                                 <template slot-scope="scope">
                                     <div v-for="(list,index) in scope.row.dchSampleList" class="handle" >
-                                        <span class="status" v-if="list.fastq_R1!=null && list.fastq_R2!=null" style="color:#3B79BA;font-size:25px;cursor:pointer;" title="上传完成">
+                                        <span class="status" v-if="list.fastq_R1!=null && list.fastq_R2!=null" style="color:#3B79BA;font-size:20px;cursor:pointer;" title="上传完成">
                                             <!-- <Tooltip content="上传完成" placement="top"> -->
-                                                <Icon type="checkmark-round"></Icon>
+                                                <Icon type="android-done"></Icon>
                                             <!-- </Tooltip> -->
                                         </span>
                                         
-                                        <span class="status" style="color:#84BF66;font-size:25px;cursor:pointer;" v-else-if="list.fastq_R1==null && list.fastq_R2==null" title="等待上传">
+                                        <span class="status" style="color:#84BF66;font-size:20px;cursor:pointer;" v-else-if="list.fastq_R1==null && list.fastq_R2==null" title="等待上传">
                                             <!-- <Tooltip content="等待上传" placement="top"  > -->
                                                  <Icon type="upload"></Icon>
                                             <!-- </Tooltip> -->
                                         </span> 
                                         
-                                        <span class="status" v-else style="color:#3B79BA;font-size:25px;opacity:.5;cursor:pointer;" title="正在上传">
+                                        <span class="status" v-else style="color:#3B79BA;font-size:20px;opacity:.5;cursor:pointer;" title="正在上传">
                                              <!-- <Tooltip content="正在上传" placement="top">  -->
                                                 <Icon type="upload"></Icon>
                                              <!-- </Tooltip>  -->
@@ -309,24 +315,32 @@
                             <el-table-column label="分析状态">
                                 <template slot-scope="scope">
                                     <div v-for="(list,index) in scope.row.dchSampleList" class="handle" >
-                                        <span class="status" v-if="list.samplestatus==1" style="color:#A5ACB3;font-size:25px;" title="等待分析">
+                                        <span class="status" v-if="list.samplestatus==1" style="color:#A5ACB3;font-size:20px;cursor:pointer;" title="等待分析">
                                             <!-- <Tooltip content="等待分析" placement="top"> -->
                                                 <Icon type="stats-bars"></Icon>
                                             <!-- </Tooltip> -->
                                         </span>
-                                        <span class="status" v-else-if="list.samplestatus==2" style="color:#3B79BA;font-size:25px;" title="正在分析">
+                                        <span class="status" v-else-if="list.samplestatus==2" style="color:#3B79BA;font-size:20px;cursor:pointer" title="正在分析">
                                             <!-- <Tooltip content="正在分析" placement="top"> -->
                                                 <Icon type="stats-bars"></Icon>
                                             <!-- </Tooltip> -->
                                         </span>
-                                        <span class="status" v-else-if="list.samplestatus==3" style="color:#3B79BA;font-size:20px;" title="分析完成">
+                                        <span class="status" v-else-if="list.samplestatus==3" style="color:#3B79BA;font-size:20px;cursor:pointer" title="分析完成">
                                             <!-- <Tooltip content="分析完成" placement="top"> -->
+<<<<<<< HEAD
                                                 <Icon type="checkmark-round"></Icon>
+=======
+                                                <Icon type="android-done"></Icon>
+>>>>>>> 0742cdab8bb365f8a9a5d10631099bb338ffadba
                                             <!-- </Tooltip> -->
                                         </span>
-                                        <span class="status" v-else-if="list.samplestatus==4" style="color:##d97b24;font-size:25px;" title="分析失敗">
+                                        <span class="status" v-else-if="list.samplestatus==4" style="color:##d97b24;font-size:20px;cursor:pointer" title="分析失敗">
                                             <!-- <Tooltip content="分析失敗" placement="top"> -->
+<<<<<<< HEAD
                                                 <Icon type="close-round"></Icon>
+=======
+                                                <Icon type="android-close"></Icon>
+>>>>>>> 0742cdab8bb365f8a9a5d10631099bb338ffadba
                                             <!-- </Tooltip> -->
                                         </span>
                                     </div>
@@ -335,7 +349,8 @@
                             <el-table-column label="操作" min-width="120%">
                                 <template slot-scope="scope">
                                     <div v-for="(list,index) in scope.row.dchSampleList" class="handle">
-                                        <span class="bian" @click="run(index,scope.row)" v-if="list.fastq_R1!=null && list.fastq_R2!=null">运行</span>
+                                        <span class="bian" style="border:none;background:none;color:#ccc;padding: 0px 10px;" disabled v-if="list.samplestatus=='0'||list.samplestatus=='5'">运行</span>
+                                        <span class="bian" @click="run(index,scope.row)" v-else-if="list.samplestatus=='6'">运行</span>
                                         <span class="bian" @click="delet(index,scope.row)">删除</span>
                                         <span class="bian" @click="edit(index,scope.row)">编辑</span>
                                         </div>
@@ -352,8 +367,7 @@
                             <el-table-column label="报告下载">
                                 <template slot-scope="scope">
                                     <div v-for="(list,index) in scope.row.dchSampleList" class="handle" style="height:40px;">
-                                         <!-- <a class="download" :href="'http://42.123.124.204:8081/dchealth-platform/1.0/data/ftpupdate?jobid='+list.jobid" download v-if="list.jobtype=='Y'">下载</a>  -->
-                                         <a class="download" :href="'http://10.131.101.159:8080/dchealth-platform/1.0/data/ftpupdate?jobid='+list.jobid" download  v-if="list.jobtype=='Y'">下载</a> 
+                                         <a class="download" :href="httpUrl+'/dchealth-platform/1.0/data/ftpupdate?jobid='+list.jobid" download  v-if="list.jobtype=='Y'">下载</a> 
                                         <a class="dis-download" href="javascript:;" download  disabled v-else>下载</a>
                                         
                                     </div>
@@ -361,7 +375,7 @@
                             </el-table-column>
                         </el-table>
                         <div style="padding:40px 0px;">
-                            <Row>
+                            <Row type="flex" justify="end">
                                 <Col span="12">
                                     <el-pagination
                                     @size-change="handleSizeChange"
@@ -384,22 +398,26 @@
                  <div class="domain_echats_graph">
                     <div class="domain_echats_header">
                         <p class="domain_echats_title">不同癌种数量</p>
-                        <p class="domain_echats_exchange">
-                            <span @click="drawDiseaseStatisticsPie"><Icon type="pie-graph"></Icon></span>
+                        <p v-if="!showNullEchart1" class="domain_echats_exchange">
                             <span @click="drawDiseaseStatisticsBar"><Icon type="stats-bars"></Icon></span>
+                            <span @click="drawDiseaseStatisticsPie"><Icon type="pie-graph"></Icon></span>
                         </p>
                     </div>
-                    <div id="difTumNum" style="height:300px;background:#ECF5FF;"></div>
+                    <div id="difTumNum" style="height:300px;background:#FFF;line-height:400px;text-align:center;">
+                        <img style="display:inline-block;" v-if="showNullEchart1" src="../img/null.png" />
+                    </div>
                  </div>
                 <div class="domain_echats_graph">
                     <div class="domain_echats_header">
-                        <p class="domain_echats_title">每月处理样本数量</p>
-                        <p class="domain_echats_exchange">
+                        <p class="domain_echats_title">本月收集病例数统计</p>
+                        <p v-if="!showNullEchart2" class="domain_echats_exchange">
                             <span @click="drawCurStatisticsLine"><Icon type="ios-pulse"></Icon></span>
                             <span @click="drawCurStatisticsBar"><Icon type="stats-bars"></Icon></span>
                         </p>
                     </div>
-                    <div id="curMouthNum" style="height:300px;background:#ECF5FF;"></div>
+                    <div id="curMouthNum" style="height:300px;background:#FFF;line-height:400px;text-align:center;">
+                        <img style="display:inline-block;" v-if="showNullEchart2" src="../img/null.png" />
+                    </div>
                  </div>
              </div> 
             <!-- 图表 结束 -->
@@ -574,6 +592,7 @@ require('echarts/lib/chart/pie');
 require('echarts/lib/component/tooltip')
 require('echarts/lib/component/legend')
 
+import { menuListToTree, filePath, httpUrl } from 'common/js/Base';
 import {data} from 'api/index.js'
 import {getCookie} from '@/common/js/cookie.js'
 import treeGrid from '@/components/treeTable/vue3/TreeGrid'
@@ -582,8 +601,9 @@ export default{
     data(){
         return{
             modal1:false,           //新建病例弹层
-            radio5: '早期筛查',      //表格切换
+            radio5: '诊断治疗',      //表格切换
             searchData:'',          //搜索框的值
+            httpUrl: httpUrl.downHttp, //服务地址
             searchValue:'',         //关键词  
             scenceUrl:'',           //场景地址
             searchList:[{           //搜索下拉菜单
@@ -612,7 +632,7 @@ export default{
             curMouthList:[],     //当前月不同癌种的样本数量
             loadone:false,         //加载loading
             currentPage:1,
-            pageSize:10,
+            pageSize:50,          //每页50条
             total:0,
             sampleEdit: false,  //点击编辑 弹窗
             sampleInfo: {},  //样本信息弹窗信息
@@ -636,7 +656,8 @@ export default{
             cancelStyle: {
                 "lungCancel": "1",      //肺癌
                 "gastricCancer": "2",   //胃癌
-                "colorectalCancer": "3" //结直肠癌
+                "colorectalCancer": "3", //结直肠癌
+                "breastCancel": "4"    //乳腺癌
             },
             samplesource: [],//样本来源下拉
             sampletype: [],  //样本来源下拉
@@ -673,6 +694,8 @@ export default{
             pageIndex:1,
             dataSize:{},
             uploadDisabled:false,
+            showNullEchart1:false,
+            showNullEchart2:false
         }
     },
     methods:{
@@ -688,7 +711,6 @@ export default{
                 "sampleid":row.dchSampleList[index].sampleid,
                 "productId":"2"
             }
-            console.log(obj)
             data.getFileList(obj).then((data)=>{
                 if(data.returnCode || data.returnCode==200){
                     if(data.data==null||data.data=="null"){
@@ -705,19 +727,15 @@ export default{
             // }
             
         },
-        // 获得本地/opt/serverData/
+        // 获得本地/opt/NfsDir/PublicDir/demo/
         _getLocalDataList() {
             let obj={
-                "path":"/opt/serverData/",
-                // "path":"/opt/NfsDir/PublicDir/demo/",
-                        // /opt/NfsDir/PublicDir/demo/  电信云
-                        // /opt/serverData/   159
+                "path": filePath.path.local,
                 "userId":getCookie("userid"),
                 "productId":"1",
                 "type":"2"
             }
             data.getSingleForldList(obj).then((data)=>{
-                console.log(data)
                 if(data.returnCode==0 || data.returnCode==200){
                     if(M.isArray(data.data)) {
                         this.fileCategoryList=data.data;
@@ -733,19 +751,15 @@ export default{
             })
         },
         // 获得服务列表 /opt/NfsDir/PublicDir/demo/
-        // /opt/serverData/
+        // /opt/NfsDir/PublicDir/demo/
         _getServerDataList() {
             let obj={
-                "path":"/opt/serverData/",
-                // "path":"/opt/NfsDir/PublicDir/demo/",
-                        // /opt/NfsDir/PublicDir/demo/  电信云
-                        // /opt/serverData/   159
+                "path": filePath.path.server,
                 "userId":getCookie("userid"),
                 "productId":"1",
                 "type":"2"
             }
             data.getSingleForldList(obj).then((data)=>{
-                    // console.log(data)
                 if(data.returnCode==0 || data.returnCode==200){
                     if(M.isArray(data.data)) {
                         this.fileServerCategoryList=data.data;
@@ -774,7 +788,6 @@ export default{
                 obj.keyword=keyWord;
             }
             data.getProjectList(obj).then((data)=>{
-                console.log(data)
                 if(data.returnCode==0 || data.returnCode==200){
                     if(data.data!=null){
                         this.total=data.data.count;
@@ -875,16 +888,13 @@ export default{
                 "userId":getCookie("userid"),
                 "sampleid":value
             }
-            console.log(obj)
             data.vishuourl(obj).then((data)=>{
-                console.log(data)
                 if(data.returnCode==0 || data.returnCode==200){
                     if(data.data=="null" || data.data==null){
                         this.$Message.error(data.msg)
                         // this.show=false;
                     }else{
                         this.$store.state.vishuourlUrl=data.data;
-                        console.log(this.$store.state.vishuourlUrl)
                         this.$router.push('/admin/tumour/cgdap')
                     }
                 }else if(data.returnCode==422 || data.returnCode==204){
@@ -905,7 +915,6 @@ export default{
             this.seqdate=row.dchSampleList[index].seqdate;
             this.takendate=row.dchSampleList[index].takendate;
             this.receivedate=row.dchSampleList[index].receivedate;
-            console.log(JSON.stringify(this.sampleInfo))
         },
         keep(name) {  //点击保存
             let obj = {
@@ -964,27 +973,17 @@ export default{
         run(index,row){  //点击运行
             this.samid=row.dchSampleList[index].sampleid;
             this.pipeline=row.dchSampleList[index].region;
-            this.pipeline=this.pipeline.toUpperCase();
-            if(this.pipeline=="WES"){
-                this.pipeline='1'
-            }else if(this.pipeline=="WGS"){
-                this.pipeline='2'
-            }else if(this.pipeline=="PANEL"){
-                this.pipeline='3'
-            }else if(this.pipeline=="NONE"){
-                this.pipeline='0'
-            }
+            this.pipeline=this.getPiplineType(this.pipeline);
             let obj={//只能是wes 其他的禁用   不会 iview的下拉框可以这么干？
 
                 "sampleId":this.samid,
                 "userId":getCookie("userid"),
                 "productId":"2",
-                "pipeline": this.pipeline,
+                "pipeline": 2,        //写死了     
                 "templateId": "0",
                 "fileGroupId":"aa",
             }
             data.executeSample(obj).then((data)=>{
-                console.log(data)
                 if(data.returnCode==200 || data.returnCode==0){
                     // 再次获取列表
                     this.load();
@@ -996,8 +995,68 @@ export default{
                 }
             }) 
         },
+        //获取pipline字段类型
+        getPiplineType(name){
+            let ret="0";
+            switch(name){
+                case "请选择":
+                    ret="0";
+                    break;
+                case "肺癌早筛基因检测panel":
+                    ret="101";
+                    break;
+                case "EGFR突变ARMS检测":
+                    ret="102";
+                    break;
+                case "EGFR T790M突变检测":
+                    ret="103";
+                    break;
+                case "ALK融合Ventana免疫组化检测":
+                    ret="104";
+                    break;
+                case "ALK FISH":
+                    ret="105";
+                    break;
+                case "ALK RT-PCR检测":
+                    ret="106";
+                    break;
+                case "ROS1 RT-PCR检测":
+                    ret="107";
+                    break;
+                case "BRAF V600E突变检测":
+                    ret="108";
+                    break;
+                case "RET基因融合检测":
+                    ret="109";
+                    break;
+                case "HER2点突变检测":
+                    ret="110";
+                    break;
+                case "MET表达量或转录本剪切检测":
+                    ret="111";
+                    break;
+                case "KRAS点突变检测":
+                    ret="112";
+                    break;
+                case "PIK3CA突变":
+                    ret="113";
+                    break;
+                case "NCCN指南8基因检测panel":
+                    ret="114";
+                    break;
+                case "耐药性基因检测panel":
+                    ret="115";
+                    break;
+                case "癌症基因检测panel":
+                    ret="116";
+                    break;
+                case "肿瘤负荷监测":
+                    ret="117";
+                    break;
+            }
+            return Number(ret);
+        },
         addsample(row){//点击添加
-            console.log(row)
             this.patid=row.dchPatient.patientid;
             this.sampleEdit=true;
             this.samid='';
@@ -1009,7 +1068,6 @@ export default{
         },
         //点击病人编号
         clickPatientcode(row){
-            console.log(row);
             this.$store.state.tumourPatientInfo.tumourPatientId=row.dchPatient.patientid;
             this.$store.state.tumourPatientInfo.tumourpatientCode=row.dchPatient.patientcode;
             this.$router.push('/admin/tomour/deaseInfo');
@@ -1031,7 +1089,8 @@ export default{
             } 
         },
         sceneChange(item,index){    //弹层选择内容切换
-            this.scenceUrl="1";
+            console.log(index);
+            this.scenceUrl=String(index);
             this.$store.state.projecttype=item.projecttype;
             if(item.sceneShow){
                 item.sceneShow=false;
@@ -1051,14 +1110,18 @@ export default{
             })
         },
         handleSubmit(){
-            if(this.scenceUrl!=''){
-                // this.$router.push(this.scenceUrl)
-                this.$store.state.tumourPatientInfo.tumourPatientId="";
-                this.$store.state.tumourPatientInfo.tumourpatientCode="";
-                this.$store.state.tumourPatientInfo.tumourProjectId = "";
-                this.$router.push('/admin/tomour/deaseInfo');
+            console.log(this.scenceUrl);
+            if(this.scenceUrl==""){
+                this.$Message.error("请选择场景");
             }else{
-                this.$Message.error("请选择场景")
+                if(this.scenceUrl==0){
+                    this.$Message.error("该功能暂未开放");
+                }else if(this.scenceUrl==1){
+                    this.$store.state.tumourPatientInfo.tumourPatientId="";
+                    this.$store.state.tumourPatientInfo.tumourpatientCode="";
+                    this.$store.state.tumourPatientInfo.tumourProjectId = "";
+                    this.$router.push('/admin/tomour/deaseInfo');
+                }
             }
             
         },
@@ -1091,7 +1154,6 @@ export default{
                 "userId":getCookie("userid")
             }
             data.getCounts(obj).then((data)=>{
-                console.log(data)
                 if(data.returnCode==0 || data.returnCode==200){
                     this.dataSize=data.data;
                 }else if(data.returnCode==422 || data.returnCode==204){
@@ -1143,11 +1205,14 @@ export default{
             let echart = echarts.init(document.getElementById('curMouthNum'));
             let diseaseName = this.getDiseaseName(this.curMouthList);
             let diseaseCount = this.getDiseaseCount(this.curMouthList);
-            console.log(diseaseName)
-            console.log(diseaseCount)
             let option = {
                 xAxis: {
-                    data: diseaseName
+                    type: 'category',
+                    data: diseaseName,
+                     axisLabel: {
+                        interval: 0,
+                        rotate: -30
+                    }
                 },
                 yAxis: {
                     splitLine: { show: false }  //改设置不显示坐标区域内的y轴分割线
@@ -1204,7 +1269,11 @@ export default{
             let option = {
                 xAxis: {
                     type: 'category',
-                    data: diseaseName
+                    data: diseaseName,
+                    axisLabel:{
+                        interval:0,
+                        rotate:-30
+                    }
                 },
                 yAxis: {
                     type: 'value'
@@ -1212,7 +1281,13 @@ export default{
                 series: [{
                     data: diseaseCount,
                     type: 'line'
-                }]
+                }],
+                 //控制边距　
+                grid: {
+                    left: '10%',
+                    right: '10%',
+                    containLabel: true
+                },
             };
             echart.clear();
             echart.setOption(option);
@@ -1224,7 +1299,11 @@ export default{
             let diseaseCount= this.getDiseaseCount(this.difTumNumList);
             let option = {
                 xAxis: {
-                    data: diseaseName
+                    data: diseaseName,
+                     axisLabel: {
+                        interval: 0,
+                        rotate: -30
+                    }
                 },
                 yAxis: {
                     splitLine: { show: false }  //改设置不显示坐标区域内的y轴分割线
@@ -1267,7 +1346,7 @@ export default{
                 grid: {
                     left: '10%',
                     right: '10%',
-                    containLabel: true,
+                    containLabel: true
                 },
             };
             echart.clear();
@@ -1284,7 +1363,7 @@ export default{
                     formatter: "{a} <br/>{b}: {c} ({d}%)"
                 },
                 legend: {
-                    bottom: 0,
+                    bottom: 10,
                     left: 'center',
                     data: diseaseName
                 },
@@ -1315,13 +1394,15 @@ export default{
         buildCurMouthList(data){
             let _this=this;
             for(var i=0;i<data.length;i++){
-                 let now={}
+                let now={}
                 if(data[i].cancertype==_this.cancelStyle.lungCancel){
                     data[i].cancertype="肺癌";
                 }else if(data[i].cancertype==_this.cancelStyle.gastricCancer){
                     data[i].cancertype="胃癌";
                 }else if(data[i].cancertype==_this.cancelStyle.colorectalCancer){
                     data[i].cancertype="结直肠癌";
+                } else if (data[i].cancertype == _this.cancelStyle.breastCancel) {
+                    data[i].cancertype = "乳腺癌";
                 };
                 //  obj={
                 //     "count":data[i].count,
@@ -1330,7 +1411,6 @@ export default{
                 now.count=data[i].count;
                 now.name=data[i].cancertype;
                 this.curMouthList.push(now || {});
-                console.log(this.curMouthList);
             }
         },
         //获取不同癌种的名称
@@ -1340,7 +1420,6 @@ export default{
                 let name = item.name;
                 ret.push(name || "");
             });
-            console.log(ret)
             return ret;
         },
         //获取不同癌种的数量
@@ -1350,7 +1429,6 @@ export default{
                 let count = item.count;
                 ret.push(count || "");
             });
-            console.log(ret)
             return ret;
         },
         //获取不同癌种的样本数量 饼状图数据结构
@@ -1420,12 +1498,21 @@ export default{
             this.dataSize = data.projectCountModel;
             // 不同癌种 的数量
             this.difTumNumList = data.profileModelList;
-            //不同癌种饼状图
-            this.drawDiseaseStatisticsPie();
-            //当月癌种数量
-            this.buildCurMouthList(data.statisticsModelList);
-            //当月癌种数量 柱状图
-            this.drawCurStatisticsBar();
+            if(this.difTumNumList.length<=0){
+                this.showNullEchart1=true;
+            }else{
+                //不同癌种饼状图
+                this.drawDiseaseStatisticsPie();
+            }
+           if(data.statisticsModelList.length<=0){
+                this.showNullEchart2=true;
+           }else{
+                //当月癌种数量
+                this.buildCurMouthList(data.statisticsModelList);
+                //当月癌种数量 柱状图
+                this.drawCurStatisticsBar();
+           }
+           
         },
     },
     mounted(){

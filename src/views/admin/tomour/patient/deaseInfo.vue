@@ -53,7 +53,7 @@
         padding-top: 20px;
         margin-top: 0;
         .disease_info_form_row {
-            height: 55px;
+            min-height:55px;
             line-height: 55px;
         }
         .tnm_btn {
@@ -120,8 +120,8 @@
                 </div>
             </div>
             <div>
-                <Form class="basic_info_form" :label-width="80" :model="formData" ref="modalForm">
-                    <Row type="flex" justify="center" class="basic_info_form_row">
+                <Form class="basic_info_form" :label-width="100" :model="formData" ref="modalForm">
+                    <Row type="flex" justify="start" class="basic_info_form_row">
                         <Col class="row" span="7">
                         <FormItem style="width:30%;"  required class="basic_info_form_item" label="病人编号">
                             <Input style="max-width:200px" v-if="editType==0" v-model="formData.patientcode"></Input>
@@ -142,7 +142,7 @@
                         </FormItem>
                         </Col>
                     </Row>
-                    <Row type="flex" justify="center" class="basic_info_form_row">
+                    <Row type="flex" justify="start" class="basic_info_form_row">
                         <Col class="row" span="7">
                             <FormItem style="width:30%;" class="basic_info_form_item" label="身份证号">
                                 <Input style="max-width:200px" v-model="formData.idcard"></Input>
@@ -159,7 +159,7 @@
                             </FormItem>
                         </Col>
                     </Row>
-                    <Row type="flex" justify="center" class="basic_info_form_row">
+                    <Row type="flex" justify="start" class="basic_info_form_row">
                         <Col class="row" span="7">
                         <FormItem style="width:30%;" label="种族">
                             <Select style="max-width:200px" v-model="formData.nation" class="basic_info_form_select">
@@ -186,18 +186,22 @@
             </div>
             <div>
                 <Form class="disease_info_form" :label-width="100" :model="diseaseInfoData" v-if="diseaseInfoData.pageModel && diseaseInfoData.pageModel.blockModels && diseaseInfoData.pageModel.blockModels.length>0">
-                    <Row type="flex" justify="start" class="disease_info_form_row" v-for="(item,index) of (diseaseInfoData.pageModel.blockModels)" :key="index">
+                    <Row type="flex"  justify="start" class="disease_info_form_row" v-for="(item,index) of (diseaseInfoData.pageModel.blockModels)" :key="index">
                         <Col class="row" :span="colLength(item.itemNodes.length)" v-for="(list,indexs) of item.itemNodes" :key="indexs">
                             <FormItem v-if="list.itemType!=itemType.checkbox"  style="width:30%;" class="disease_info_form_item" :required="list.bRequired" :label="list.itemName">
+                                <!--可以调用接口的下拉菜单-->
                                 <Select id="cancelSelect" style="max-width:200px" v-if="list.itemType==itemType.apiSelect" v-model="list.itemValue" @on-change="getTemplatebyid">
                                     <Option v-for="(cont,ids) of list.content" :key="ids" :value="cont.templeid">{{cont.name}}</Option>
                                 </Select>
+                                <!--长度较短下拉菜单-->
                                  <Select style="max-width:100px" v-else-if="list.itemType==itemType.smallSelect" v-model="list.itemValue">
                                     <Option v-for="(cont,ids) of list.content" :key="ids" :value="cont">{{cont}}</Option>
                                 </Select>
+                                <!--普通下拉菜单-->
                                 <Select style="max-width:200px" v-else-if="list.itemType==itemType.select" v-model="list.itemValue">
                                     <Option v-for="(cont,ids) of list.content" :key="ids" :value="cont">{{cont}}</Option>
                                 </Select>
+                                <!--tnm-->
                                 <Poptip v-model="visible" placement="bottom" width="400" v-if="list.itemType==itemType.tnm">
                                     <Button class="tnm_btn" @click="addTnmActive" size="small" type="primary">点击选择</Button>
                                     <span class="tnmSpan">{{gtnmSelect.T}}</span>
@@ -223,12 +227,18 @@
                                         </Row>
                                     </div>
                                 </Poptip>
+                                <!--文本框-->
                                 <Input style="max-width:200px;" v-else-if="list.itemType==itemType.input"  v-model="list.itemValue"></Input>
-                                <Input v-else-if="list.itemType==itemType.textarea" type="textarea" style="margin-bottom:10px;"  v-model="list.itemValue"></Input>
+                                <!--文本域-->
+                                <Input v-else-if="list.itemType==itemType.textarea" type="textarea" style="margin-bottom:10px;width:200%;" :rows=Number(5)  v-model="list.itemValue"></Input>
+                                <!--时间选择器-->
                                 <DatePicker v-else-if="list.itemType==itemType.dataTimePick" type="date" style="max-width: 200px" v-model="list.itemValue"></DatePicker>
+                                <!--级联选择器-->
+                                <Cascader v-else-if="list.itemType==itemType.cascader" :data="list.content" v-model="list.itemValue"></Cascader>
                             </FormItem>
-                            <FormItem v-else  style="width:30%;" class="disease_info_form_item" :required="list.bRequired" label=" ">
-                                <Checkbox v-if="list.itemType==itemType.checkbox"  v-model="list.itemValue">{{list.itemName}}</Checkbox>
+                            <FormItem v-else  style="width:30%;":label-width="30" class="disease_info_form_item" :required="list.bRequired" label=" ">
+                                <!--复选框-->
+                                <Checkbox size="large" v-if="list.itemType==itemType.checkbox"  v-model="list.itemValue">{{list.itemName}}</Checkbox>
                             </FormItem>
                         </Col>
                     </Row>
@@ -288,13 +298,15 @@
                                 <!--文本框-->
                                 <Input style="max-width:200px;" v-else-if="list.itemType==itemType.input"  v-model="list.itemValue"></Input>
                                 <!--文本域-->
-                                <Input v-else-if="list.itemType==itemType.textarea" type="textarea" style="margin-bottom:10px;"  v-model="list.itemValue"></Input>
+                                <Input v-else-if="list.itemType==itemType.textarea" type="textarea" style="margin-bottom:10px;width:200%;" :rows=Number(5)  v-model="list.itemValue"></Input>
                                 <!--日期选择器-->
                                 <DatePicker  v-else-if="list.itemType==itemType.dataTimePick" type="date" style="max-width: 200px" v-model="list.itemValue"></DatePicker>
+                                <!--级联选择器-->
+                                <Cascader v-else-if="list.itemType==itemType.cascader" :data="list.content" v-model="list.itemValue"></Cascader>
                             </FormItem>
-                            <FormItem v-else  style="width:30%;" class="disease_info_form_item" :required="list.bRequired" label=" ">
+                            <FormItem v-else  style="width:30%;" :label-width="30" class="disease_info_form_item" :required="list.bRequired" label=" ">
                                 <!--复选框-->
-                                <Checkbox v-if="list.itemType==itemType.checkbox"  v-model="list.itemValue">{{list.itemName}}</Checkbox>
+                                <Checkbox size="large" v-if="list.itemType==itemType.checkbox"  v-model="list.itemValue">{{list.itemName}}</Checkbox>
                             </FormItem>
                         </Col>
                     </Row>
@@ -340,12 +352,14 @@ export default {
                "input":5,      //普通文本框
                "textarea":6,   //文本域
                "dataTimePick":7, //时间选择器
-               "checkbox":8      //复选框
+               "checkbox":8,     //复选框
+               "cascader":10     //级联选择器
             },
             cancelStyle: {
                 "lungCancel" : "1",      //肺癌
                 "gastricCancer" : "2",   //胃癌
-                "colorectalCancer" : "3" //结直肠癌
+                "colorectalCancer" : "3", //结直肠癌
+                "breastCancel" : "4"    //乳腺癌
             },
             formData: {},  //基本信息表单数据
             diseaseInfoData:{},//疾病信息数据 
@@ -434,7 +448,6 @@ export default {
                 "productId": "2"
             }
             data.deletePatientAndProjectById(obj).then((data) => {
-                console.log(data)
                 if (data.returnCode == 0 || data.returnCode == 200) {
                     if (data.msg == "成功") {
                         this.$Message.success(data.msg);
@@ -685,10 +698,8 @@ export default {
         },
         //创建tnm数据
          buildGtnmSelect(data){
-             console.log(data);
             for(var i=0; i<data.pageModel.blockModels.length;i++){
                 var bm=data.pageModel.blockModels[i];
-                console.log(bm);
                 for(var k=0; k<bm.itemNodes.length;k++){
                     var im=bm.itemNodes[k];
                     if(im.itemType==this.itemType.tnm){
@@ -711,7 +722,6 @@ export default {
                 }
                 if(this.gtnmSelect.N){
                     $(".N").each(function(){
-                         console.log($(this).text())
                         if($(this).text() == _this.gtnmSelect.N){
                             $(this).addClass("cell_active");
                         }
@@ -719,7 +729,6 @@ export default {
                 }
                 if(this.gtnmSelect.M){
                     $(".M").each(function(){
-                         console.log($(this).text())
                         if($(this).text() == _this.gtnmSelect.M){
                             $(this).addClass("cell_active");
                         }
@@ -778,7 +787,6 @@ export default {
         //提交表单时 获取所选择的癌种
         getCancelType(){
             var  ret=null;
-            console.log($("#cancelSelect .ivu-select-selection").find("span[class=ivu-select-selected-value]").html());
             var  text=   $("#cancelSelect .ivu-select-selection").find("span[class=ivu-select-selected-value]").html();
             switch(text){
                 case "肺癌":
@@ -789,6 +797,9 @@ export default {
                     break;
                 case "结直肠癌":
                     ret = this.cancelStyle.colorectalCancer;
+                    break;
+                case "乳腺癌":
+                    ret = this.cancelStyle.breastCancel;
                     break;
                 default:
                     ret=null;
@@ -841,8 +852,6 @@ export default {
          
     },
     created() {
-        console.log(this.$store.state.tumourPatientInfo.tumourPatientId);
-        console.log(this.$store.state.tumourPatientInfo.tumourpatientCode);
         if(this.$store.state.tumourPatientInfo.tumourPatientId=="" && this.$store.state.tumourPatientInfo.tumourpatientCode==""){
             this.editType=0;
             this.showDelete=false;

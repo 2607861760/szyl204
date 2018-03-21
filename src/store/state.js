@@ -1,9 +1,13 @@
 // 根目录下的状态
 const state = {
+
+    // 记录后台一级菜单展开状态
+    adminOpenMenus: [],
     // 当前登登录的用户的基本信息
     currentUser: {},
     allfile: [], //存储文件
     load: true, //loading状态
+    jumpId: "", //左侧菜单跳转是携带的id
     loadstate: false, //
     uid: '',
     code: '',
@@ -29,6 +33,9 @@ const state = {
         tumourpatientCode: '', //肿瘤二期 病人编号
         tumourProjectId: '', //肿瘤二期 项目id
     },
+    taskManageMenuList: [], //任务管理选项卡菜单
+    fileManageMenuList: [], //文件管理选项卡菜单
+    processManageMenuList: [], //流程管理选项卡菜单
 };
 
 export default state;

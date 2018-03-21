@@ -195,6 +195,7 @@
 </template>
 <script>
 import {data} from 'api/index.js'
+import { filePath, httpUrl } from 'common/js/Base';
 import treeGrid from '@/components/treeTable/vue2/TreeGrid'
 import {getCookie} from '@/common/js/cookie.js'
 export default {

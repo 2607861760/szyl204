@@ -1,6 +1,6 @@
 <style lang="scss">
 	.build{
-		margin-top:10px;
+		margin-top:15px;
 	}
 	.upload {
 		padding: 10px 10px 30px;
@@ -20,6 +20,9 @@
 			font-size: 12px;
 			cursor: pointer;
 		}
+	}
+	.patient_info_footer{
+		margin-top:10px;
 	}
 </style>
 <template>
@@ -242,6 +245,7 @@
 </template>
 <script>
 import { data } from 'api/index.js'
+import { filePath, httpUrl } from 'common/js/Base';
 import treeGrid from '@/components/treeTable/vue3/TreeGrid'
 import { getCookie } from '@/common/js/cookie.js'
 export default {
@@ -544,10 +548,7 @@ export default {
 		// 获得服务
 		_getServerDataList() {
 			let obj = {
-				"path": "/opt/serverData/",
-				// "path":"/opt/NfsDir/PublicDir/demo/",
-				// /opt/NfsDir/PublicDir/demo/  电信云
-				// /opt/serverData/   159
+				"path": filePath.path.server,
 				"userId": getCookie("userid"),
 				"productId": "2",
 				"type": "2"
@@ -570,10 +571,7 @@ export default {
 		// 获得本地
 		_getLocalDataList() {
 			let obj = {
-				"path": "/opt/serverData/",
-				// "path":"/opt/NfsDir/PublicDir/demo/",
-				// /opt/NfsDir/PublicDir/demo/  电信云
-				// /opt/serverData/   159
+				"path": filePath.path.local,
 				"userId": getCookie("userid"),
 				"productId": "2",
 				"type": "2"

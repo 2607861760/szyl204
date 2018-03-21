@@ -102,7 +102,7 @@
                 <Col span="12">
                     <div class="task-right">
                          <!-- <a class="task-download" :href="'http://42.123.124.204:8081/dchealth-platform/1.0/data/vcfdownload?jobid='+this.$store.state.jobid" download>下载vcf文件</a>  -->
-                         <a class="task-download" :href="'http://10.131.101.159:8080/dchealth-platform/1.0/data/vcfdownload?jobid='+this.$store.state.jobid" download>下载vcf文件</a> 
+                         <a class="task-download" :href="downHttp+'/dchealth-platform/1.0/data/vcfdownload?jobid='+this.$store.state.jobid" download>下载vcf文件</a> 
                     </div>
                 </Col>
             </Row>
@@ -230,12 +230,14 @@
 </template>
 <script>
 // 组件实例
+import {httpUrl } from 'common/js/Base';
 export default {
     name:"task-index",
     data() {
         return {
             path:'',
-            openLoadModel:false, // 下载弹框
+            openLoadModel:false,       // 下载弹框
+            downHttp:httpUrl.downHttp, //下载地址
             taskModelList:[],    // 弹层数据
             currentView: "quality",     //需要的组件名称
             show:true,

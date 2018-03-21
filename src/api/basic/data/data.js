@@ -390,4 +390,5 @@ export const data = {
             return Promise.resolve(res.data)
         })
     },
+
 }
