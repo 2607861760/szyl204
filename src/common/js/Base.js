@@ -217,6 +217,10 @@ export const consts = {
     pageRow: 20
 };
 
+export const register = {
+    //是否显示注册按钮
+    showBtn: false
+}
 
 // 全局图片路径
 export const imgUrl = {

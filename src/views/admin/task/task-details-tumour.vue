@@ -110,7 +110,7 @@
             <Row>
                 <Col span="12">
                     <div class="title">
-                        <span>{{url.samplecode}}</span><span></span>
+                        <span>样本编号：{{this.$store.state.sampleInfo.samplecode}}</span><span></span>
                     </div>
                 </Col>
                 <!--<Col span="12">

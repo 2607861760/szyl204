@@ -90,7 +90,7 @@
                     		<Icon style="padding:0 10px;cursor:pointer;" type="android-person"></Icon>
                     		<div class="api" style="max-height:200px" slot="content">
                     			<el-table v-loading="assinged"  align="center" :data="assignedData">
-                        			<el-table-column  label="分配人姓名">
+                        			<el-table-column  label="分配给：">
                         				<template slot-scope="scope2">
                         					<span v-if="assignedData[scope2.$index].dept.name!=''">
                         						{{assignedData[scope2.$index].username}}({{assignedData[scope2.$index].dept.name}})
@@ -893,9 +893,11 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         },
         upsuccess(response, file, fileList){
             if(response.returnCode==0){
-                this.$Message.success(response.msg)
+                this.$Message.success(response.msg);
             }else if(response.returnCode==217){
-                this.$Message.error(response.msg)
+                this.$Message.error(response.msg);
+            }else if(response.returnCode==903){
+                this.$Message.error(response.msg);
             }else if(response.returnCode==422 || response.returnCode==204){
                 this.$router.push('/login')
             }
