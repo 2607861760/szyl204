@@ -80,12 +80,12 @@
 							</span>
 							<span class="status" v-else-if="scope.row.samplestatus==3" style="color:#3B79BA;font-size:20px;" title="分析完成">
 								<!-- <Tooltip content="分析完成" placement="top"> -->
-									<Icon type="close-round"></Icon>
+									<Icon type="checkmark-round"></Icon>
 								<!-- </Tooltip> -->
 							</span>
 							<span class="status" v-else-if="scope.row.samplestatus==4" style="color:##d97b24;font-size:25px;" title="分析失敗">
 								<!-- <Tooltip content="分析失敗" placement="top"> -->
-									<Icon type="checkmark-round"></Icon>
+									<Icon type="close-round"></Icon>
 								<!-- </Tooltip> -->
 							</span>
 						<!-- </div> -->
