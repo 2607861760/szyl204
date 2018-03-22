@@ -205,7 +205,7 @@
             </el-table>
             <div style="padding-top:40px;">
                 <Row>
-                    <Col span="12">
+                    <Col span="8">
                         <el-pagination
                         @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
@@ -215,6 +215,11 @@
                         layout="total, sizes, prev, pager, next, jumper"
                         :total="total">
                         </el-pagination>
+                    </Col>
+                    <Col span="4">
+                    <div style="line-height:32px;margin-left:-50px;">
+                        共 {{sampleCount}} 个样本
+                    </div>
                     </Col>
                     <Col :lg="{span:12,push:7}" v-if="batchShowBtn">
                         <Button type="default" class="batch-btn pri-left-btn" @click="batchClickBtn">
@@ -446,6 +451,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         pipeline:'',                         //存放pipeline 
         allocation:false,                    //代表是否在分配状态
         sampleEditType:0,                  //0 代表添加状态，1代表编辑状态
+        sampleCount:0,                      //样本数
         ruleCustom: {                        //表单验证规则
           samplecode: [
               { required: true, message: '样本编号不能为空', trigger: 'blur' }
@@ -771,6 +777,8 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     if(data.data!=null){
                         this.tableData3 = data.data.projectList;
                         this.total=data.data.count;
+                        this.sampleCount=data.data.sampleCount;
+                        console.log(data.data.sampleCount)
                         M.each(this.tableData3,(item)=> {
                             // console.log(item.dchSampleList);
                             if(item.dchSampleList.length==0) {
@@ -1249,6 +1257,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
                     if(data.data!=null){
                         this.total=data.data.count;
                         this.tableData3= data.data.projectList;
+                        this.sampleCount=data.data.sampleCount;
                     }else{
                         this.total=0;
                         this.emptytext="暂无数据"
