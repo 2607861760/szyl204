@@ -207,7 +207,6 @@
                 <Row>
                     <Col span="12">
                         <div style="width:100%;height:32px;line-height:32px">
-                            <div style="font-size:13px;color:#606266;float:left;"> 共 {{sampleCount}} 个样本</div>
                             <el-pagination style="float:left;"
                             @size-change="handleSizeChange"
                             @current-change="handleCurrentChange"
@@ -217,6 +216,7 @@
                             layout="total, sizes, prev, pager, next, jumper"
                             :total="total">
                             </el-pagination>
+                            <div style="font-size:13px;color:#606266;float:left;padding:1px 5px;"> 共 {{sampleCount}} 个样本</div>
                         </div>
     
                     </Col>
