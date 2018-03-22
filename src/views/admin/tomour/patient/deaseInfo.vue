@@ -758,7 +758,10 @@ export default {
                     this.buildPageData(data.data);
                    setTimeout(function(){
                        _this.doBuildTnm();
-                       _this.buildGtnmSelect(data.data.pageContents[0]);
+                       if(data.data && data.data.pageContents!=null){
+                             _this.buildGtnmSelect(data.data.pageContents[0]);
+                       }
+                      
                    },0);
                 } else if (data.returnCode == 422 || data.returnCode == 204) {
                     this.$router.push('/login')

@@ -160,9 +160,9 @@
                                     <router-link to="/admin"  class="avatar-admin" style="margin-left:30px;">{{currentUserName}}</router-link>
                                 </div>
                                 <div v-else>
-                                     <a href="javascript:;" @click="loginModal" class="active" v-show="showBtn">登录</a> 
+                                     <a href="javascript:;" @click="loginModal" class="active">登录</a> 
                                      <!-- <router-link to="/login"  @click="loginModal = true" class="active" v-show="showBtn">登录</router-link>  -->
-                                    <span>|</span>
+                                    <span v-show="showBtn">|</span>
                                     <!-- <router-link to="/register" v-show="showBtn">
                                         注册
                                     </router-link> -->
@@ -237,14 +237,15 @@
 import {
     login
 } from 'api/index.js'
-import {getCookie} from '@/common/js/cookie.js'
+import {getCookie} from '@/common/js/cookie.js';
+import { register } from 'common/js/Base.js';
 export default {
     name: "header",
     data() {
         return {
             avatarShow:false,
             currentUserEmail:'',
-            showBtn: true,
+            showBtn: false,
             currentUserName: '',
             // 绑定用户名和密码
             formLogin: {},
@@ -301,6 +302,7 @@ export default {
     },
     created() {
         this.getCookieValue();
+        this.showBtn=register.showBtn;
     },
 
     computed: {

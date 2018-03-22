@@ -323,6 +323,7 @@ export default {
         //点击样本编号
         routeChange(row){
             console.log(row)
+            this.$store.state.sampleInfo.samplecode=row.samplecode;
             if(row.status==99){
                 this.$store.state.jobid=row.jobid;
                 if(this.$store.state.projectid==1){
@@ -393,6 +394,8 @@ export default {
                         this.$Message.error(data.msg);
                         this.jobTotal=0;
                     }else {
+                        //取消所有的所中
+                        this.selectList = [];
                         this.sampleList = data.data.sampleList;
                         this.jobTotal = data.data.count; 
                     }
@@ -406,15 +409,17 @@ export default {
         },
         //是否可以勾选
         selectable(row,index){
-            if(row.samplestatus!='6'){
-                return 1;
+            if(row.sampleststus=='6'){
+                return true;
             }else{
-                return 0;
+                return false;
             }
         },
         //选择
         handleselect(val){
             console.log(val);
+            //每次选择之前先清空所选中的列表
+            this.selectList=[];
             M.each(val,(item,index)=>{
                 this.selectList.push(item.sampleid);
             })
@@ -431,6 +436,7 @@ export default {
             })
             if(val.length==0){
                 this.disSubmit = true;
+                this.selectList=[];
             }else{
                 this.disSubmit = false;
             }
@@ -462,14 +468,14 @@ export default {
                 console.log(data)
                 if(data.returnCode==0 || data.returnCode==200){
                     // this.newModel=false;
-                    // 提交完成清空数组
-                    this.selectList = [];
                     // 提示信息
                     this.$Message.success(data.msg);
                     // 重新渲染样本列表
-                    // this.getSampleList(this.pageIndex);
+                    this.getSampleList(this.pageIndex);
                     // 重新渲染列表
                     this._getTaskList();
+                    // 提交完成清空数组
+                    this.selectList = [];
                 } else if (data.returnCode == 422 || data.returnCode == 204) {
                     this.$router.push('/login')
                 } else {
