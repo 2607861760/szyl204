@@ -86,7 +86,7 @@
                 
                 <el-table-column label="病人编号" width="250" sortable prop="dchPatient.patientcode" >
                     <template slot-scope="scope">
-                    	<Poptip placement="bottom-start"  width="300" @on-popper-show="getUserBySample(scope.row)">
+                    	<Poptip placement="bottom-start" :transfer="true"  width="300" @on-popper-show="getUserBySample(scope.row)">
                     		<Icon style="padding:0 10px;cursor:pointer;" type="android-person"></Icon>
                     		<div class="api" style="max-height:200px" slot="content">
                     			<el-table v-loading="assinged"  align="center" :data="assignedData">
@@ -127,7 +127,7 @@
                 <el-table-column label="文件状态" width="200">
     				<template slot-scope="scope">
 						<div v-for="(list,index) in scope.row.dchSampleList"  style="height:40px;" :key="index">
-                            <Poptip  :placement="scope.$index<=2?'bottom-end':'top-end'" v-if="list.fastq_R1!=null" width="300">
+                            <Poptip  :transfer="true" placement="bottom-end" v-if="list.fastq_R1!=null" width="300">
                                 <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
                                     {{list.fastq_R1}}
                                 </div>
@@ -138,7 +138,7 @@
                             <div class="imgbox" v-else>
                                 <div class="fastq_R1_off"></div>
                             </div>
-                            <Poptip  :placement="scope.$index<=2?'bottom-end':'top-end'" v-if="list.fastq_R2!=null " width="300">
+                            <Poptip :transfer="true"  placement="bottom-end" v-if="list.fastq_R2!=null " width="300">
                                 <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
                                     {{list.fastq_R2}}
                                 </div>
@@ -149,7 +149,7 @@
                             <div class="imgbox" v-else>
                                 <div class="fastq_R2_off"></div>
                             </div>
-                            <Poptip  :placement="scope.$index<=2?'bottom-end':'top-end'" v-if="list.vcf!=null" width="300">
+                            <Poptip  :transfer="true" placement="bottom-end" v-if="list.vcf!=null" width="300">
                                 <div slot="content" style="height: 80px;word-wrap: break-word;text-align: left;">
                                     {{list.vcf}}
                                 </div>
@@ -160,7 +160,7 @@
                             <div class="imgbox" v-else>
                                 <div class="vcf_off"></div>
                             </div>
-                            <Poptip :placement="scope.$index<=2?'bottom-end':'top-end'" v-if="list.etcFiles!=null " width="300">
+                            <Poptip :transfer="true" placement="bottom-end" v-if="list.etcFiles!=null " width="300">
                                 <div class="imgbox">
                                     <div class="etc_on" ></div>
                                 </div>
@@ -1019,6 +1019,7 @@ import treeGrid from '@/components/treeTable/vue2/TreeGrid'
         },
 	//点击人物ICON
         getUserBySample(row){
+            console.log(row);
         	let len=row.dchSampleList.length;
         	let userid = getCookie("userid");
         	this.assignedData=[];
