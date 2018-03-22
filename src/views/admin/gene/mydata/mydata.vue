@@ -205,21 +205,20 @@
             </el-table>
             <div style="padding-top:40px;">
                 <Row>
-                    <Col span="8">
-                        <el-pagination
-                        @size-change="handleSizeChange"
-                        @current-change="handleCurrentChange"
-                        :current-page="currentPage"
-                        :page-sizes="[50, 100, 200, 500, 1000]"
-                        :page-size="pageSize"
-                        layout="total, sizes, prev, pager, next, jumper"
-                        :total="total">
-                        </el-pagination>
-                    </Col>
-                    <Col span="4">
-                    <div style="line-height:32px;margin-left:-50px;">
-                        共 {{sampleCount}} 个样本
-                    </div>
+                    <Col span="12">
+                        <div style="width:100%;height:32px;line-height:32px">
+                            <div style="font-size:13px;color:#606266;float:left;"> 共 {{sampleCount}} 个样本</div>
+                            <el-pagination style="float:left;"
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page="currentPage"
+                            :page-sizes="[50, 100, 200, 500, 1000]"
+                            :page-size="pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="total">
+                            </el-pagination>
+                        </div>
+    
                     </Col>
                     <Col :lg="{span:12,push:7}" v-if="batchShowBtn">
                         <Button type="default" class="batch-btn pri-left-btn" @click="batchClickBtn">
