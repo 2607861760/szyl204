@@ -44,10 +44,12 @@ $right-main-bg: #ECF0F5;
         font-size: $left-menu-font;
         .admin-layout-nav {
             width: 100%;
-            height: 60px;
+            height: 48px;
             padding-left: 9%;
-            line-height: 60px;
+            line-height: 48px;
             font-size: 14px;
+            margin:0;
+            text-align:center;
             .menu{
                 letter-spacing:35px;
                 @media screen and (max-width:1100px){
@@ -108,9 +110,9 @@ $right-main-bg: #ECF0F5;
     <!-- 主体 -->
     <Layout class="admin-main" type="flex">
         <Sider ref="side1" hide-trigger collapsible :collapsed-width="64" v-model="isCollapsed" class="admin-layout-left">
-            <div class="admin-layout-nav" style="height:56px;margin:0;text-align:center;">
+            <div class="admin-layout-nav">
                 <!-- <span class="menu">目录</span> -->
-                <Icon @click.native="collapsedSider" :class="rotateIcon"  style="cursor:pointer;margin:17px 21px;"  type="navicon-round" size="22"></Icon>
+                <Icon @click.native="collapsedSider" :class="rotateIcon"  style="cursor:pointer;margin:13px 21px;"  type="navicon-round" size="22"></Icon>
             </div>
             <el-menu theme="dark"
                 :class="menuitemClasses" 
@@ -125,11 +127,11 @@ $right-main-bg: #ECF0F5;
                     <!-- 判断是否存在子级菜单 -->
                     <el-menu-item  v-if="!item.subMenus.length" :index="item.url">
                         <Icon :type="item.icon"  size="22"></Icon>
-                        <span slot="title">{{item.menuName}}</span>
+                        <span style="margin-left:30px;" slot="title">{{item.menuName}}</span>
                     </el-menu-item>
                     <el-menu-item v-else @click="showChildBar(item)"  :index="item.url">
                         <Icon :type="item.icon"  size="22"></Icon>
-                        <span slot="title">{{item.menuName}}</span>
+                        <span style="margin-left:30px;" slot="title">{{item.menuName}}</span>
                     </el-menu-item>
                     <!-- 如果包含二级菜单 -->
                     <!-- <el-submenu v-else :index="item.menuName"> -->

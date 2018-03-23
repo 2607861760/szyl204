@@ -28,18 +28,19 @@
                         <FormItem label="病人姓名 " style="width:30%;">
                             <Input v-model="basicInfo.patientname"></Input>
                         </FormItem>
-                    </Col>
-                    <Col class="tables">
                         <FormItem label="出生日期" style="width:30%;">
                             <DatePicker type="date" v-model="birthday"></DatePicker>
                         </FormItem>
+                    </Col>
+                    <Col class="tables">
+                        <!-- <FormItem label="出生日期" style="width:30%;">
+                            <DatePicker type="date" v-model="birthday"></DatePicker>
+                        </FormItem> -->
                         <FormItem label="性别" style="width:30%;">
                             <Select v-model="genderId" @on-change="changeGender">
                                 <Option v-for="item in sexs" :value="item.value" :key="item.value">{{ item.label }}</Option>
                             </Select>
                         </FormItem>
-                    </Col>
-                    <Col class="tables">
                         <FormItem label="血缘关系" style="width:30%;">
                             <Input v-model="basicInfo.consanguinity"></Input>
                         </FormItem>
@@ -47,6 +48,14 @@
                             <Input v-model="basicInfo.nation"></Input>
                         </FormItem>
                     </Col>
+                    <!-- <Col class="tables">
+                        <FormItem label="血缘关系" style="width:30%;">
+                            <Input v-model="basicInfo.consanguinity"></Input>
+                        </FormItem>
+                        <FormItem label="民族" style="width:30%;">
+                            <Input v-model="basicInfo.nation"></Input>
+                        </FormItem>
+                    </Col> -->
                     <Col class="tables"> 
                         <FormItem label="临床信息" style="width:78%;">
                             <Input v-model="basicInfo.clinicalinf" type="textarea" :rows="3" :maxlength="800" placeholder="请输入不超过800个字"></Input>

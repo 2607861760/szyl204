@@ -52,15 +52,23 @@
                         </div>
                     </Col>
                     <Col span="8" style="min-width:500px;margin-left:20px;">
-                        <div class="search-inp">查询：
-                            <Select v-model="searchColumn" style="width:140px;" placeholder="请选择查询字段" @on-change="getSearchColumn">
+                        <!-- <div class="search-inp">查询： -->
+                            <!-- <Select v-model="searchColumn" style="width:140px;" placeholder="请选择查询字段" @on-change="getSearchColumn">
                                 <Option v-for="item in searchColumnList" :value="item.value" :key="item.value" style="text-align:center;letter-spacing:1px;">{{ item.label }}</Option>
                             </Select>
                             <Input type="text" v-model="keyword" style="margin-right:20px;height:30px;width:40%;margin-left:5px;" placeholder="请输入关键字" />
                             <Button type="primary" class="build" @click="load">
                                 查询
-                            </Button>
-                        </div>
+                            </Button> -->
+                            <div class="domain_table_search" style="width:80%;">
+                                <Input  v-model="keyword">
+                                    <Select v-model="searchColumn" slot="prepend" style="width:80px;" @on-change="getSearchColumn">
+                                        <Option v-for="item in searchColumnList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                                    </Select>
+                                    <span slot="append" style="padding:10px 13px;" @click="load"><Icon type="ios-search" ></Icon></span>
+                                </Input>
+                            </div>
+                        <!-- </div> -->
                     </Col>
                     <Col span="3" style="float:right;margin-right:10px;min-width:300px;">
                         <div class="select-na">批次筛选:</div>

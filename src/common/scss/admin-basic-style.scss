@@ -70,14 +70,22 @@ a {
                 font-size: 14px;
             }
             .el-menu-item {
+                height: 48px;
+                line-height: 48px;
                 color: #b8c7ce;
                 font-size: 14px;
                 &.is-active {
                     background: #2B3245;
                     color: #fff;
+                    .ivu-icon {
+                        color: #fff;
+                    }
                 }
                 &:hover {
-                    background: #d1dbe5;
+                    background: #4E537E;
+                }
+                .ivu-icon {
+                    color: #b8c7ce;
                 }
             }
         }
@@ -91,6 +99,8 @@ a {
                 &.is-active,
                 &.is-opened {
                     .el-submenu__title {
+                        height: 48px;
+                        line-height: 48px;
                         background: #2B3245;
                     }
                 }
@@ -202,7 +212,7 @@ a {
             white-space: normal;
         }
         .bian {
-            color: #3c8dbc;
+            color: #5095C0;
             height: 40px;
             line-height: 40px;
         }
@@ -535,8 +545,10 @@ a {
 }
 
 .el-radio-button__orig-radio:checked+.el-radio-button__inner {
-    background-color: rgba(51, 122, 183, 1);
+    height: 34px;
+    // background-color: rgba(51, 122, 183, 1);
     border-color: rgba(51, 122, 183, 1);
+    background: #4578AD;
     -webkit-box-shadow: -1px 0 0 0 rgba(51, 122, 183, 1);
     box-shadow: -1px 0 0 0 rgba(51, 122, 183, 1);
 }

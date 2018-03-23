@@ -38,6 +38,12 @@ li {
     & {
         overflow: visible;
     }
+    th {
+        background: #EEF1F6;
+        border: 1px solid #E6EBF5;
+        font-size: 14px;
+        color: #666;
+    }
     // 表格头部和内容高度
     th,
     td {
