@@ -327,20 +327,12 @@
                                         </span>
                                         <span class="status" v-else-if="list.samplestatus==3" style="color:#3B79BA;font-size:20px;cursor:pointer" title="分析完成">
                                             <!-- <Tooltip content="分析完成" placement="top"> -->
-<<<<<<< HEAD
-                                                <Icon type="checkmark-round"></Icon>
-=======
                                                 <Icon type="android-done"></Icon>
->>>>>>> 0742cdab8bb365f8a9a5d10631099bb338ffadba
                                             <!-- </Tooltip> -->
                                         </span>
                                         <span class="status" v-else-if="list.samplestatus==4" style="color:##d97b24;font-size:20px;cursor:pointer" title="分析失敗">
                                             <!-- <Tooltip content="分析失敗" placement="top"> -->
-<<<<<<< HEAD
-                                                <Icon type="close-round"></Icon>
-=======
                                                 <Icon type="android-close"></Icon>
->>>>>>> 0742cdab8bb365f8a9a5d10631099bb338ffadba
                                             <!-- </Tooltip> -->
                                         </span>
                                     </div>
