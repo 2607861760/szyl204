@@ -63,10 +63,10 @@
         <div class="back-next">
             <Row>
                 <Col span="12">
-                    <Button type="primary" @click="next('basicInfo')" >下一步</Button>
+                    <Button type="ghost" size="small" @click="backUp('basicInfo')" >返回</Button>
                 </Col>
                 <Col span="12" pull="8">
-                    <Button type="primary" @click="backUp('basicInfo')" >返回</Button>
+                    <Button type="primary" size="small" @click="next('basicInfo')" >下一步</Button>
                 </Col>
             </Row>
         </div>
