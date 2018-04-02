@@ -129,7 +129,8 @@
 								</Select>
 							</FormItem>
 							<FormItem label="样本编号" style="width:30%;" prop="samplecode">
-								<Input v-model="sampleInfo.samplecode"></Input>
+								<Input v-if="sampleEditType==0" v-model.trim="sampleInfo.samplecode"></Input>
+                            	<Input v-else-if="sampleEditType==1" disabled v-model="sampleInfo.samplecode"></Input>
 							</FormItem>
 							</Col>
 							<Col class="tables">
@@ -321,6 +322,7 @@ export default {
 			userId: '',
 			fileServerCategoryList: [],
 			uploadDisabled: true,
+			sampleEditType:0,  //样本标号状态 0 为添加 1为编辑
 			tabsVal: 'upload'
 		}
 	},
@@ -342,6 +344,11 @@ export default {
 	// 		}
 	// 	},
 	// },
+	watch: {
+		"sampleInfo.samplecode": function(val, oldval) {
+			this.sampleInfo.samplecode = val.replace(/\s|\xA0/g, "");
+		}
+	},
 	methods: {
 		//取消必填选项
 		resetForm(){
@@ -452,6 +459,7 @@ export default {
 			})
 		},
 		found() { //点击新建样本
+			this.sampleEditType = 0,
 			this.upshow = false;
 			this.sampleModal = true;
 			this.sampleInfo = {};
@@ -525,7 +533,7 @@ export default {
 			})
 		},
 		edit(index, row) {  //点击编辑
-			console.log(row);
+			this.sampleEditType = 1;
 			this.samid= row.sampleid;
 			this.sampleid = row.sampleid;
 			this.uploadDisabled = false;

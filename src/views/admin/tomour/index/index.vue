@@ -457,7 +457,8 @@
                             </Select>
                         </FormItem>
                         <FormItem label="样本编号" style="width:30%;" prop="samplecode">
-                            <Input v-model="sampleInfo.samplecode"></Input>
+                            <Input v-if="sampleEditType==0" v-model.trim="sampleInfo.samplecode"></Input>
+                            <Input v-else-if="sampleEditType==1" disabled v-model="sampleInfo.samplecode"></Input>
                         </FormItem>
                     </Col>
                     <Col class="tables">
@@ -622,6 +623,7 @@ export default{
             tableData3:[],         //表格数据    
             difTumNumList:[],      //不同癌种的样本数量
             curMouthList:[],     //当前月不同癌种的样本数量
+            sampleEditType:0,    //样本编号状态 0为添加 1为编辑
             loadone:false,         //加载loading
             currentPage:1,
             pageSize:50,          //每页50条
@@ -688,6 +690,11 @@ export default{
             uploadDisabled:false,
             showNullEchart1:false,
             showNullEchart2:false
+        }
+    },
+    watch: {
+        "sampleInfo.samplecode": function(val, oldval) {
+            this.sampleInfo.samplecode = val.replace(/\s|\xA0/g, "");
         }
     },
     methods:{
@@ -898,6 +905,7 @@ export default{
             })
         },
         edit(index,row){ //点击编辑
+            this.sampleEditType = 1;
             this.sampleInfo={};
             this.sampleEdit = true;
             this.upModal = false;
@@ -1049,6 +1057,7 @@ export default{
             return Number(ret);
         },
         addsample(row){//点击添加
+            this.sampleEditType = 0,
             this.patid=row.dchPatient.patientid;
             this.sampleEdit=true;
             this.samid='';

@@ -22,8 +22,12 @@
     .batch-btn {
         padding:6px 40px;
     }
-    .pri-left-btn {
-        margin-left: -30px;
+    // .pri-left-btn {
+    //     margin-left: -30px;
+    // }
+    .fp-btn{
+        margin-right:10px;
+        padding:4px 40px;
     }
     .pri-right-btn {
         margin-left: 20px;
@@ -71,15 +75,15 @@
                         <!-- </div> -->
                     </Col>
                     <Col span="3" style="float:right;margin-right:10px;min-width:300px;">
-                        <div class="select-na">批次筛选:</div>
-                        <Select style="float:left;width:120px;" v-model="selectPcId" @on-change="SelectChangeData">
+                        <!-- <div class="select-na">批次筛选:</div> -->
+                        <Button type="primary" class="fp-btn" @click="bactnSubmmitBtn" :disabled="disShowNo" style="margin-left:15px;float:right;">
+                            分配
+                        </Button> 
+                        <Select style="float:right;width:120px;" v-model="selectPcId" @on-change="SelectChangeData">
                             <Option value="All">全部</Option>
                             <Option value="0">无批次</Option>
                             <Option v-for="(item, index) in piciList" :value="item.value" :label="item.label" :key="index">{{item.label}}</Option>
                         </Select>
-                         <Button type="primary" class="build" @click="clickSoltData" style="margin-left:10px;">
-                            分配数据
-                        </Button> 
                     </Col>
                 </Row>
             </div>
@@ -213,6 +217,11 @@
             </el-table>
             <div style="padding-top:40px;">
                 <Row>
+                    <Col span="12" v-if="batchShowBtn">
+                        <Button type="default" class="batch-btn pri-left-btn" @click="batchClickBtn">
+                            返回
+                        </Button>
+                    </Col>
                     <Col span="12">
                         <div style="width:100%;height:32px;line-height:32px">
                             <el-pagination style="float:left;"
@@ -226,15 +235,6 @@
                             </el-pagination>
                             <div style="font-size:13px;color:#606266;float:left;padding:1px 5px;"> 共 {{sampleCount}} 个样本</div>
                         </div>
-    
-                    </Col>
-                    <Col :lg="{span:12,push:7}" v-if="batchShowBtn">
-                        <Button type="default" class="batch-btn pri-left-btn" @click="batchClickBtn">
-                            返回
-                        </Button>
-                        <Button type="primary" class="batch-btn pri-right-btn" @click="bactnSubmmitBtn" :disabled="disShowNo">
-                            分配
-                        </Button>
                     </Col>
                 </Row>
             </div>
