@@ -275,12 +275,16 @@ import {getCookie} from '@/common/js/cookie.js'
 				}
 			},
 			uploadstatus(cellValue){
-				if (cellValue == 1) {
-					return cellValue = "正在上传"
+				if(cellValue == 0){
+					return cellValue = "未上传";
+				}else if (cellValue == 1) {
+					return cellValue = "正在上传";
 				} else if (cellValue == 2) {
-					return cellValue = "上传完成"
-				} else {
-					return cellValue = "上传完成"
+					return cellValue = "上传完成";
+				}else if(cellValue == 3){
+					return cellValue = "上传失败";
+				}else{
+					return cellValue = "上传完成";
 				}
 			}
     	},

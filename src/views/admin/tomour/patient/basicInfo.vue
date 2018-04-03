@@ -1,4 +1,4 @@
-<style lang="scss" scope>
+﻿<style lang="scss" scope>
 // 引入公共变量及方法
 @import '~common/scss/public/base-url.scss';
 .basic_info {

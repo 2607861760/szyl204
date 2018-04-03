@@ -18,7 +18,7 @@
                     <Row>
                         <Col class="tables">
                             <FormItem label="病人编号" style="width:30%;" prop="patientcode">
-                                <Input v-model="basicInfo.patientcode"></Input>
+                                <Input v-model.trim="basicInfo.patientcode"></Input>
                             </FormItem>
                             <FormItem label="病人姓名" style="width:30%;">
                                 <Input v-model="basicInfo.patientname"></Input>
@@ -92,6 +92,11 @@ export default{
     },
     updated(){
         this.$emit('binfo',this.basicInfo)
+    },
+    watch: {
+        "basicInfo.patientcode": function(val, oldval) {
+            this.basicInfo.patientcode = val.replace(/\s|\xA0/g, "");
+        }
     },
     methods: {
         // 返回

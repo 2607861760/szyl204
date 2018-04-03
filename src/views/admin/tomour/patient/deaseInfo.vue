@@ -851,8 +851,10 @@ export default {
     mounted() {
         
     },
-    watch:{
-         
+    watch: {
+        "formData.patientcode": function(val, oldval) {
+            this.formData.patientcode = val.replace(/\s|\xA0/g, "");
+        }
     },
     created() {
         if(this.$store.state.tumourPatientInfo.tumourPatientId=="" && this.$store.state.tumourPatientInfo.tumourpatientCode==""){

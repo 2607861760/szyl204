@@ -1,4 +1,4 @@
-import Vue from 'vue';
+﻿import Vue from 'vue';
 // 引入vue-router
 import VueRouter from 'vue-router';
 
