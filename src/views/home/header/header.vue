@@ -177,7 +177,7 @@
         </div>
         <div class="home-header-nav">
             <ul class="nav-inner container">
-                <li>首页</li>
+                <li style="cursor:pointer;" @click="gohome">首页</li>
                 <li>关于我们</li>
                 <li>
                     精准医学
@@ -298,6 +298,9 @@ export default {
                     }
                 }
             })
+        },
+        gohome(){
+            this.$router.push("/home");
         }
     },
     created() {

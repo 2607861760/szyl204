@@ -17,6 +17,12 @@ const router = new VueRouter({
             children: [{
                 path: '/home',
                 component: resolve => require(['@/views/home/index/index.vue'], resolve),
+            }, {
+                path: '/home/genePage',
+                component: resolve => require(['@/views/home/index/geneDetail.vue'], resolve),
+            }, {
+                path: '/home/tumourPage',
+                component: resolve => require(['@/views/home/index/tumourdetail.vue'], resolve),
             }]
         },
         {

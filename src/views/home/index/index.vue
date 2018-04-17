@@ -57,22 +57,24 @@
         .medicine-inner{
             padding:60px;
             .medicine-pic{
-                width:120px;
+                width:100px;
                 margin:auto;
                 .medicine-icon{
+                    cursor:pointer;
                     width:100%;
-                    height:120px;
+                    height:100px;
                     border-radius:50%;
                     img{
                         width:60px;
                         height:60px;
                         display:inline-block;
-                        margin-top:30px;
+                        margin-top:20px;
                     }
                 }
                 p{
                     margin-top:20px;
                     width:130px;
+                    text-align:left;
                     &:hover{
                         color:#ff6600;
                     }
@@ -90,6 +92,7 @@
             .cloud-pic-fs{
                 height:488px;
                 background:url('./img/u8.jpg') no-repeat;
+
             }
             .cloud-pic-sc{
                 height:244px;
@@ -180,7 +183,7 @@
         .cooperate-inner{
             padding:60px 50px 0;
             position:relative;
-            height:196px;
+            height:100%;
             .cooperate-left,.cooperate-right{
                 position: absolute;
                 top: 70%;
@@ -270,14 +273,32 @@
                     }
                 }
                 .cooperate-pic.cooperate-pic-fs{
-                    background:url('./img/fd.png');
+                    background:url('./img/fd.png') no-repeat;
+                    background-size:100% 100%;
+                }
+                .cooperate-pic.cooperate-pic-dz{
+                    background:url('./img/dz.jpg') no-repeat;
+                    background-size:100% 100%;
+                }
+                .cooperate-pic.cooperate-pic-broad{
+                    background:url('./img/broad.jpg') no-repeat;
+                    background-size:100% 100%;
                 }
                 .cooperate-pic.cooperate-pic-sc{
-                    background:url('./img/hb.png');
+                    background:url('./img/hb.png') no-repeat;
+                    background-size:100% 100%;
                 }
                 .cooperate-pic.cooperate-pic-th{
-                    background:url('./img/xj.png');
+                    background:url('./img/xj.png') no-repeat;
+                    background-size:100% 100%;
                 }
+            }
+        }
+        .swiper-wrapper{
+            height:198px;
+            .swiper-slide{
+                width:275px;
+                height: 198px;
             }
         }
     }
@@ -300,7 +321,7 @@
                 <div class="medicine-inner">
                     <Row type="flex" justify="space-between">
                         <Col :lg="{span:6}">
-                            <div class="medicine-pic">
+                            <div @click="gogene" class="medicine-pic">
                                 <div class="medicine-icon" style="background:#1ea8e3;">
                                     <img src="./img/tu2.png"/>
                                 </div>
@@ -308,7 +329,7 @@
                             </div>
                         </Col>
                         <Col :lg="{span:6}">
-                            <div class="medicine-pic">
+                            <div  @click="gotumour" class="medicine-pic">
                                 <div class="medicine-icon" style="background:#00c800;">
                                     <img src="./img/tu3.png"/>
                                 </div>
@@ -382,10 +403,9 @@
         <div class="cooperate">
             <div class="inner container">
                 <div class="inner-title">科研合作</div>
-                <div class="cooperate-inner">
-                    <div class="cooperate-left"></div>
-                    <Row type="flex" justify="space-around">
-                        <Col span="6">
+                <div class="cooperate-inner swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
                             <div class="cooperate-content">
                                 <div class="cooperate-pic cooperate-pic-fs">
                                     <div class="cooperate-bg">
@@ -397,8 +417,21 @@
                                     </div>
                                 </div>
                             </div>
-                        </Col>
-                        <Col span="6">
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="cooperate-content">
+                                <div class="cooperate-pic cooperate-pic-dz">
+                                    <div class="cooperate-bg">
+                                        <div style="padding:18px 0 10px;"><img src="./img/dzlg.png" height="40" width="40"/></div>
+                                        <p>这里是对合作伙伴简短的介绍，包括医院成立时间、地址、级别合作项目等介绍</p>
+                                    </div>
+                                    <div class="cooperate-title">中国医学科学院肿瘤医院
+                                    <div class="cooperate-tras"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
                             <div class="cooperate-content">
                                 <div class="cooperate-pic cooperate-pic-sc">
                                     <div class="cooperate-bg">
@@ -410,22 +443,21 @@
                                     </div>
                                 </div>
                             </div>
-                        </Col>
-                        <Col span="6">
+                        </div>
+                        <div class="swiper-slide">
                             <div class="cooperate-content">
-                                <div class="cooperate-pic cooperate-pic-th">
+                                <div class="cooperate-pic cooperate-pic-broad">
                                     <div class="cooperate-bg">
-                                        <div style="padding:18px 0 10px;"><img src="./img/xjlg.png" height="40" width="40"/></div>
+                                        <div style="padding:18px 0 10px;"><img src="./img/bdlg.png" height="40" width="40"/></div>
                                         <p>这里是对合作伙伴简短的介绍，包括医院成立时间、地址、级别合作项目等介绍</p>
                                     </div>
-                                    <div class="cooperate-title">西京医院
+                                    <div class="cooperate-title">Broad
                                     <div class="cooperate-tras"></div>
                                     </div>
                                 </div>
                             </div>
-                        </Col>
-                    </Row>
-                    <div class="cooperate-right"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -436,6 +468,8 @@ import {
     feature,
     database
 } from 'api/index.js';
+import Swiper from 'swiper';
+import 'swiper/dist/css/swiper.min.css';
 export default {
     name: "index",
     data() {
@@ -450,7 +484,13 @@ export default {
     		 window.screenWidth = document.body.clientWidth;
              that.screenWidth = window.screenWidth;
              that.height=that.screenWidth*0.2125+"px";
-    	}
+        },
+        gogene(){
+            this.$router.push("/home/genePage");
+        },
+        gotumour(){
+            this.$router.push("/home/tumourPage");
+        }
     },
     mounted () { 
        	this.resize();
@@ -458,6 +498,16 @@ export default {
        	window.onresize = function() {
         	return that.resize();
         } 
+        var swiper = new Swiper('.swiper-container', {
+            loop :true,
+            autoplay : 6000,  
+            slidesPerView: 3,
+            spaceBetween: 91,
+            // pagination: {
+            //     el: '.swiper-pagination',
+            //     clickable: true,
+            // },
+        });
     }
 }
 </script>

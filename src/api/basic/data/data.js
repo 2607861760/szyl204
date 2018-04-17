@@ -390,5 +390,14 @@ export const data = {
             return Promise.resolve(res.data)
         })
     },
-
+    /**
+     * [data  获取视频链接]
+     * @param  {[type]} param [productId]
+     * @return {[type]}   obj
+     */
+    getPlayVideoPath(obj) {
+        return $ajax.post(apiUrl.apiUrl + 'auth/getPlayVideoPath', obj).then(function(res) {
+            return Promise.resolve(res.data)
+        })
+    },
 }

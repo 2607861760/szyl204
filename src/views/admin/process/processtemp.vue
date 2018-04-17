@@ -139,7 +139,7 @@
 	<div v-loading="loadding" class="drawer_box">
 		<div id="drawer">
            <mu-drawer class="mu-drawer" style="box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.35);" right :open="open" @close="toggle()">
-             <mu-list v-for="(item,index) in drawerlist">
+             <mu-list :key="index" v-for="(item,index) in drawerlist">
                <mu-list-item v-if="checked">
                    <mu-checkbox name="group" :label="item.tooldescribe" :nativeValue="item.toolId" v-model="drawerListId" class="demo-checkbox"/>
                </mu-list-item>
