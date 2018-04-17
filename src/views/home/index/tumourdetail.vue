@@ -5,7 +5,7 @@
         line-height:160px;
         height: 160px;
         font-size:20px;
-        font-weight:400;
+        font-weight:800;
         color:#666;
     }
     .video_box {
@@ -17,9 +17,11 @@
         }
         video {
             margin-top: 50px;
+            background:#000;
         }
         embed{
             margin-top:50px;
+            background:#000;
         }
         span {
             width: 450px;
@@ -48,18 +50,11 @@
             display:inline-block;
             margin-top:20px;
             width:100%;
-            span{
+            img{
                 display:inline-block;
                 width:40px;
                 height:40px;
-                border-radius:50%;
                 text-align:center;
-                background:#1996cd;
-                .ivu-icon{
-                    color:#fff;
-                    margin-top:7px;
-                    font-size:25px;
-                }
             }
             b{
                 display:inline-block;
@@ -182,27 +177,27 @@
                 <Col span="2"></Col>
                 <Col span="6">
                     <div class="ad">
-                        <div style="float:left"><span><Icon type="ios-upload-outline"></Icon></span></div>
+                        <div style="float:left"><img src="./img/ygjy.png" /></div>
                         <div style="float:left"><b>易感基因及药物代谢相关基因</b></div>
                     </div>
                     <div class="ad">
-                        <div style="float:left"><span><Icon type="social-buffer-outline"></Icon></span></div>
+                        <div style="float:left"><img src="./img/wdzs.png" /></div>
                         <div style="float:left"><b>位点注释信息和药物注释信息</b></div>
                     </div>
                 </Col>
                 <Col span="6">
                    <div class="ad">
-                        <div style="float:left"><span><Icon type="stats-bars"></Icon></span></div>
-                        <div style="float:left"><b>SNP、CNV等变异类型</i></b></div>
+                        <div style="float:left"><img src="./img/snp.png" /></div>
+                        <div style="float:left"><b>SNP、CNV等变异类型</img></b></div>
                     </div>
                     <div class="ad">
-                        <div style="float:left"><span><Icon type="clipboard"></Icon></span></div>
+                        <div style="float:left"><img src="./img/zlfa.png" /></div>
                         <div style="float:left"><b>治疗方案</b></div>
                     </div>
                 </Col>
                 <Col span="6">
                    <div class="ad">
-                        <div style="float:left"><span><Icon type="stats-bars"></Icon></span></div>
+                        <div style="float:left"><img src="./img/ywxx.png" /></div>
                         <div style="float:left"><b>药物信息</b></div>
                     </div>
                 </Col>
@@ -269,7 +264,6 @@ export default {
                 }
             }).catch((error) => {
                 this.videoShow = false;
-                this.$Message.error(error.statusText);
             })
         }
     },

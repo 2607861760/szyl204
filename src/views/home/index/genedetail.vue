@@ -9,9 +9,11 @@
         }
         video{
             margin-top:50px;
+            background:#000;
         }
         embed{
             margin-top:50px;
+            background:#000;
         }
         span{
             width:450px;
@@ -161,7 +163,6 @@ export default {
             }
         }).catch((error) => {
             this.videoShow = false;
-            this.$Message.error(error.statusText);
         })
     }
   },

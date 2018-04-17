@@ -35,7 +35,7 @@
     }
 }
 .inner{
-        padding-top:60px;
+        padding-top:30px;
         text-align:center;
         color:#333;
         .inner-title{
@@ -52,7 +52,7 @@
     }
     /*精准医学*/
     .medicine{
-        height:430px;
+        height:360px;
         background:rgba(242, 242, 242, 1);
         .medicine-inner{
             padding:60px;
@@ -84,7 +84,7 @@
     }
     /*组学云平台*/ 
     .cloud{
-        height:720px;
+        height:650px;
         background:rgba(255, 255, 255, 1);
         .cloud-inner{
             height:488px;
@@ -178,7 +178,7 @@
     }
     /*科研合作 */
     .cooperate{
-        height:490px;
+        height:400px;
         background:rgba(255, 255, 255, 1);
         .cooperate-inner{
             padding:60px 50px 0;
