@@ -31,7 +31,7 @@
             bottom:0;
             margin:auto;
             line-height:30px;
-            height:150px;
+            height:250px;
             font-size:16px;
         }
     }
@@ -40,6 +40,10 @@
         height: 450px;
         padding-top:30px;
         background:#fff;
+        .ad_content{
+            width:1100px;
+            margin:0 auto;
+        }
         .ivu-col{
             height: 349px;
         }
@@ -47,7 +51,7 @@
             margin-top:20px;
             text-align:center;
             font-size:20px;
-            font-weight:400;
+            font-weight:800;
             color:#666;
             margin-bottom:30px;
         }
@@ -109,30 +113,31 @@
         <!--罕见病精准医学系统的优势-->
         <div class="advantage">
             <h3>罕见病精准医学系统的优势</h3>
-            <Row>
-                <Col span="6"></Col>
-                <Col class="col" span="8">
+            <div class="ad_content">
+                <Row type="flex" justify="center">
+                    <Col class="col" span="4"></Col>
+                    <Col class="col" span="10">
+                        <div class="ad">
+                            <div style="float:left"><span><Icon type="ios-upload-outline"></Icon></span></div>
+                            <div style="float:left"><b>大规模数据的<i>批量上传</i>和管理</b></div>
+                        </div>
+                        <div class="ad">
+                            <div style="float:left"><span><Icon type="social-buffer-outline"></Icon></span></div>
+                            <div style="float:left"><b style="line-height:30px;">强大的数据库<i>资源支撑</i>的变异位点的<i>解读系统</i></b></div>
+                        </div>
+                    </Col>
+                    <Col span="10">
                     <div class="ad">
-                        <div style="float:left"><span><Icon type="ios-upload-outline"></Icon></span></div>
-                        <div style="float:left"><b>大规模数据的<i>批量上传</i>和管理</b></div>
-                    </div>
-                    <div class="ad">
-                        <div style="float:left"><span><Icon type="social-buffer-outline"></Icon></span></div>
-                        <div style="float:left"><b style="line-height:30px;">强大的数据库<i>资源支撑</i>的变异位点的<i>解读系统</i></b></div>
-                    </div>
-                </Col>
-                <Col span="8">
-                   <div class="ad">
-                        <div style="float:left"><span><Icon type="stats-bars"></Icon></span></div>
-                        <div style="float:left"><b>严格质控的生物信息<i>分析流程</i></b></div>
-                    </div>
-                    <div class="ad">
-                        <div style="float:left"><span><Icon type="clipboard"></Icon></span></div>
-                        <div style="float:left"><b>自动的<i>报告生成</i>系统</b></div>
-                    </div>
-                </Col>
-                <Col span="2"></Col>
-            </Row>
+                            <div style="float:left"><span><Icon type="stats-bars"></Icon></span></div>
+                            <div style="float:left"><b>严格质控的生物信息<i>分析流程</i></b></div>
+                        </div>
+                        <div class="ad">
+                            <div style="float:left"><span><Icon type="clipboard"></Icon></span></div>
+                            <div style="float:left"><b>自动的<i>报告生成</i>系统</b></div>
+                        </div>
+                    </Col>
+                 </Row>
+            </div>
         </div>
     </div>
 </template>

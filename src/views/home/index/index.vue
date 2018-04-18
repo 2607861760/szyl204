@@ -57,13 +57,19 @@
         .medicine-inner{
             padding:60px;
             .medicine-pic{
-                width:100px;
+                width:150px;
                 margin:auto;
                 .medicine-icon{
                     cursor:pointer;
-                    width:100%;
+                    width:100px;
                     height:100px;
+                    margin:0 25px;
                     border-radius:50%;
+                    transition: transform 0.5s;
+                    &:hover{
+                        transform: scale(1.2);
+                        transition: transform 0.5s;
+                    }
                     img{
                         width:60px;
                         height:60px;
@@ -73,8 +79,10 @@
                 }
                 p{
                     margin-top:20px;
-                    width:130px;
-                    text-align:left;
+                    cursor:pointer;
+                    width:150px;
+                    font-size:16px;
+                    text-align:center;
                     &:hover{
                         color:#ff6600;
                     }
@@ -292,6 +300,10 @@
                     background:url('./img/xj.png') no-repeat;
                     background-size:100% 100%;
                 }
+                .cooperate-pic.cooperate-pic-xh{
+                    background:url('./img/bjxh.jpg') no-repeat;
+                    background-size:100% 100%;
+                }
             }
         }
         .swiper-wrapper{
@@ -407,10 +419,23 @@
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="cooperate-content">
+                                <div class="cooperate-pic cooperate-pic-xh">
+                                    <div class="cooperate-bg">
+                                        <div style="padding:18px 0 10px;"><img src="./img/xhlg.png" height="40" width="40" /></div>
+                                        <p>北京协和医院是集医疗、科研、教学为一体的大型综合医院。中国医学科学院临床医学研究所，中华人民共和国卫生部指定的诊治疑难重症的技术指导中心。</p>
+                                    </div>
+                                    <div class="cooperate-title">北京协和医院
+                                    <div class="cooperate-tras"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="cooperate-content">
                                 <div class="cooperate-pic cooperate-pic-fs">
                                     <div class="cooperate-bg">
                                         <div style="padding:18px 0 10px;"><img src="./img/fdlg.png" height="40" width="40" /></div>
-                                        <p>这里是对合作伙伴简短的介绍，包括医院成立时间、地址、级别合作项目等介绍</p>
+                                        <p>复旦大学附属儿科医院是一所集医辽、教学、科研、预防为一体的儿童医院，是上海市医保定点单位。</p>
                                     </div>
                                     <div class="cooperate-title">上海复旦儿科
                                     <div class="cooperate-tras"></div>
@@ -423,7 +448,7 @@
                                 <div class="cooperate-pic cooperate-pic-dz">
                                     <div class="cooperate-bg">
                                         <div style="padding:18px 0 10px;"><img src="./img/dzlg.png" height="40" width="40"/></div>
-                                        <p>这里是对合作伙伴简短的介绍，包括医院成立时间、地址、级别合作项目等介绍</p>
+                                        <p>中国医学科学院肿瘤医院是一所集医教研防于一体的三级肿瘤专科医院，是北京市医保定点医院。</p>
                                     </div>
                                     <div class="cooperate-title">中国医学科学院肿瘤医院
                                     <div class="cooperate-tras"></div>
@@ -436,7 +461,7 @@
                                 <div class="cooperate-pic cooperate-pic-sc">
                                     <div class="cooperate-bg">
                                         <div style="padding:18px 0 10px;"><img src="./img/hblg.png" height="40" width="40"/></div>
-                                        <p>这里是对合作伙伴简短的介绍，包括医院成立时间、地址、级别合作项目等介绍</p>
+                                        <p>湖北省肿瘤医院是湖北省卫生计生委直属的集预防、医疗、康复、科研、教学于一体的大型三级肿瘤专科医院，是武汉市医保定点医院。</p>
                                     </div>
                                     <div class="cooperate-title">湖北省肿瘤医院
                                     <div class="cooperate-tras"></div>
@@ -449,9 +474,9 @@
                                 <div class="cooperate-pic cooperate-pic-broad">
                                     <div class="cooperate-bg">
                                         <div style="padding:18px 0 10px;"><img src="./img/bdlg.png" height="40" width="40"/></div>
-                                        <p>这里是对合作伙伴简短的介绍，包括医院成立时间、地址、级别合作项目等介绍</p>
+                                        <p>博德研究所是一个高水平的基因组学研究中心，隶属于美国麻省理工学院和哈佛大学。</p>
                                     </div>
-                                    <div class="cooperate-title">Broad
+                                    <div class="cooperate-title">Broad研究所
                                     <div class="cooperate-tras"></div>
                                     </div>
                                 </div>
@@ -500,7 +525,7 @@ export default {
         } 
         var swiper = new Swiper('.swiper-container', {
             loop :true,
-            autoplay : 6000,  
+            autoplay : 4000,  
             slidesPerView: 3,
             spaceBetween: 91,
             // pagination: {

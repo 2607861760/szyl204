@@ -43,9 +43,13 @@
             font-size: 16px;
         }
     }
-    /*数据库*/
+    /*知识库*/
     .data_lab{
         height:350px;
+        .ad_content{
+            width:1200px;
+            margin:auto;
+        }
         .ad{
             display:inline-block;
             margin-top:20px;
@@ -142,7 +146,7 @@
             width:1082px;
             height:564px;
             margin:0 auto;
-            margin-bottom:30px;
+            margin-bottom:50px;
             img{
                 display:block;
                 width:1082px;
@@ -170,38 +174,40 @@
                 <Col span="3"></Col>
             </Row>
         </div>
-        <!--数据库-->
+        <!--知识库-->
         <div class="data_lab">
-            <h3>数据库</h3>
-            <Row type="flex" justify="center">
-                <Col span="2"></Col>
-                <Col span="6">
+            <div class="ad_content">
+                <h3>知识库</h3>
+                <Row type="flex" justify="center">
+                    <Col span="3"></Col>
+                    <Col span="7">
+                        <div class="ad">
+                            <div style="float:left"><img src="./img/ygjy.png" /></div>
+                            <div style="float:left"><b>易感基因及药物代谢相关基因</b></div>
+                        </div>
+                        <div class="ad">
+                            <div style="float:left"><img src="./img/wdzs.png" /></div>
+                            <div style="float:left"><b>位点注释信息和药物注释信息</b></div>
+                        </div>
+                    </Col>
+                    <Col span="7">
                     <div class="ad">
-                        <div style="float:left"><img src="./img/ygjy.png" /></div>
-                        <div style="float:left"><b>易感基因及药物代谢相关基因</b></div>
-                    </div>
+                            <div style="float:left"><img src="./img/snp.png" /></div>
+                            <div style="float:left"><b>SNP、CNV等变异类型</img></b></div>
+                        </div>
+                        <div class="ad">
+                            <div style="float:left"><img src="./img/zlfa.png" /></div>
+                            <div style="float:left"><b>治疗方案</b></div>
+                        </div>
+                    </Col>
+                    <Col span="7">
                     <div class="ad">
-                        <div style="float:left"><img src="./img/wdzs.png" /></div>
-                        <div style="float:left"><b>位点注释信息和药物注释信息</b></div>
-                    </div>
-                </Col>
-                <Col span="6">
-                   <div class="ad">
-                        <div style="float:left"><img src="./img/snp.png" /></div>
-                        <div style="float:left"><b>SNP、CNV等变异类型</img></b></div>
-                    </div>
-                    <div class="ad">
-                        <div style="float:left"><img src="./img/zlfa.png" /></div>
-                        <div style="float:left"><b>治疗方案</b></div>
-                    </div>
-                </Col>
-                <Col span="6">
-                   <div class="ad">
-                        <div style="float:left"><img src="./img/ywxx.png" /></div>
-                        <div style="float:left"><b>药物信息</b></div>
-                    </div>
-                </Col>
-            </Row>
+                            <div style="float:left"><img src="./img/ywxx.png" /></div>
+                            <div style="float:left"><b>药物信息</b></div>
+                        </div>
+                    </Col>
+                </Row>
+            </div>
         </div>
         <!--应用场景-->
         <div class="scen">

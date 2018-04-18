@@ -225,8 +225,9 @@ export const register = {
 // 全局图片路径
 export const imgUrl = {
     // imgurl: 'http://192.168.163.214:82', //复旦
-    // imgurl: 'http://10.131.101.159:82', //159  本地测试服务,
-    imgurl: 'http://42.123.124.204:82', //204   外网测试服务
+    imgurl: 'http://10.131.101.159:82', //159  本地测试服务,
+    // imgurl: 'http://42.123.124.204:82', //204   外网测试服务
+    imgurl: 'http://42.123.125.114:82', //114
 }
 
 export const httpUrl = {
@@ -234,13 +235,17 @@ export const httpUrl = {
         // "tgax": 'http://192.168.163.215/#/analyses/', //复旦
         // "loginOut": 'https://auth-dch.genecards.cn/account/LogOff/?returnUrl=http://192.168.163.214:8080/&app=DCHDM', //复旦
 
-        // "downHttp": '10.131.101.159:8080', //159 下载文件地址
-        // "tgax": "http://10.131.101.173:88/#/analyses/", //159 内网测试
-        // "loginOut": "https://auth-dch-qa.genecards.cn/account/LogOff/?returnUrl=http://10.131.101.159:8080/&app=DCHDM", //159内网测试
+        "downHttp": '10.131.101.159:8080', //159 下载文件地址
+        "tgax": "http://10.131.101.173:88/#/analyses/", //159 内网测试
+        "loginOut": "https://auth-dch-qa.genecards.cn/account/LogOff/?returnUrl=http://10.131.101.159:8080/&app=DCHDM", //159内网测试
 
-        "downHttp": 'http://42.123.124.204:8081', //204 下载文件地址
-        "tgax": 'http://tgex-dev.dchgenecloud.com:88/#/analyses/', //204
-        "loginOut": 'https://auth-dch-qa.genecards.cn/account/LogOff/?returnUrl=http://42.123.124.204:8081&app=DCHDM', //204 外网测试
+        // "downHttp": 'http://42.123.124.204:8081', //204 下载文件地址
+        // "tgax": 'http://tgex-dev.dchgenecloud.com:88/#/analyses/', //204
+        // "loginOut": 'https://auth-dch-qa.genecards.cn/account/LogOff/?returnUrl=http://42.123.124.204:8081&app=DCHDM', //204 外网测试
+
+        // "downHttp": 'http://42.123.125.114:8081', //114 下载文件地址
+        // "tgax": 'http://tgex-dev.dchgenecloud.com:88/#/analyses/', //114
+        // "loginOut": 'https://auth-dch-qa.genecards.cn/account/LogOff/?returnUrl=http://42.123.125.114:8081&app=DCHDM', //114 外网测试
     }
     //全局上传文件路径
 export const filePath = {
@@ -248,11 +253,14 @@ export const filePath = {
             // "local": '/run/media/root/', //本地上传   复旦
             // "server": '/storage/luyulan/', //服务器上传 复旦
 
-            // "local": '/opt/serverData/', //159 本地上传
-            // "server": '/opt/serverData/', // 159 服务器上传
+            "local": '/opt/serverData/', //159 本地上传
+            "server": '/opt/serverData/', // 159 服务器上传
 
-            "local": '/opt/NfsDir/PublicDir/demo/', //204本地上传  
-            "server": '/opt/NfsDir/PublicDir/demo/', //204 服务器上传
+            // "local": '/opt/NfsDir/PublicDir/demo/', //204本地上传  
+            // "server": '/opt/NfsDir/PublicDir/demo/', //204 服务器上传
+
+            // "local": '/opt/NfsDir/PublicDir/demo/', //114本地上传  
+            // "server": '/opt/NfsDir/PublicDir/demo/', //114 服务器上传
         }
     }
     //全局接口路径
