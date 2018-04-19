@@ -243,9 +243,9 @@ export const httpUrl = {
         // "tgax": 'http://tgex-dev.dchgenecloud.com:88/#/analyses/', //204
         // "loginOut": 'https://auth-dch-qa.genecards.cn/account/LogOff/?returnUrl=http://42.123.124.204:8081&app=DCHDM', //204 外网测试
 
-        // "downHttp": 'http://42.123.125.114:8081', //114 下载文件地址
+        // "downHttp": 'http://42.123.125.114:8080', //114 下载文件地址
         // "tgax": 'http://tgex-dev.dchgenecloud.com:88/#/analyses/', //114
-        // "loginOut": 'https://auth-dch-qa.genecards.cn/account/LogOff/?returnUrl=http://42.123.125.114:8081&app=DCHDM', //114 外网测试
+        // "loginOut": 'https://auth-dch-qa.genecards.cn/account/LogOff/?returnUrl=http://42.123.125.114:8080&app=DCHDM', //114 外网测试
     }
     //全局上传文件路径
 export const filePath = {

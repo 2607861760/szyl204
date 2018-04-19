@@ -148,11 +148,11 @@
                     <ul class="home-header-top-right">
                         <li>
                             <Icon type="ios-telephone" color="#1996CD" size="16"></Icon>
-                            <span class="header-phone">010-61852722</span>
+                            <span class="header-phone">010-86452200</span>
                         </li>
-                        <li>
+                        <!-- <li>
                             <el-button size="small" type="primary">联系客服</el-button>
-                        </li>
+                        </li> -->
                         <li>
                             <div class="top-own">
                                 <div v-if="currentUserName">
@@ -160,7 +160,7 @@
                                     <router-link to="/admin"  class="avatar-admin" style="margin-left:30px;">{{currentUserName}}</router-link>
                                 </div>
                                 <div v-else>
-                                     <a href="javascript:;" @click="loginModal" class="active">登录</a> 
+                                     <el-button size="small" type="primary" href="javascript:;" @click="loginModal" class="active">登录</el-button> 
                                      <!-- <router-link to="/login"  @click="loginModal = true" class="active" v-show="showBtn">登录</router-link>  -->
                                     <span v-show="showBtn">|</span>
                                     <!-- <router-link to="/register" v-show="showBtn">
@@ -192,8 +192,14 @@
                             <div style="float:left;margin-left: 50px;">
                                 <p style="font-size:18px;color:#1996cd;">产品中心</p>
                                 <ol class="goods">
+                                     <li>
+                                        <div style="cursor:pointer;" @click="goTumor">
+                                            <div class="round"></div>
+                                            <span>罕见病精准医学</span>
+                                        </div>
+                                    </li>
                                     <li>
-                                        <div>
+                                        <div style="cursor:pointer;" @click="goGene">
                                             <div class="round"></div>
                                             <span>肿瘤精准医学</span>
                                         </div>
@@ -201,25 +207,7 @@
                                     <li>
                                         <div>
                                             <div class="round"></div>
-                                            <span>罕见病精准医学</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div>
-                                            <div class="round"></div>
                                             <span>药物基因组精准分析</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div>
-                                            <div class="round"></div>
-                                            <span>更多内容</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div>
-                                            <div class="round"></div>
-                                            <span>更多内容</span>
                                         </div>
                                     </li>
                                 </ol>
@@ -297,10 +285,17 @@ export default {
                         })
                     }
                 }
-            })
+            });
+
         },
         gohome(){
             this.$router.push("/home");
+        },
+        goGene() {
+            this.$router.push("/home/genePage");
+        },
+        goTumor() {
+            this.$router.push("/home/tumourPage");
         }
     },
     created() {

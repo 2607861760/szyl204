@@ -179,7 +179,7 @@
        .about-txt{
            color:#fff;
            text-indent:2em;
-           padding:30px 0 0;
+           padding:60px 0 0;
            margin:auto;
            line-height:28px;
        }

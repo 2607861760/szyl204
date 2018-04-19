@@ -12,6 +12,36 @@
         width: 100%;
         height: 349px;
         background: rgba(247, 247, 247, 1);
+        .v_box{
+            width:1200px;
+            height: 349px;
+            margin:auto;
+        }
+        .fl{
+            float:left;
+        }
+        .v_box_show{
+            width:450px;
+            margin-left:20px;
+        }
+        .v_box_title{
+            width:650px;
+            margin-left:80px;
+            height:349px;
+            position: relative;
+            p{
+                width:650px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                margin: auto;
+                line-height: 30px;
+                height: 150px;
+                font-size: 16px;
+            }
+        }
         .ivu-col {
             height: 349px;
         }
@@ -30,17 +60,6 @@
             height: 40px;
             line-height: 40px;
             color: #333;
-        }
-        p {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            margin: auto;
-            line-height: 30px;
-            height: 150px;
-            font-size: 16px;
         }
     }
     /*知识库*/
@@ -161,18 +180,16 @@
     <div class="tumour_page">
         <!--视频播放区域-->
         <div class="video_box">
-            <Row>
-                <Col span="3"></Col>
-                <Col span="9">
+            <div class="v_box">
+                <div class="v_box_show fl">
                     <video v-show="videoShow" width="450" height="248" :src="videoUrl" loop="loop" controls="controls"></video>
                     <embed v-show="!videoShow" src="https://imgcache.qq.com/tencentvideo_v1/playerv3/TPout.swf?max_age=86400&v=20161117&vid=k0631n7v0fl&auto=0" allowFullScreen="true" quality="high" width="450" height="248" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
                     <span>肿瘤检测报告-demo</span>
-                </Col>
-                <Col span="9">
+                </div>
+                <div class="v_box_title fl">
                     <p>癌症基因数据解读平台可完成肿瘤早期遗传筛查、靶向用药指导、化疗用药指导、预后分析及耐药位点监控等多方面基因数据解读，为临床医生治疗决策提供详实的、最新最权威的循证医学方案。</p>
-                </Col>
-                <Col span="3"></Col>
-            </Row>
+                </div>
+            </div>
         </div>
         <!--知识库-->
         <div class="data_lab">
@@ -265,8 +282,7 @@ export default {
                     }else{
                         this.videoShow=true;
                         this.videoUrl = data.data.path;
-                    }
-                    
+                    }                    
                 }
             }).catch((error) => {
                 this.videoShow = false;

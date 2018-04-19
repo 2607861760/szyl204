@@ -2,8 +2,38 @@
 .gene_page{
     .video_box{
         width:100%;
+        margin:auto;
         height: 349px;
         background:rgba(247,247,247,1);
+        .v-box{
+            width:1200px;
+            height:349px;
+            margin:auto;
+            .fl{
+                float:left;
+            }
+            .v_show_box{
+                width:450px;
+                margin-left:20px;
+            }
+            .v_show_title{
+                width:650px;
+                margin-left:80px;
+                height:349px;
+                position: relative;
+                p{
+                    position: absolute;
+                    top:0;
+                    left: 0;
+                    right:0;
+                    bottom:0;
+                    margin:auto;
+                    line-height:30px;
+                    height:200px;
+                    font-size:16px;
+                }
+            }
+        }
         .ivu-col{
             height: 349px;
         }
@@ -22,17 +52,6 @@
             height:40px;
             line-height:40px;
             color:#333;
-        }
-        p{
-            position: absolute;
-            top:0;
-            left: 0;
-            right:0;
-            bottom:0;
-            margin:auto;
-            line-height:30px;
-            height:250px;
-            font-size:16px;
         }
     }
     .advantage{
@@ -97,18 +116,17 @@
 <template>
     <div class="gene_page">
         <div class="video_box">
-            <Row>
-                <Col span="3"></Col>
-                <Col span="9">
+            <div class="v-box">
+                <div class="v_show_box fl">
                     <video v-show="videoShow" width="450" height="248" :src="videoUrl" loop="loop" controls="controls"></video>
                     <embed v-show="!videoShow" src="https://imgcache.qq.com/tencentvideo_v1/playerv3/TPout.swf?max_age=86400&v=20161117&vid=d0631s99fh2&auto=0" allowFullScreen="true" quality="high" width="450" height="240" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
                     <span>罕见病检测报告-demo</span>
-                </Col>
-                <Col span="9">
-                    <p>NGS数据解读平台是xxx，这里是对罕见病检测平台的介绍内容文案，这里是对罕见病检测平台的介绍内容文案这里是对罕见病检测平台的介绍内容文案这里是对罕见病检测平台的介绍内容文案这里是对罕见病检测平台的介绍内容文案这里是对罕见病检测平台的介绍内容文案。</p>
-                </Col>
-                <Col span="3"></Col>
-            </Row>
+                </div>
+                <div class="v_show_title fl">
+                    <p>本产品拥有自主研发的信息分析平台,可快速准确地对临床样本的各种类型数据进行分析,并基于庞大的知识库提供合理的数据解读和报告。通过分析患者的组学信息对患患者进行精准诊断,并提供个性化的用药指导。可以有效地降低药物毒副作用,减少药物不良反应,提高患者的生活质量。
+精准医学解决方案可进行私有化部署,SAAS层包含 GeneReviews、CHPO、 Vishuo、TGeX、 Spark、Aspera等,可为肿瘤、罕见病、队列研究等应用提供稳定、快速、准确地运行环境支持。</p>
+                </div>
+            </div>
         </div>
         <!--罕见病精准医学系统的优势-->
         <div class="advantage">
