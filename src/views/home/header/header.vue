@@ -193,13 +193,13 @@
                                 <p style="font-size:18px;color:#1996cd;">产品中心</p>
                                 <ol class="goods">
                                      <li>
-                                        <div style="cursor:pointer;" @click="goTumor">
+                                        <div style="cursor:pointer;" @click="goGene">
                                             <div class="round"></div>
                                             <span>罕见病精准医学</span>
                                         </div>
                                     </li>
                                     <li>
-                                        <div style="cursor:pointer;" @click="goGene">
+                                        <div style="cursor:pointer;" @click="goTumor">
                                             <div class="round"></div>
                                             <span>肿瘤精准医学</span>
                                         </div>
