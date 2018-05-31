@@ -38,10 +38,13 @@ const router = new VueRouter({
             name: "后台主页",
             component: resolve => require(['@/views/admin/index/index.vue'], resolve),
             children: [{
+                path: '/admin',
+                component: resolve => require(['@/views/admin/information/mydata/mydata.vue'], resolve)
+            }, {
                 path: '/admin/tumour',
                 component: resolve => require(['@/views/admin/information/mydata/mydata.vue'], resolve)
             }, {
-                path: '/admin',
+                path: '/admin/mydata',
                 component: resolve => require(['@/views/admin/gene/mydata/mydata.vue'], resolve)
             }, {
                 name: "editgene",

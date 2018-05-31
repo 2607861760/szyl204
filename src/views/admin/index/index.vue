@@ -259,6 +259,8 @@ export default {
                 if(data.returnCode==0 || data.returnCode==200) {
                     if(data.data && data.data.length>0){
                         this.menuList = data.data;
+                        this.$router.push(data.data[0].url);
+                        this.show = true;
                     }
                 }else if(data.returnCode==422 || data.returnCode==204){
                     this.$router.push('/login')
@@ -266,7 +268,7 @@ export default {
                     this.$Message.error(data.msg)
                 }
             }).catch((err)=>{
-
+                this.$Message.error(err.statusText);
             })
         },
         // 一级菜单被打开事件
@@ -304,7 +306,7 @@ export default {
                             vm.cusername=decodeURI(data.data.user.username);
                             vm.$store.state.uid=data.data.user.dchUserId;
                             vm.$store.state.code=code;
-                            vm.show=true;
+                            // vm.show=true;
                             // vm.load=false;
                             console.log(vm.cusername)
                         }
@@ -320,7 +322,7 @@ export default {
                 })
             }else{
                 // vm.load=false;
-                vm.show=true;
+                // vm.show=true;
                 vm.cusername=decodeURI(getCookie('username'));
                 console.log(vm.cusername)
             }
