@@ -1,4 +1,4 @@
-<style lang="scss" scoped>
+﻿<style lang="scss" scoped>
 .bg{
     background-image:url('./bg2.jpg');
     width:100%;
