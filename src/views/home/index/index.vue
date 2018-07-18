@@ -527,11 +527,7 @@ export default {
             loop :true,
             autoplay : 4000,  
             slidesPerView: 3,
-            spaceBetween: 91,
-            // pagination: {
-            //     el: '.swiper-pagination',
-            //     clickable: true,
-            // },
+            spaceBetween: 91
         });
     }
 }
