@@ -256,11 +256,14 @@ export const filePath = {
             // "local": '/opt/serverData/', //159 本地上传
             // "server": '/opt/serverData/', // 159 服务器上传
 
-            "local": '/opt/NfsDir/PublicDir/demo/', //204本地上传  
-            "server": '/opt/NfsDir/PublicDir/demo/', //204 服务器上传
+            // "local": '/opt/NfsDir/PublicDir/demo/', //204本地上传  
+            // "server": '/opt/NfsDir/PublicDir/demo/', //204 服务器上传
 
             // "local": '/opt/NfsDir/PublicDir/demo/', //114本地上传  
             // "server": '/opt/NfsDir/PublicDir/demo/', //114 服务器上传
+
+            "local": '/home/dchealth/', //173本地上传 
+            "server": '/home/dchealth/', //173 服务器上传
         }
     }
     //全局接口路径
